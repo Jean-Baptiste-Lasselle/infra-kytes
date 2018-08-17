@@ -1,0 +1,9 @@
+
+.DS_Store
+# Fichiers et répertoires générés par docker-compose
+db/
+gitlab/logs/
+gitlab/data/
+gitlab/config/
+nginx/logs/
+nginx/certificates/
