@@ -25,6 +25,23 @@ Ou en une seule ligne :
 ```bash
 export PROVISIONING_HOME=$(pwd)/coquelicot && mkdir -p $PROVISIONING_HOME && cd $PROVISIONING_HOME && git clone "https://github.com/Jean-Baptiste-Lasselle/coquelicot" . && chmod +x ./operations.sh && ./operations.sh
 ```
+Lorsque vous exécuterez ces commandes, vous serez guidé, dans la provision, interactivement : 
+* La recette s'exécutera
+* Il vous sera demandé de crééer un utilisateur rocketchat, qui devra correspondre à celui spécifié dans le `./docker-compose.yml`, avec les deux variables d'environnement `ROCKETCHAT_USER` et `ROCKETCHAT_PASSWORD` (cf. définition du conteneur `hubot`)
+* Vous presserez la touche entrée
+* La recette se terminera, et vous pourrez constater la sortie log suivante, et attestant du succès de la connexion du HUBOT dans le serveur RocketChat
+
+Seul manque de ce repo Git : 
+
+*  Il reste à appliquer les instructions en fin de cette page, pour customiser les webhooks Gitlab
+
+Améliorations : 
+* Utiliser un HEALTHCHECK RocketChat, pour faire patienter le processus bash qui terminera ensuite en re-démarrant le service
+* Trouver le moyent de faire focntionner les depends_on avec les HEALTHCHECK de chaque conteneur. Y compris le contneur qui initialise le replicaset : Quand il a terminé son travail, alors seulement l'instance applicative RocketChat peut démarrer.
+
+
+
+### Plus en détails
 
 Pour tout détruire et nettoyer : 
 
