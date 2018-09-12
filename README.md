@@ -61,7 +61,7 @@ Your hubot-scripts.json is empty, so you just need to remove it.
 Seul manque de ce repo Git : 
 
 *  Il reste à appliquer les instructions en fin de cette page, pour customiser les webhooks Gitlab. Pour ce faire, je vais donc utiliser l'inteface graphique web de rocketchat, pour aller à l'admin et créer un "incoming webhook", et ce en utilisant le script suivant : 
-```bash
+```javascript
 /* eslint no-console:0, max-len:0 */
 // see https://gitlab.com/help/web_hooks/web_hooks for full json posted by GitLab
 const NOTIF_COLOR = '#6498CC';
