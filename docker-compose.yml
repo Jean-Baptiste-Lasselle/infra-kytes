@@ -55,9 +55,9 @@ services:
 #         ipv4_address: 192.168.160.5
 
   mongo:
-    image: mongo:latest
-    # image: marguerite/mongo:1.0.0    
-    # build: ./mongodb/construction/
+    # image: mongo:latest
+    image: marguerite/mongo:1.0.0    
+    build: ./mongodb/construction/
     # hostname: "mongo"
     container_name: 'mongo'
     volumes:
