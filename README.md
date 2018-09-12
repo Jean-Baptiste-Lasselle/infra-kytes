@@ -31,7 +31,7 @@ Pour débogguer cette recette, j'ai utilisé :
 ```bash
 docker-compose down --rmi all && docker system prune -f && docker-compose --verbose build && docker-compose --verbose up -d && sleep 10 && docker ps -a
 ```
-Pour inspecter les logs d'exécution de chaque conteneur, cette recette met à disposition un service 'sondereseau', que l'on peut utiliser de la manière suivante : 
+Pour inspecter les logs d'exécution de chaque conteneur : 
 ```bash
 export NOM_DU_CONTENEUR=gitlab
 export NOM_DU_CONTENEUR=mongo
@@ -42,7 +42,7 @@ export NOM_DU_CONTENEUR=hubot
 
 docker logs $NOM_DU_CONTENEUR
 ```
-Pour testerla connectivité entre deux conteneurs :
+Pour testerla connectivité entre deux conteneurs, cette recette met à disposition un service 'sondereseau', que l'on peut utiliser de la manière suivante :
 ```bash
 # - lien entre les conteneurs 'gitlab' et 'rocketchat'
 export NOM_DU_CONTENEUR1=gitlab
