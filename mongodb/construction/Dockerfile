@@ -8,9 +8,9 @@ EXPOSE 27017
 
 USER 1001
 
-COPY docker-healthcheck /usr/local/bin/
-RUN chmod +x /usr/local/bin/docker-healthcheck
-HEALTHCHECK CMD ["docker-healthcheck"]
+COPY mongo-healthcheck /usr/local/bin/
+RUN chmod +x /usr/local/bin/mongo-healthcheck
+HEALTHCHECK CMD ["mongo-healthcheck"]
 
 ENTRYPOINT [ "/app-entrypoint.sh" ]
 CMD [ "/run.sh" ]
