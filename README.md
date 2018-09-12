@@ -161,6 +161,17 @@ Error: $MONGO_OPLOG_URL must be set to the 'local' database of a Mongo replica s
     at Array.forEach (<anonymous>)
 ``` 
 
+J'ai encore creusé mon investigation, et cette fois il apparaît, que la valeur de configuration de la variable `MONGO_OPLOG_URL`  , est bien correte.
+Si cette variable d'environnement est précisée pour la configuration du conteneur `rocketchat`, c'est parce que le conteneur `rocketchat` doit pouvoir communiquer avec l'instance MongoDB, par un canal particulier. On trouvera rapidement avec une recehrceh google, que ce canal est mis à disposition par MongoDB, etles applicatons peuvent l'utiliser pour écouter les évènements sur l'histroique mongodb (celui lié à la notion "mongo replay").
+D'autre part, si on fait un :
+```bash
+docker logs mongo-init-replica
+```
+On constate que ce conteneur a échoué dans sa tâche, et ce parceque la connexion lui a été refusée. La tâche accomplie par ce conteneur est d'initialiser  le "replicaSet" MongoDB, donc le "replicaSet" n'est pas initialisé correctement, et la connexion  utilisée par `rocketchat`, configurée avec la variable `MONGO_OPLOG_URL`, échoue, parce qu'elle nécessite l'initialisation du replicaSet.
+
+Je peux éventuellement voir si mon rocketchat peut se passer d'utiliser la connexion permetant d'écouter les évènements `MONGO_OPLOG_URL`.
+
+
 # ChatOps with Rocket.Chat
 ## Inspired in Gitlab: "From Idea to Production"
 
