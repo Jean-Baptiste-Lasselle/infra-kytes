@@ -169,8 +169,109 @@ docker logs mongo-init-replica
 ```
 On constate que ce conteneur a échoué dans sa tâche, et ce parceque la connexion lui a été refusée. La tâche accomplie par ce conteneur est d'initialiser  le "replicaSet" MongoDB, donc le "replicaSet" n'est pas initialisé correctement, et la connexion  utilisée par `rocketchat`, configurée avec la variable `MONGO_OPLOG_URL`, échoue, parce qu'elle nécessite l'initialisation du replicaSet.
 
-Je peux éventuellement voir si mon rocketchat peut se passer d'utiliser la connexion permetant d'écouter les évènements `MONGO_OPLOG_URL`.
+J'ai encorea pprofondi l'étude, et ai découvert que la valeur de `MONGO_OPLOG_URL`, doit préciser le nom du repilicaSet mongoDb, avec un paramètre HTTP/get : 
 
+```bash
+version: '3'
+
+services:
+  gitlab:
+# - [... etc... J'ai abrégé la confioguration]
+  mongo-init-replica:
+    # image: mongo:3.2
+    image: mongo:latest
+    container_name: 'mongo-init-replica'
+    command: 'mongo mongo/rocketchat --eval "rs.initiate({ _id: ''rs0'', members: [ { _id: 0, host: ''mongo:27017'' } ]})"'
+    networks:
+      - devops
+    depends_on:
+      - mongo
+  rocketchat:
+    image: rocketchat/rocket.chat:latest
+    container_name: 'rocketchat'
+    volumes:
+      - ./rocketchat/uploads:/app/uploads
+    environment:
+      - PORT=3000
+      - ROOT_URL=http://rocketchat.marguerite.io:3000
+      - MONGO_URL=mongodb://mongo:27017/rocketchat
+      - MONGO_OPLOG_URL=mongodb://mongo:27017/local?replicaSet=rs0
+      - MAIL_URL="smtp://smtp.google.com"
+    ports:
+      - 3000:3000
+    expose:
+      - "3000"
+    depends_on:
+      - mongo
+    networks:
+      - devops
+    restart: always
+
+```
+On remarquera aussi que le nom du replica Set, créé avec le conteneur `mongo-init-replica`, doit être le nom du replicaSet mentionné par `MONGO_OPLOG_URL` (ci-dessus, `rs0`).
+
+Une fois relancé l'emsble du docker-compose, on constate que de nouveaux problèmes se manifestent : 
+* D'abord, le conteneur `mongo-init-replica` échoue toujours à sa première tntative de création du replicaSet, parce que le conteneur `mongodb` n'est pas prêt. On peut donc relancer l'exécution du conteneur `mongo-init-replica`, afin de crééer le replicaSet : `docker start mongo-ibit-replica`
+* Une fois cela fait, on peut alors suivre les logs du conteneur rocketchat, qui démarre effectivmeent, mais tout en émettant des avertissements qu'il faudra traiter comme des erreurs. Sortie standard de ces erreurs : 
+```bash
+/app/bundle/programs/server/node_modules/fibers/future.js:313
+						throw(ex);
+						^
+MongoError: no primary found in replicaset or invalid replica set name
+    at /app/bundle/programs/server/npm/node_modules/meteor/npm-mongo/node_modules/mongodb-core/lib/topologies/replset.js:560:28
+    at Server.<anonymous> (/app/bundle/programs/server/npm/node_modules/meteor/npm-mongo/node_modules/mongodb-core/lib/topologies/replset.js:312:24)
+    at Object.onceWrapper (events.js:315:30)
+    at emitOne (events.js:116:13)
+    at Server.emit (events.js:211:7)
+    at /app/bundle/programs/server/npm/node_modules/meteor/npm-mongo/node_modules/mongodb-core/lib/topologies/server.js:300:14
+    at /app/bundle/programs/server/npm/node_modules/meteor/npm-mongo/node_modules/mongodb-core/lib/connection/pool.js:469:18
+    at _combinedTickCallback (internal/process/next_tick.js:131:7)
+    at process._tickCallback (internal/process/next_tick.js:180:9)
+Updating process.env.MAIL_URL
+Starting Email Intercepter...
+Warning: connect.session() MemoryStore is not
+designed for a production environment, as it will leak
+memory, and will not scale past a single process.
+Setting default file store to GridFS
+LocalStore: store created at 
+LocalStore: store created at 
+LocalStore: store created at 
+Fri, 17 Aug 2018 10:52:39 GMT connect deprecated multipart: use parser (multiparty, busboy, formidable) npm module instead at npm/node_modules/connect/lib/middleware/bodyParser.js:56:20
+Fri, 17 Aug 2018 10:52:39 GMT connect deprecated limit: Restrict request size at location of read at npm/node_modules/connect/lib/middleware/multipart.js:86:15
+Updating process.env.MAIL_URL
+Using GridFS for custom sounds storage
+Using GridFS for custom emoji storage
+ufs: temp directory created at "/tmp/ufs"
+➔ System ➔ startup
+➔ +-------------------------------------------------------------+
+➔ |                        SERVER RUNNING                       |
+➔ +-------------------------------------------------------------+
+➔ |                                                             |
+➔ |  Rocket.Chat Version: 0.69.2                                |
+➔ |       NodeJS Version: 8.11.3 - x64                          |
+➔ |             Platform: linux                                 |
+➔ |         Process Port: 3000                                  |
+➔ |             Site URL: http://rocketchat.marguerite.io:3000  |
+➔ |     ReplicaSet OpLog: Enabled                               |
+➔ |          Commit Hash: 7df9818105                            |
+➔ |        Commit Branch: HEAD                                  |
+➔ |                                                             |
+➔ +-------------------------------------------------------------+
+
+```
+* Ensuite, on voit que le conteneur `hubot`, a arrêté son exécution. Si on le re-démarre, avec un `docker start hubot`, et que l'on inspecte les logs de son exécution, on voir que le hubot démarre correctement, mais en logguant les avertissements suivants: 
+ ```
+ [Fri Aug 17 2018 10:55:37 GMT+0000 (UTC)] INFO Starting Rocketchat adapter version 1.0.11...
+[Fri Aug 17 2018 10:55:37 GMT+0000 (UTC)] INFO Once connected to rooms I will respond to the name: Rocket.Cat
+[Fri Aug 17 2018 10:55:37 GMT+0000 (UTC)] INFO I will also respond to my Rocket.Chat username as an alias: rocket.cat
+[Fri Aug 17 2018 10:55:37 GMT+0000 (UTC)] INFO Connecting To: rocketchat:3000
+[Fri Aug 17 2018 10:55:37 GMT+0000 (UTC)] INFO Successfully connected!
+[Fri Aug 17 2018 10:55:37 GMT+0000 (UTC)] INFO 
+[Fri Aug 17 2018 10:55:37 GMT+0000 (UTC)] INFO Logging In
+[Fri Aug 17 2018 10:55:37 GMT+0000 (UTC)] ERROR Unable to Login: {"isClientSafe":true,"error":403,"reason":"User has no password set","message":"User has no password set [403]","errorType":"Meteor.Error"} Reason: User has no password set
+[Fri Aug 17 2018 10:55:37 GMT+0000 (UTC)] ERROR If joining GENERAL please make sure its using all caps.
+[Fri Aug 17 2018 10:55:37 GMT+0000 (UTC)] ERROR If using LDAP, turn off LDAP, and turn on general user registration with email verification off.
+```
 
 # ChatOps with Rocket.Chat
 ## Inspired in Gitlab: "From Idea to Production"
