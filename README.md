@@ -634,8 +634,24 @@ Althougth Hubot is a very powerfull tool for bot scripting, you might wanna add 
 
 For that, there is a pretty simple script that you can change as you like, to read the gitlabs webhooks and throw some messages inside your project channel.
 
-Here is what you gonna do:
 
+
+Here is what you gonna do:
+#### ajout jbl :
+
+la méthode décrite cidessous implique un ficher de script à modifier. Je veux voir si je peux psécifier ce script au boot du conteneur, avec la variable d'environnement ̀`EXTERNAL_SCRIPTS` ci dessous :
+
+```bash
+docker run -it -e ROCKETCHAT_URL=<your rocketchat instance>:<port> \
+    -e ROCKETCHAT_ROOM='' \
+    -e LISTEN_ON_ALL_PUBLIC=true \
+    -e ROCKETCHAT_USER=bot \
+    -e ROCKETCHAT_PASSWORD=bot \
+    -e ROCKETCHAT_AUTH=password \
+    -e BOT_NAME=bot \
+    -e EXTERNAL_SCRIPTS=hubot-pugme,hubot-help \
+    rocketchat/hubot-rocketchat
+```
 ### Create Rocket.Chat Incoming WebHook
 
 Access your rocket.chat from your browser (http://chat.dorgam.it) and go to the top menu (the little arrow besides your name) and click in Administration > Integrations > New Integration > Incoming WebHook.
