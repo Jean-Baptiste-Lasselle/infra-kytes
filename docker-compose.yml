@@ -131,7 +131,10 @@ services:
       - BOT_NAME=jblrocks
       - LISTEN_ON_ALL_PUBLIC=true
       - GITLAB_URL=http://marguerite_gitlab:8081/api/v3/
-      - EXTERNAL_SCRIPTS=hubot-help,hubot-seen,hubot-links,hubot-diagnostics,hubot-rocketchat-gitlab
+      # - EXTERNAL_SCRIPTS=hubot-help,hubot-seen,hubot-links,hubot-diagnostics,hubot-rocketchat-gitlab
+      # - EXTERNAL_SCRIPTS=hubot-pugme,hubot-help,hubot-seen,hubot-links,hubot-diagnostics,hubot-rocketchat-gitlab
+      # - cf. https://github.com/RocketChat/hubot-rocketchat#docker
+      - EXTERNAL_SCRIPTS=hubot-pugme,hubot-help
       - GITLAB_API_KEY="cNhsExCcNhsExicNhsExx"
       - GITLAB_TOKEN=cNhsExCcNhsExicNhsExx
       - GITLAB_RECORD_LIMIT=100
