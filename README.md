@@ -17,8 +17,13 @@ export PROVISIONING_HOME=$(pwd)/coquelicot
 mkdir -p $PROVISIONING_HOME
 cd $PROVISIONING_HOME
 git clone "https://github.com/Jean-Baptiste-Lasselle/coquelicot" . 
+chmod +x ./operations.sh
+./operations.sh
+```
+Ou en une seule ligne : 
 
-docker-compose down --rmi all && docker system prune -f && docker-compsoe up -d
+```bash
+export PROVISIONING_HOME=$(pwd)/coquelicot && mkdir -p $PROVISIONING_HOME && cd $PROVISIONING_HOME && git clone "https://github.com/Jean-Baptiste-Lasselle/coquelicot" . && chmod +x ./operations.sh && ./operations.sh
 ```
 
 Pour tout détruire et nettoyer : 
@@ -27,10 +32,16 @@ Pour tout détruire et nettoyer :
 docker-compose down --rmi all && docker system prune -f
 ```
 
-Pour débogguer cette recette, j'ai utilisé :
+Pour débogguer cette recette :
+
+```bash
+export PROVISIONING_HOME=$(pwd)/coquelicot && mkdir -p $PROVISIONING_HOME && cd $PROVISIONING_HOME && git clone "https://github.com/Jean-Baptiste-Lasselle/coquelicot" . && chmod +x ./operations-verbose.sh && ./operations-verbose.sh
+```
+Ou : 
 ```bash
 docker-compose down --rmi all && docker system prune -f && docker-compose --verbose build && docker-compose --verbose up -d && sleep 10 && docker ps -a
 ```
+
 Pour inspecter les logs d'exécution de chaque conteneur : 
 ```bash
 export NOM_DU_CONTENEUR=gitlab
