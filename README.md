@@ -29,7 +29,34 @@ Lorsque vous exécuterez ces commandes, vous serez guidé, dans la provision, in
 * La recette s'exécutera
 * Il vous sera demandé de crééer un utilisateur rocketchat, qui devra correspondre à celui spécifié dans le `./docker-compose.yml`, avec les deux variables d'environnement `ROCKETCHAT_USER` et `ROCKETCHAT_PASSWORD` (cf. définition du conteneur `hubot`)
 * Vous presserez la touche entrée
-* La recette se terminera, et vous pourrez constater la sortie log suivante, et attestant du succès de la connexion du HUBOT dans le serveur RocketChat
+* La recette se terminera, et vous pourrez constater la sortie log suivante, et attestant du succès de la connexion du HUBOT dans le serveur RocketChat : 
+
+```bash
+npm info install hubot-rocketchat@1.0.11
+npm info postinstall hubot-rocketchat@1.0.11
+npm info install rocketbot@0.0.0
+npm info postinstall rocketbot@0.0.0
+npm info prepublish rocketbot@0.0.0
+npm info ok 
+[Fri Aug 17 2018 12:10:56 GMT+0000 (UTC)] INFO Starting Rocketchat adapter version 1.0.11...
+[Fri Aug 17 2018 12:10:56 GMT+0000 (UTC)] INFO Once connected to rooms I will respond to the name: jblrocks
+[Fri Aug 17 2018 12:10:56 GMT+0000 (UTC)] INFO I will also respond to my Rocket.Chat username as an alias: jbl
+[Fri Aug 17 2018 12:10:56 GMT+0000 (UTC)] INFO Connecting To: rocketchat:3000
+[Fri Aug 17 2018 12:10:56 GMT+0000 (UTC)] INFO Successfully connected!
+[Fri Aug 17 2018 12:10:56 GMT+0000 (UTC)] INFO 
+[Fri Aug 17 2018 12:10:56 GMT+0000 (UTC)] INFO Logging In
+[Fri Aug 17 2018 12:10:56 GMT+0000 (UTC)] INFO Successfully Logged In
+[Fri Aug 17 2018 12:10:56 GMT+0000 (UTC)] INFO rid:  []
+[Fri Aug 17 2018 12:10:56 GMT+0000 (UTC)] INFO All rooms joined.
+[Fri Aug 17 2018 12:10:56 GMT+0000 (UTC)] INFO Preparing Meteor Subscriptions..
+[Fri Aug 17 2018 12:10:56 GMT+0000 (UTC)] INFO Subscribing to Room: __my_messages__
+[Fri Aug 17 2018 12:10:56 GMT+0000 (UTC)] INFO Successfully subscribed to messages
+[Fri Aug 17 2018 12:10:56 GMT+0000 (UTC)] INFO Setting up reactive message list...
+[Fri Aug 17 2018 12:10:56 GMT+0000 (UTC)] WARNING Expected /home/hubot/scripts/package to assign a function to module.exports, got object
+[Fri Aug 17 2018 12:10:56 GMT+0000 (UTC)] WARNING Loading scripts from hubot-scripts.json is deprecated and will be removed in 3.0 (https://github.com/github/hubot-scripts/issues/1113) in favor of packages for each script.
+
+Your hubot-scripts.json is empty, so you just need to remove it.
+```
 
 Seul manque de ce repo Git : 
 
