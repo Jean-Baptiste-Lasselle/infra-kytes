@@ -6,7 +6,7 @@ FROM mongo:latest
 # - > Il faudra à l'avenir utilsier ce healthcheck, plus fin que celui ci-dessous : 
 EXPOSE 27017
 
-USER 1001
+# USER 1001
 
 COPY mongo-healthcheck /usr/local/bin/
 # - -------------------------------------------------------------
@@ -17,7 +17,7 @@ COPY mongo-healthcheck /usr/local/bin/
 # - -------------------------------------------------------------
 HEALTHCHECK CMD ["mongo-healthcheck"]
 
-ENTRYPOINT [ "/app-entrypoint.sh" ]
-CMD [ "/run.sh" ]
+# ENTRYPOINT [ "/app-entrypoint.sh" ]
+# CMD [ "/run.sh" ]
 
 
