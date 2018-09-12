@@ -123,10 +123,12 @@ services:
     environment:
       - ROCKETCHAT_URL=rocketchat:3000
       - ROCKETCHAT_ROOM=devops
-      - ROCKETCHAT_USER=rocket.cat
-      - ROCKETCHAT_PASSWORD=bot
+      # - ROCKETCHAT_USER=rocket.cat
+      - ROCKETCHAT_USER=jbl
+      # - ROCKETCHAT_PASSWORD=bot
+      - ROCKETCHAT_PASSWORD=jbl
       - ROCKETCHAT_AUTH=password
-      - BOT_NAME=Rocket.Cat
+      - BOT_NAME=jblrocks
       - LISTEN_ON_ALL_PUBLIC=true
       - GITLAB_URL=http://marguerite_gitlab:8081/api/v3/
       - EXTERNAL_SCRIPTS=hubot-help,hubot-seen,hubot-links,hubot-diagnostics,hubot-rocketchat-gitlab
