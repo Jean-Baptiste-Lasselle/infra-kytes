@@ -259,7 +259,7 @@ ufs: temp directory created at "/tmp/ufs"
 ➔ +-------------------------------------------------------------+
 
 ```
-* Ensuite, on voit que le conteneur `hubot`, a arrêté son exécution. Si on le re-démarre, avec un `docker start hubot`, et que l'on inspecte les logs de son exécution, on voir que le hubot démarre correctement, mais en logguant les avertissements suivants: 
+* Ensuite, on voit que le conteneur `hubot`, a arrêté son exécution. Si on le re-démarre, avec un `docker start hubot`, et que l'on inspecte les logs de son exécution, on voit que le hubot démarre correctement, puis stoppe, en logguant l'erreur suivante: 
  ```
  [Fri Aug 17 2018 10:55:37 GMT+0000 (UTC)] INFO Starting Rocketchat adapter version 1.0.11...
 [Fri Aug 17 2018 10:55:37 GMT+0000 (UTC)] INFO Once connected to rooms I will respond to the name: Rocket.Cat
@@ -272,6 +272,11 @@ ufs: temp directory created at "/tmp/ufs"
 [Fri Aug 17 2018 10:55:37 GMT+0000 (UTC)] ERROR If joining GENERAL please make sure its using all caps.
 [Fri Aug 17 2018 10:55:37 GMT+0000 (UTC)] ERROR If using LDAP, turn off LDAP, and turn on general user registration with email verification off.
 ```
+* Il faut donc maitenant créer l'utilisateur que le HUBOT réclame !
+
+# REPRISE
+* Il faut donc maitenant créer l'utilisateur que le HUBOT réclame !
+
 
 # ChatOps with Rocket.Chat
 ## Inspired in Gitlab: "From Idea to Production"
