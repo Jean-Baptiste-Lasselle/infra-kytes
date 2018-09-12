@@ -54,33 +54,46 @@ export UTILISATEUR_HUBOT_ROCKETCHAT_PWD=$(cat ./docker-compose.yml|grep ROCKETCH
 
 
 # - Je créée "tout"
-docker-compose down --rmi all && docker system prune -f && docker-compose --verbose build && docker-compose --verbose up -d && sleep 10 && docker ps -a
-sleep 10 && docker ps -a
+docker-compose down --rmi all && docker system prune -f && docker-compose --verbose build && docker-compose --verbose up -d 
+sleep 5 && docker ps -a
+
 # - 1 - Je dois relancer le conteneur qui créée et initialise le replicaSet mongoDB, dès que mongoDB est disponible :
 checkHealth $NOM_CONTENEUR_BDD_ROCKETCHAT
 docker start $NOM_CONTENEUR_INIT_REPLICASET_BDD_ROCKETCHAT
 
 # - 2 - Maintenant que le replicaSet Existe, je peux re-démarrer le conteneur rocketchat
-docker-compose down $NOM_CONTENEUR_ROCKETCHAT && docker build $NOM_CONTENEUR_ROCKETCHAT && docker-compose --verbose up $NOM_CONTENEUR_ROCKETCHAT -d 
-sleep 10 && docker ps -a
-
+docker-compose down $NOM_CONTENEUR_ROCKETCHAT && docker-compose build --verbose $NOM_CONTENEUR_ROCKETCHAT && docker-compose --verbose up $NOM_CONTENEUR_ROCKETCHAT -d 
+sleep 3 && docker ps -a
+docker logs $NOM_CONTENEUR_ROCKETCHAT
+# -->> À terme, je voudrais, au lieu de re-démarrer de force le service rocketchat, le laisser re-démarrer, et vérifier que
+#      Rocket Chat est dans un état "Healthy", avant de créer manuellement le USER utilisé par le service HUBOT ensuite :
+#           pour cela, il faudra donc faire un HEALTHCHECK rocketchat, et invoquer la focntion [checkHealth] de ce script : 
+# 
+#    checkHealth $NOM_CONTENEUR_ROCKETCHAT
+# 
+# 
 # - 3 - Il faut manuellement créer l'utilisateur RocketChat mentionné dans la configuration du service 'hubot' dans le fichier docker-compose.yml : 
-echo " Please Create a user in rocketchat, with the following  credentials : "
+clear
+echo "  "
+echo " ---------------------------------------------------------------------- "
+echo "  Please Create a user in rocketchat, with the following  credentials : "
+echo " ---------------------------------------------------------------------- "
 echo "    - username : \"UTILISATEUR_HUBOT_ROCKETCHAT_USERNAME\" "
 echo "    - password : \"UTILISATEUR_HUBOT_ROCKETCHAT_PWD\" "
 echo "  "
-echo "  Pressez la touche entrée lorsque cela sera fait "
+echo "  Pressez la touche entrée lorsque cela sera fait, le  "
+echo "  service HUBOT/ROCKETCHAT sera re-démarré "
+echo " ---------------------------------------------------------------------- "
 echo "  "
 read ATTENTE_CREATION_UTILISATEUR_ROCKETCHAT
 
-# - 4 - Maintenant que l'utilisateur dont le hubot a besoin, existe, on re-démarre le hubot : 
-docker-compose down $NOM_CONTENEUR_HUBOT && docker build $NOM_CONTENEUR_HUBOT && docker-compose --verbose up $NOM_CONTENEUR_HUBOT -d 
-sleep 10 && docker ps -a
-
+# - 4 - Maintenant que l'utilisateur dont le hubot a besoin existe, on re-démarre le hubot : 
+docker-compose down $NOM_CONTENEUR_HUBOT && docker-compose --verbose build $NOM_CONTENEUR_HUBOT && docker-compose --verbose up $NOM_CONTENEUR_HUBOT -d 
+sleep 3 && docker ps -a
 # - Maintenant, examinons les logs du conteneur hubot :
 
 docker logs  $NOM_CONTENEUR_HUBOT
 
-sleep 10 && docker ps -a
+sleep 3 && docker ps -a
 
 
