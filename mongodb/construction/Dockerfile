@@ -9,7 +9,12 @@ EXPOSE 27017
 USER 1001
 
 COPY mongo-healthcheck /usr/local/bin/
-RUN chmod +x /usr/local/bin/mongo-healthcheck
+# - -------------------------------------------------------------
+# - Rendu exécutable par operations.sh à la place, ou devrait 
+# - être commité exécutable dans ce repository Git.
+# - -------------------------------------------------------------
+# RUN chmod +x /usr/local/bin/mongo-healthcheck
+# - -------------------------------------------------------------
 HEALTHCHECK CMD ["mongo-healthcheck"]
 
 ENTRYPOINT [ "/app-entrypoint.sh" ]
