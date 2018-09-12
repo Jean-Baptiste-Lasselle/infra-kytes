@@ -63,7 +63,7 @@ checkHealth $NOM_CONTENEUR_BDD_ROCKETCHAT
 docker start $NOM_CONTENEUR_INIT_REPLICASET_BDD_ROCKETCHAT
 
 # - 2 - Maintenant que le replicaSet Existe, je peux re-démarrer le conteneur rocketchat
-docker-compose down $NOM_CONTENEUR_ROCKETCHAT && docker-compose build --verbose $NOM_CONTENEUR_ROCKETCHAT && docker-compose --verbose up $NOM_CONTENEUR_ROCKETCHAT -d 
+docker-compose --verbose up -d $NOM_CONTENEUR_ROCKETCHAT 
 sleep 3 && docker ps -a
 docker logs $NOM_CONTENEUR_ROCKETCHAT
 # -->> À terme, je voudrais, au lieu de re-démarrer de force le service rocketchat, le laisser re-démarrer, et vérifier que
@@ -89,11 +89,11 @@ echo "  "
 read ATTENTE_CREATION_UTILISATEUR_ROCKETCHAT
 
 # - 4 - Maintenant que l'utilisateur dont le hubot a besoin existe, on re-démarre le hubot : 
-docker-compose down $NOM_CONTENEUR_HUBOT && docker-compose --verbose build $NOM_CONTENEUR_HUBOT && docker-compose --verbose up $NOM_CONTENEUR_HUBOT -d 
+docker-compose --verbose up -d $NOM_CONTENEUR_HUBOT
 sleep 3 && docker ps -a
 # - Maintenant, examinons les logs du conteneur hubot :
 
-docker logs  $NOM_CONTENEUR_HUBOT
+docker logs  $NOM_CONTENEUR_HUBOT -f
 
 sleep 3 && docker ps -a
 
