@@ -1,20 +1,94 @@
-# Utilisation
+# Principe
 
-```bash
-docker-compose down && docker system prune -f && docker-compose build && docker-compose up -d
-```
-source : 
+Ce repository Git vis à faire évoluer la recette du repo : 
 
 https://github.com/RocketChat/Chat.Code.Ship
+
+Afin:
+* de faire en sorte qu'elle fonctionne dans n'importe quel hôte docker ayant accès au registry docker public officiel docker.io
+* de faire en sorte qu'elle soit en version docker-compose 3, au lieu de la version 2.
+* de la fair eévoluer, pour qu'elle peremette un calcul des SLA, et un déploiment Kubernetes, le service mpongo DB étant automatiquement "scalé" par le scale-up Kuibernetes, en cohérence avec le recplicaset créé pour rocketchat, mentionné dans la configuration du service rocketchat.
+
+# Utilisation
+
+
+```bash
+export PROVISIONING_HOME=$(pwd)/coquelicot
+mkdir -p $PROVISIONING_HOME
+cd $PROVISIONING_HOME
+git clone "https://github.com/Jean-Baptiste-Lasselle/coquelicot" . 
+
+docker-compose down --rmi all && docker system prune -f && docker-compsoe up -d
+```
+
+Pour tout détruire et nettoyer : 
+
+```bash
+docker-compose down --rmi all && docker system prune -f
+```
+
+Pour débogguer cette recette, j'ai utilisé :
+```bash
+docker-compose down --rmi all && docker system prune -f && docker-compose --verbose build && docker-compose --verbose up -d && sleep 10 && docker ps -a
+```
+Pour inspecter les logs d'exécution de chaque conteneur, cette recette met à disposition un service 'sondereseau', que l'on peut utiliser de la manière suivante : 
+```bash
+export NOM_DU_CONTENEUR=gitlab
+export NOM_DU_CONTENEUR=mongo
+export NOM_DU_CONTENEUR=mongo-init-replica
+export NOM_DU_CONTENEUR=rocketchat
+export NOM_DU_CONTENEUR=hubot
+
+
+docker logs $NOM_DU_CONTENEUR
+```
+Pour testerla connectivité entre deux conteneurs :
+```bash
+# - lien entre les conteneurs 'gitlab' et 'rocketchat'
+export NOM_DU_CONTENEUR1=gitlab
+export NOM_DU_CONTENEUR2=rocketchat
+# - lien entre les conteneurs 'mongo-init-replica' et 'mongo'
+export NOM_DU_CONTENEUR1=mongo-init-replica
+export NOM_DU_CONTENEUR2=mongo
+# - lien entre les conteneurs 'rocketchat' et 'mongo'
+export NOM_DU_CONTENEUR1=rocketchat
+export NOM_DU_CONTENEUR2=mongo
+# - lien entre les conteneurs 'rocketchat' et 'hubot'
+export NOM_DU_CONTENEUR2=rocketchat
+export NOM_DU_CONTENEUR1=hubot
+
+# - on installe l'utilitaire linux 'ping' dans les conteneurs à tester : 
+
+# - Vérifier les OS dans chaque conteneur ... :  
+docker exec -it $NOM_DU_CONTENEUR1 bash -c "apt-get update -y && apt-get install -y iputils-ping && ping -c 4 localhost"
+docker exec -it $NOM_DU_CONTENEUR1 bash -c "yum update -y && yum install -y iputils && ping -c 4 localhost"
+docker exec -it $NOM_DU_CONTENEUR1 bash -c "apk update -y && apk add -y iputils-ping && ping -c 4 localhost"
+
+docker exec -it $NOM_DU_CONTENEUR2 bash -c "apt-get update -y && apt-get install -y iputils-ping && ping -c 4 localhost"
+docker exec -it $NOM_DU_CONTENEUR2 bash -c "yum update -y && yum install -y iputils && ping -c 4 localhost"
+docker exec -it $NOM_DU_CONTENEUR2 bash -c "apk update -y && apk add -y iputils-ping && ping -c 4 localhost"
+
+
+# -- on utilise la propriété de transitivité du ping réseau, vu en tant que morphisme (le morphisme exsite, si le ping est positif)
+export COMMANDE="ping -c 4 $NOM_DU_CONTENEUR1"
+
+
+echo " sonde réseau : ping du coteneur [NOM_DU_CONTENEUR1] vers le contenur [sondereseau] : "
+docker exec -it $NOM_DU_CONTENEUR1 bash -c "ping -c 4 sondereseau"
+echo " sonde réseau : ping du coteneur [sondereseau] vers le contenur [NOM_DU_CONTENEUR2] : "
+docker exec -it sondereseau bash -c "ping -c 4 $NOM_DU_CONTENEUR2"
+# - composée : 
+echo " sonde réseau : ping du coteneur [NOM_DU_CONTENEUR1] vers le contenur [NOM_DU_CONTENEUR2] : "
+docker exec -it $NOM_DU_CONTENEUR1 bash -c "ping -c 4 $NOM_DU_CONTENEUR2"
+
+```
+
+
 
 Ok, les tests préliminaires m'amènent à conclure, qu'il faut "réparer" la configuration réseau docker-compose, afin de pouvoir utiliser la recette. Une configuration plus fine, devrait pêtre orchestrée par un Ansible / Terraform.
 
 Il faudra corriger pour que les conteneurs ne fasse mention réciproque que de leur nom de domaine nginx, dans leurs configurations respectives. Et l'ensemble de l'intégratio n dépendra de la configurration de la résolution de noms de domaines, dans la pile réseau docker.
 
-Pour débogguer cette recette, j'ai utilisé :
-```bash
-docker-compose down --rmi all && docker system prune -f && docker-compose --verbose build && docker-compose --verbose up -d
-```
 
 ### Les fichiers qui mentionnent des noms de domaine
 
