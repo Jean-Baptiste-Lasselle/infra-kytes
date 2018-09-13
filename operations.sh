@@ -48,8 +48,8 @@ checkHealth () {
 
 # - Je récupère, dans le fichier 'docker-compose.yml', les valeurs de configuration pour le username et le password
 
-export UTILISATEUR_HUBOT_ROCKETCHAT_USERNAME=$(cat ./docker-compose.yml|grep ROCKETCHAT_USER | awf -F = '{print $2}')
-export UTILISATEUR_HUBOT_ROCKETCHAT_PWD=$(cat ./docker-compose.yml|grep ROCKETCHAT_PASSWORD | awf -F = '{print $2}')
+export UTILISATEUR_HUBOT_ROCKETCHAT_USERNAME=$(cat ./docker-compose.yml|grep ROCKETCHAT_USER | awk -F = '{print $2}')
+export UTILISATEUR_HUBOT_ROCKETCHAT_PWD=$(cat ./docker-compose.yml|grep ROCKETCHAT_PASSWORD | awk -F = '{print $2}')
 
 # - Je rends exéutable les fichiers de script utilisés dans le build de l'image MongoDB qui doivent l'être : 
 chmod +x ./mongodb/construction/mongo-healthcheck
