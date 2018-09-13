@@ -15,7 +15,7 @@ J'ai pu entre autres vérifier qu'une upgrade majeure du hubot-rocketchat avait 
 
 
 
-* Mon but ultime, réaliser une utilisation du [type suivant](https://github.com/RocketChat/Rocket.Chat.Ops#old-chat-ops-information), possible avec HUBOT : 
+* Mon but ultime, réaliser une utilisation du [type suivant](https://github.com/RocketChat/Rocket.Chat.Ops#old-chat-ops-information), possible avec [HUBOT](https://hubot.github.com) : 
   ```
   extension is per-room customizable, for example: one room for open source project Rocket.Chat developers via github 
   integration, another for MineCraft server farms operators discussion and network monitoring, yet another for a drone delivery 
