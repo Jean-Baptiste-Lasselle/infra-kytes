@@ -124,7 +124,7 @@ services:
     environment:
       - ROCKETCHAT_URL=rocketchat:3000
       # - ROCKETCHAT_ROOM=devops
-      # ce channel RocketChat est à crééer avec le client Web RocketChat, comme l'utlisateur "ROCKETCHAT_USER"
+      # Ce channel RocketChat est à crééer avec le client Web RocketChat, comme l'utlisateur Rocketchat utilisé par ce hubot
       - ROCKETCHAT_ROOM=canal-de-test-jbl
       - ROCKETCHAT_USER=jbl
       - ROCKETCHAT_PASSWORD=jbl
