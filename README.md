@@ -4,6 +4,31 @@ Vraiment merci Github: un pârfait exemple pour illuster les design pattern Scal
 Exctement ce que je devrai trouver dans mon bootiemachin...
 Expliquer notamment mon design pattern avec le HEALTHCHECK sur les replicaSet MongoDB, pour la scalabilité, se référer à un replicaSet, et non à un hôte réseau particulier, ou un nom de base de données particlière, du cluster mongo....
 
+Oh :
+
+```bash
+Docker supports the following restart policies:
+Policy 	Result
+no 	Do not automatically restart the container when it exits. This is the default.
+on-failure[:max-retries] 	Restart only if the container exits with a non-zero exit status. Optionally, limit the number of restart retries the Docker daemon attempts.
+always 	Always restart the container regardless of the exit status. When you specify always, the Docker daemon will try to restart the container indefinitely. The container will also always start on daemon startup, regardless of the current state of the container.
+unless-stopped 	Always restart the container regardless of the exit status, including on daemon startup, except if the container was put into a stopped state before the Docker daemon was stopped.
+```
+
+Donc, ce qu'il faut que je fasse, pour mon conteneur `mongo-init-replica` :
+```yaml
+  mongo-init-replica:
+    # + Et comme cela, mon conteneur ne re-démarrera que si son exécution a terminé avec un code
+    # + d'erreur: si le replicaSet n'a pas été correctement créé.
+    # + Quand le conteneur aura créé le replicaSet
+    - restart: on-failure[:max-retries]
+```
+ALors, si je prends cette approche, le healthcheck qui vérifiera l'existence, et l'état du replicaSet, doit être placé dans le conteneur de la BDD MongoDB de RocketChat, et non dans le conteneur mongo-init-replica. Ainsi, de plus, on délcarera une seule dépendance, au lieu de deux, du conteneur RocketChat, vers le conteneur MongoDB. On supprime la dépendance du contneur `rocketchat`, pour le conteneur `mongo-init-replica`.
+Et en plsu , le contneur de abse de données expose un statu Healthy cohérent avec ce qu'attend, dans le principe, RocketChat : un replicaSet MongoDB UP N RUNNING.
+
+Notons enfin que j'ai laissé le problème de l'initialisation Gitlab (code HTTP 402 au changement initial du mot de passe de l'utilisateur initial), de côté : je le traiterais en dernier, parce que je l'ai rencontré dans d'autres ocntextes, et le sais indépendant du présent contexte de travail.
+
+
 
 # Un petit i-robot, bombardé de fleurs françaises...
 
