@@ -50,7 +50,18 @@ checkHealth () {
 
 export UTILISATEUR_HUBOT_ROCKETCHAT_USERNAME=$(cat ./docker-compose.yml|grep ROCKETCHAT_USER | awk -F = '{print $2}')
 export UTILISATEUR_HUBOT_ROCKETCHAT_PWD=$(cat ./docker-compose.yml|grep ROCKETCHAT_PASSWORD | awk -F = '{print $2}')
-
+clear
+echo "  "
+echo " ---------------------------------------------------------------------- "
+echo "  DEBUG : "
+echo " ---------------------------------------------------------------------- "
+echo "    - username : \"UTILISATEUR_HUBOT_ROCKETCHAT_USERNAME=$UTILISATEUR_HUBOT_ROCKETCHAT_USERNAME\" "
+echo "    - password : \"UTILISATEUR_HUBOT_ROCKETCHAT_PWD=$UTILISATEUR_HUBOT_ROCKETCHAT_PWD\" "
+echo "  "
+echo "  Pressez la touche entrée.  "
+echo " ---------------------------------------------------------------------- "
+echo "  "
+read DEBUGJBL
 # - Je rends exéutable les fichiers de script utilisés dans le build de l'image MongoDB qui doivent l'être : 
 chmod +x ./mongodb/construction/mongo-healthcheck
 
@@ -79,8 +90,8 @@ echo "  "
 echo " ---------------------------------------------------------------------- "
 echo "  Please Create a user in rocketchat, with the following  credentials : "
 echo " ---------------------------------------------------------------------- "
-echo "    - username : \"UTILISATEUR_HUBOT_ROCKETCHAT_USERNAME\" "
-echo "    - password : \"UTILISATEUR_HUBOT_ROCKETCHAT_PWD\" "
+echo "    - username : \"UTILISATEUR_HUBOT_ROCKETCHAT_USERNAME=$UTILISATEUR_HUBOT_ROCKETCHAT_USERNAME\" "
+echo "    - password : \"UTILISATEUR_HUBOT_ROCKETCHAT_PWD=$UTILISATEUR_HUBOT_ROCKETCHAT_PWD\" "
 echo "  "
 echo "  Pressez la touche entrée lorsque cela sera fait, le  "
 echo "  service HUBOT/ROCKETCHAT sera re-démarré "
