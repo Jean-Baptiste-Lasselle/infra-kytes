@@ -4,6 +4,15 @@ Ce repository Git vis à faire évoluer la recette du repo :
 
 https://github.com/RocketChat/Chat.Code.Ship
 
+Erratum : 
+
+J'ai pu vérifier que popur les dernières version de rocketchat  hubot, il faut utiliser les instrcutions présentes ici : 
+
+https://github.com/RocketChat/Rocket.Chat.Ops
+
+J'ai pu entre autres vérifier qu'une upgrade majeure du hubot-rocketchat avait été publiée, ce qui pourrait expliquer les problématiques que j'ai rencontrées.
+
+
 Afin:
 * de faire en sorte qu'elle fonctionne dans n'importe quel hôte docker ayant accès au registry docker public officiel docker.io
 * de faire en sorte qu'elle soit en version docker-compose 3, au lieu de la version 2.
