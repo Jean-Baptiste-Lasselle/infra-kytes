@@ -40,9 +40,13 @@ Please open another ticket if you want to change the default GENERAL channel.
 #### Construire mon propre HUBOT pour MEs Jenkins Pipeline fleuris
 
 Sur [cette page](https://github.com/RocketChat/hubot-rocketchat#building-a-bot), l'auteur décris comment re-construire le hubot-rocketchat, à partir de [hubot](https://hubot.github.com/) tout seul.
-Autrementy dit, je refais le build from source, et je n'aurai qu'à regarder le code porduit par l'équipe ROcketCHat, pour crééer son hubot, afin de créer : 
-* un hubot pour mattermost
-* un hubot pour mes Jenkins Pipeline fleuris, ue j'aime une peu, beaucoup, à la folie, passionnément...
+Autrementy dit, je refais le build from source, et je n'aurai qu'à:
+* regarder le code porduit par l'équipe RocketCHat, pour crééer son hubot,
+* bien apprendre les patterns décris dans https://hubot.github.com/docs/scripting/
+Ceci afin de créer mes propres hubot: 
+* pour mattermost
+* pour mes Jenkins Pipeline fleuris, ue j'aime une peu, beaucoup, à la folie, passionnément...
+* pour tous les composants fleuris...
 
 
 
