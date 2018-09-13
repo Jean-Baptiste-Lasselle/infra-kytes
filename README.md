@@ -14,9 +14,6 @@ J'ai pu entre autres vérifier qu'une upgrade majeure du hubot-rocketchat avait 
 
 
 
-
-
-Afin:
 * Mon but ultime, réaliser une utilisation du [type suivant]()https://github.com/RocketChat/Rocket.Chat.Ops#old-chat-ops-information, possible avec HUBOT : 
   ```
   extension is per-room customizable, for example: one room for open source project Rocket.Chat developers via github 
@@ -27,6 +24,8 @@ Afin:
   
 * de la faire évoluer, pour qu'elle peremette un calcul des SLA, et un déploiment Kubernetes, le service mpongo DB étant automatiquement "scalé" par le scale-up Kuibernetes, en cohérence avec le recplicaset créé pour rocketchat, mentionné dans la configuration du service rocketchat.
 
+#### Info intéressante
+
 Sur [cette page](https://github.com/RocketChat/hubot-rocketchat/issues/81), j'ai trouvé une info intéressante : 
 ```
 LISTEN_ON_ALL_PUBLIC will work if you set ROCKET_CHATROOM= ... with nothing after the =.
@@ -36,7 +35,16 @@ LISTEN_ON_ALL_PUBLIC also activates DM - so no need to set both. When doing DM, 
 Updating the doc and closing this ticket.
 
 Please open another ticket if you want to change the default GENERAL channel.
+
 ```
+#### Construire mon propre HUBOT pour MEs Jenkins Pipeline fleuris
+
+Sur [cette page](https://github.com/RocketChat/hubot-rocketchat#building-a-bot), l'auteur décris comment re-construire le hubot-rocketchat, à partir de [hubot](https://hubot.github.com/) tout seul.
+Autrementy dit, je refais le build from source, et je n'aurai qu'à regarder le code porduit par l'équipe ROcketCHat, pour crééer son hubot, afin de créer : 
+* un hubot pour mattermost
+* un hubot pour mes Jenkins Pipeline fleuris, ue j'aime une peu, beaucoup, à la folie, passionnément...
+
+
 
 # Utilisation
 
