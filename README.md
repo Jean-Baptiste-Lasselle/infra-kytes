@@ -44,10 +44,10 @@ Sur [cette page](https://github.com/RocketChat/hubot-rocketchat#building-a-bot),
 Autrementy dit, je refais le build from source, et je n'aurai qu'à:
 * regarder le code porduit par l'équipe RocketCHat, pour crééer son hubot,
 * bien apprendre les patterns décris dans https://hubot.github.com/docs/scripting/
-Ceci afin de créer mes propres hubot: 
-* pour mattermost
-* pour mes Jenkins Pipeline fleuris, ue j'aime une peu, beaucoup, à la folie, passionnément...
-* pour tous les composants fleuris...
+Ceci afin: 
+* pour mattermost: https://github.com/renanvicente/hubot-mattermost
+* de créer mes propres hubotpour mes Jenkins Pipeline fleuris, que j'aime une peu, beaucoup, à la folie, passionnément...
+* de créer mes propres hubot pour tous les composants fleuris...
 
 
 
