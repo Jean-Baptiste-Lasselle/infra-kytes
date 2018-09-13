@@ -50,6 +50,7 @@ Ceci afin:
 * de créer mes propres hubot pour tous les composants fleuris... cf : 
   * https://dzone.com/articles/how-to-create-a-simple-bot-using-hubot
   * https://github.com/RocketChat/hubot-rocketchat-boilerplate
+  * https://www.icicletech.com/blog/automate-your-development-activities-with-hubot (excellent celui-là, explique le dev avec le framework HUBOT)
 
 
 # Utilisation
