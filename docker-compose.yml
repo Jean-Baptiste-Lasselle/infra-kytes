@@ -75,7 +75,7 @@ services:
 
   mongo-init-replica:
     # image: mongo:3.2
-    image: /mongo-replica-initializer:latest
+    image: marguerite/mongo-replica-initializer:1.0.0
     build: ./mongo-init-replica/construction/
     container_name: 'mongo-init-replica'
     # + Pour que le conteneur reste UP ' N 'RUNNING, y compris lorsque le replicaSet a été créé avec succès, et
