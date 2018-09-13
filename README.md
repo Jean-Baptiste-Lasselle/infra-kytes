@@ -1,3 +1,8 @@
+# TODO urgent : finir de corriger les script HEALTHCHECK et CMD du conteneur `mongo-init-replica`
+
+Vraiment merci Github: un pârfait exemple pour illuster les design pattern Scalable dans un Kubernetes, avec NodeJS
+Exctement ce que je devrai trouver dans mon bootiemachin...
+
 # Un petit i-robot, bombardé de fleurs françaises...
 
 
