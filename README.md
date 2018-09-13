@@ -52,6 +52,9 @@ Ceci afin:
   * https://github.com/RocketChat/hubot-rocketchat-boilerplate
   * https://www.icicletech.com/blog/automate-your-development-activities-with-hubot (excellent celui-là, explique le dev avec le framework HUBOT). `Extending the functionality for Hubot is as simple as placing the code in the "scripts" folder. ` et le code qu'il doit y avoir dans chacun de ces ficheirs de script, doit respecter les règles linguistiques décrites dans la doc offcielle "scripting, de hubot: https://hubot.github.com/docs/scripting/ , et notamment importer en tant que dépendance, le `robot`, avec la syntaxe `module.exports = (robot) -> /* puis la suite du code Javascript, avec les méthodes à implémenter HEAR etc ... */ `
   
+##### Construire mon propre HUBOT, avec sa personnalité, basée sur de l'intelligence artificielle
+
+https://www.chatbots.org/chatbot/a.l.i.c.e/
 
 
 # Utilisation
