@@ -1,4 +1,5 @@
-# Principe
+# Principe (Un petit i-robot, bombardé de fleurs...)
+
 
 Ce repository Git vis à faire évoluer la recette du repo : 
 
