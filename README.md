@@ -47,8 +47,9 @@ Autrementy dit, je refais le build from source, et je n'aurai qu'à:
 Ceci afin: 
 * pour mattermost: https://github.com/renanvicente/hubot-mattermost
 * de créer mes propres hubotpour mes Jenkins Pipeline fleuris, que j'aime une peu, beaucoup, à la folie, passionnément...
-* de créer mes propres hubot pour tous les composants fleuris...
-
+* de créer mes propres hubot pour tous les composants fleuris... cf : 
+  * https://dzone.com/articles/how-to-create-a-simple-bot-using-hubot
+  * https://github.com/RocketChat/hubot-rocketchat-boilerplate
 
 
 # Utilisation
