@@ -1,4 +1,4 @@
-# Principe (Un petit i-robot, bombardé de fleurs françaises...)
+# Un petit i-robot, bombardé de fleurs françaises...
 
 
 Ce repository Git vis à faire évoluer la recette du repo : 
