@@ -75,13 +75,22 @@ services:
 
   mongo-init-replica:
     # image: mongo:3.2
-    image: mongo:latest
+    image: /mongo-replica-initializer:latest
+    build: mongo-init-replica/construction/create-replicaset/
     container_name: 'mongo-init-replica'
-    # - il FAUDRA remplacer ce sleep par une meilleure solution
+    # + il FAUDRA remplacer ce sleep par une meilleure solution
     # command: 'mongo mongo/rocketchat --eval "rs.initiate({ _id: ''rs0'', members: [ { _id: 0, host: ''localhost:27017'' } ]})"'
-    command: 'mongo mongo/rocketchat --eval "rs.initiate({ _id: ''rs0'', members: [ { _id: 0, host: ''mongo:27017'' } ]})"'
-#     links:
-#       - mongo:mongo
+    # command: 'mongo mongo/rocketchat --eval "rs.initiate({ _id: ''rs0'', members: [ { _id: 0, host: ''mongo:27017'' } ]})"'
+    # 
+    # + Note : 
+    # + on pourra ajouter une varible d'environnement à cette image custom, qui permettra de préciser le nom du
+    # + replica Set à initialiser, et d'autres variables d'environnement, pour préciser une
+    # + éventuelle configuration du replicaSet
+    # 
+#     environment:
+#       - REPLICASET_NAME: ""
+#       - REPLICASET_CONF_PARAM_1: ""
+#       - REPLICASET_CONF_PARAM_2: ""
     networks:
       - devops
 #     expose:
@@ -102,15 +111,15 @@ services:
       - MONGO_URL=mongodb://mongo:27017/rocketchat
       - MONGO_OPLOG_URL=mongodb://mongo:27017/local?replicaSet=rs0
       - MAIL_URL="smtp://smtp.google.com"
-#     links:
-#       - mongo:mongo
-#       - marguerite_gitlab:marguerite_gitlab
     ports:
       - 3000:3000
     expose:
       - "3000"
     depends_on:
       - mongo
+      # + Depuis utilisation d'un build image custom mongo avec HEALTHCHECK pour le
+      # + conteneur 'mongo-init-replica', cf. ./mongo-init-replica/construction/replicaset-health-check
+      - mongo-init-replica
     networks:
       - devops
 #       devops:
