@@ -1,1 +1,57 @@
 #!/bin/bash
+
+# - 1 - On commence par récuperer le statut du replicaSet : un objet JSON sera renvoyé.
+# export RESULTAT_JSON_REQUETE_MONGO=mongo mongo/rocketchat --eval "rs.status()"
+# (à tester) : 
+# export RESULTAT_JSON_REQUETE_MONGO=mongo mongo/rocketchat --eval "rs.status({ _id: ''rs0'', members: [ { _id: 0, host: ''mongo:27017'' } ]})"
+
+# - si la command mopngo retourne un code différent de zéro, une erreur, alors ce process ne sortira pas et ne retournera pas
+# un code différent de zéro, une erreur, à ce processus, qui est le rpocessus exécuté par le conteneur docker 'mongo-init-replica'
+# Le conteneur ne stoppera donc pas 
+export RESULTAT_JSON_REQUETE_MONGO=$(mongo mongo/rocketchat --eval "rs.status({ _id: ''rs0''})")
+
+# - 2 - Ensuite, on vérifie que dans le JSON, on trouve bien mention de l'ID du replicaSet, et on vérifie son statut, le
+#       tout en "parsant" le JSON. Pour cela, on doit utiliser la structure de l'output de cette commande, précisé
+#       par la documentation ofiicielle : https://docs.mongodb.com/manual/reference/command/replSetGetStatus/#rs-status-output
+# -------------------------------------------------------------------------------------------------------------------------
+# -- d'après la doc officielle, le JSON retourné coontient l'info du nom de replicaSet, et de son statut "myState" :
+# 
+# -------------------------------------------------------------------------------------------------------------------------
+#           {
+#              "set" : "replset",
+#              "date" : ISODate("2018-05-13T16:36:54.319Z"),
+#              "myState" : 1,
+#              etc...
+#
+# -------------------------------------------------------------------------------------------------------------------------
+# 
+#    il est donc possible de parcourir l'arbre JSON à l'aide de commandes mongoDB, du genre du find(), pour
+#    retrouver le name et le "myState" du replicaSet `rs0`
+
+
+# -------------------------------------------------------------------------------------------------------------------------
+# Donc, si  : 
+# 
+#     mongo mongo/rocketchat --eval "rs.status({ _id: ''rs0''})"
+# 
+# retourne une valeur, c'est que le replicaSet "rs0" existe. Si cette commande retourne la chîne de caractère vide ou
+# un truc du genre un objet JSON vide "{}", alors le replica set 'rs0' n'existe pas.
+# 
+
+if [ "x$RESULTAT_REQUETE_MONGO" -eq "x" || "x$RESULTAT_REQUETE_MONGO" -eq "x{}"] then;
+# Alors le replplicaSet n'existe carrément pas. (à vérifier, c'est peut-êtrte un
+# JSON vide, et non la chaîne de caractère vide, qui est renvoyée)
+echo " DEBUG - [RESULTAT_REQUETE_MONGO=$RESULTAT_REQUETE_MONGO] "
+echo "  => le replicaSet [rs0] n'a même pas encore été créé dans l'hôte MongoDB [mongo:27017]: Il faut le créer !  "
+
+# ==>> Comme dans le docker-compose.yml dictribué par l'équipe RocketChat : 
+mongo mongo/rocketchat --eval "rs.initiate({ _id: ''rs0'', members: [ { _id: 0, host: ''mongo:27017'' } ]})"
+
+else
+export AFFICHAGE_JSON_REQUETE_MONGO=$(mongo mongo/rocketchat --eval "rs.status({ _id: ''rs0''}).pretty()")
+echo " Le replicaSet [rs0] existe, il ne faut pas ré-essayer de le créer, et laisser le HEALTHCHECK vérifier que son statut est  1 	\"PRIMARY\"   "
+echo " "
+echo "$AFFICHAGE_JSON_REQUETE_MONGO"
+echo " "
+
+fi
