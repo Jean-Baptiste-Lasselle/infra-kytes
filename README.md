@@ -984,6 +984,41 @@ services:
 ```
 
 Ainsi, ci-dessus, `rs0`, le nom du replicaSet créé avec le conteneur `mongo-init-replica`, doit être le nom du replicaSet mentionné par `MONGO_OPLOG_URL`.
+Petite note au passage : 
+Je dois faire un HEALTHCHECK pour le conteneur  `mongo-init-replica` qui à la fois : 
+* tente de créer le replicaSet, avec sa commande d'exécution : 
+```bash
+mongo mongo/rocketchat --eval "rs.initiate({ _id: ''rs0'', members: [ { _id: 0, host: ''mongo:27017'' } ]})"
+```
+* et vérifie que ce replicaSet existe, et "est en bonne santé" avec un HEALTHCHECK exécutant les commandes : 
+```bash
+# - 1 - On commence par récuperer le statut du replicaSet : un objet JSON sera renvoyé.
+mongo mongo/rocketchat --eval "rs.status()"
+
+
+# - 2 - Ensuite, on vérifie que dans le JSON, on trouve bien mention de l'ID du replicaSet, et on vérifie son statut, le
+#       tout en "parsant" le JSON. Pour cela, on doit utiliser la structure de l'output de cette commande, précisé
+#       par la documentation ofiicielle : https://docs.mongodb.com/manual/reference/command/replSetGetStatus/#rs-status-output
+
+# -- d'après la doc officielle, il y a une section "members", qui liste tous les replciaSet: je suis quasi sûr
+#    qu'il estpossible de parcourir l'arbre JSON à l'aide de commandes mongoDB, du genre du find()
+# ou encore (à tester) : 
+# mongo mongo/rocketchat --eval "rs.status({ _id: ''rs0'', members: [ { _id: 0, host: ''mongo:27017'' } ]})"
+
+# Donc, si  : 
+#     mongo mongo/rocketchat --eval "rs.status({ _id: ''rs0'', members: [ { _id: 0, host: ''mongo:27017'' } ]})"
+# retourne une valeur, c'est que le replicaSet "rs0" existe.
+# D'après [https://docs.mongodb.com/manual/reference/replica-states/], si le replmicaSet existe, il
+# doit être dans l'état 1 "PRIMARY", pour que le replicaSet, formé d'une seule réplique, soti prêt à l'emploi pour
+# RocketChat :  
+# -------------------------------------------------------------------------------------------------------------------------
+# Number 	Name 	State Description
+# 0 	STARTUP 	Not yet an active member of any set. All members start up in this state. The 
+#                       mongod parses the replica # set configuration document while in STARTUP.
+# 1 	PRIMARY 	The member in state primary is the only member that can accept write operations. Eligible to vote.
+# -------------------------------------------------------------------------------------------------------------------------
+
+```
 
 Une fois relancé l'ensemble du docker-compose, on constate que de nouveaux problèmes se manifestent : 
 * D'abord, le conteneur `mongo-init-replica` échoue toujours à sa première tentative de création du replicaSet, parce que le conteneur `mongodb` n'est pas prêt. On peut donc relancer l'exécution du conteneur `mongo-init-replica`, afin de crééer le replicaSet : `docker start mongo-ibit-replica`
