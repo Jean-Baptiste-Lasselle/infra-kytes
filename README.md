@@ -1043,7 +1043,10 @@ ufs: temp directory created at "/tmp/ufs"
 * Il faut donc maitenant créer l'utilisateur que le HUBOT réclame !
 
 # REPRISE
-* Il faut donc maitenant créer l'utilisateur que le HUBOT réclame !
+Je pense qu je vais devoir complètement cahnger l'image de hubot que j'utilise et sa configuration, pour utiliser une image conforme à : 
+https://github.com/RocketChat/Rocket.Chat.Ops/tree/develop/hubots/hubot-gitsy
+qui est le hubot "latest" distribué par l'équipe RocketChat.
+
 
 
 # ChatOps with Rocket.Chat
