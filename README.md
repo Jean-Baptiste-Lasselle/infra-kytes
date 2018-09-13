@@ -76,9 +76,25 @@ Ou, en mode verbeux :
 export PROVISIONING_HOME=$(pwd)/coquelicot && mkdir -p $PROVISIONING_HOME && cd $PROVISIONING_HOME && git clone "https://github.com/Jean-Baptiste-Lasselle/coquelicot" . && chmod +x ./operations-verbose.sh && ./operations-verbose.sh
 ```
 
-Lorsque vous exécuterez ces commandes, vous serez guidé, dans la provision, interactivement : 
+Lorsque vous exécuterez ces commandes, vous serez guidé interactivement : 
 * La recette s'exécutera
 * Il vous sera demandé de crééer un utilisateur rocketchat, qui devra correspondre à celui spécifié dans le `./docker-compose.yml`, avec les deux variables d'environnement `ROCKETCHAT_USER` et `ROCKETCHAT_PASSWORD` (cf. définition du conteneur `hubot`)
+* Vous devrez de plus  : 
+  * créer un fichier de script javascript qui contiendra le code Javascript de votre "Incoming WebHook", adapté à ma version de RocketChat, en vertu de la documentation officielle https://rocket.chat/docs/administrator-guides/integrations/ ,
+  * Créer dans RocketChat un "Webhook" de type "Incoming" ( Menu Administration > Intégrations > Create New Integration (bouton en haut à droite de la page) : 
+  
+   En haut à gauche, le menu "Administration" : 
+  ![Menu Administration](https://github.com/Jean-Baptiste-Lasselle/coquelicot/raw/master/documentation/images/rocketchat-incoming-webhook-menus-1.png)
+   Sur le menu latéral gauche, le menu "Integrations" : 
+  ![Menu Administration > Integrations](https://github.com/Jean-Baptiste-Lasselle/coquelicot/raw/master/documentation/images/rocketchat-incoming-webhook-menus-2.png)
+  Le bouton bleu en haut à droite, "New Integration" : 
+  ![Menu Administration > Integrations > New Intregration](https://github.com/Jean-Baptiste-Lasselle/coquelicot/raw/master/documentation/images/rocketchat-incoming-webhook-menus-3.png)
+  Et enfin, cliquer sur le bouton "Incoming Webhook", pour crééer un webhook entrant  : 
+  ![créer un "Incoming Webhook", ou un "Outgoing Webhook"](https://github.com/Jean-Baptiste-Lasselle/coquelicot/raw/master/documentation/images/rocketchat-incoming-webhook-menus-4.png)
+  * Ce webhook entrant devra être configuré Pour l'utilisateur RocketChat que le HUBOT va utiliser, avec le formulaire qui s'affiche
+  * Ce webhook doit être configuré de manière à utiliser le script "Incoming Webhook" que vous avez écris : 
+  ![Textfield Scripts Webhook Entrants RocketChat](https://github.com/Jean-Baptiste-Lasselle/coquelicot/raw/master/documentation/images/rocketchat-incoming-webhook-script.png)
+  * À chaque étape, n'oubliez pas de sauvegarder ave les boutons `save` de RocketChat.
 * Vous presserez la touche entrée
 * La recette se terminera, et vous pourrez constater la sortie log suivante, et attestant du succès de la connexion du HUBOT dans le serveur RocketChat : 
 
