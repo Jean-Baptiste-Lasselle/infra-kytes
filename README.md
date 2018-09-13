@@ -13,10 +13,20 @@ https://github.com/RocketChat/Rocket.Chat.Ops
 J'ai pu entre autres vérifier qu'une upgrade majeure du hubot-rocketchat avait été publiée, ce qui pourrait expliquer les problématiques que j'ai rencontrées.
 
 
+
+
+
 Afin:
-* de faire en sorte qu'elle fonctionne dans n'importe quel hôte docker ayant accès au registry docker public officiel docker.io
-* de faire en sorte qu'elle soit en version docker-compose 3, au lieu de la version 2.
-* de la fair eévoluer, pour qu'elle peremette un calcul des SLA, et un déploiment Kubernetes, le service mpongo DB étant automatiquement "scalé" par le scale-up Kuibernetes, en cohérence avec le recplicaset créé pour rocketchat, mentionné dans la configuration du service rocketchat.
+* Mon but ultime, réaliser une utilisation du [type suivant]()https://github.com/RocketChat/Rocket.Chat.Ops#old-chat-ops-information, possible avec HUBOT : 
+  ```
+  extension is per-room customizable, for example: one room for open source project Rocket.Chat developers via github 
+  integration, another for MineCraft server farms operators discussion and network monitoring, yet another for a drone delivery 
+  service's fleet monitoring and control (see screenshot below)
+  ```
+  Et notamment, permettre d'incruster dasn une chat room, de la géolocalisation avec openstreetmap. Je veux ainsi pouvoir Brancher mon gitlab public, mon Jenkins public, mon twitter, mon facebook, mon fil de news site internet corporate, sur mon RocketChat. Je veux aussi ajouter comme le coup de l'exemple des drones + la géoloc, un canal qui permet à des humains d'une organisation de discuter pour assurer un service, avec le canal associé de remontée qualité des clients (SAV). Le tout avec deux schemas, un BPMN l'autre ITIL, pour chaque paire (canal de service delivery + canal SAV associé au service).
+  
+* de la faire évoluer, pour qu'elle peremette un calcul des SLA, et un déploiment Kubernetes, le service mpongo DB étant automatiquement "scalé" par le scale-up Kuibernetes, en cohérence avec le recplicaset créé pour rocketchat, mentionné dans la configuration du service rocketchat.
+
 
 # Utilisation
 
