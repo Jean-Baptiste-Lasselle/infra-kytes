@@ -123,13 +123,15 @@ services:
     container_name: 'hubot'
     environment:
       - ROCKETCHAT_URL=rocketchat:3000
-      - ROCKETCHAT_ROOM=devops
+      # - ROCKETCHAT_ROOM=devops
+      # ce channel RocketChat est à crééer avec le client Web RocketChat, comme l'utlisateur "ROCKETCHAT_USER"
+      - ROCKETCHAT_ROOM=canal-de-test-jbl
       # - ROCKETCHAT_USER=rocket.cat
       - ROCKETCHAT_USER=jbl
       # - ROCKETCHAT_PASSWORD=bot
       - ROCKETCHAT_PASSWORD=jbl
       - ROCKETCHAT_AUTH=password
-      - BOT_NAME=jblrocks
+      - BOT_NAME=jbl
       - LISTEN_ON_ALL_PUBLIC=true
       - GITLAB_URL=http://marguerite_gitlab:8081/api/v3/
       # - EXTERNAL_SCRIPTS=hubot-help,hubot-seen,hubot-links,hubot-diagnostics,hubot-rocketchat-gitlab
