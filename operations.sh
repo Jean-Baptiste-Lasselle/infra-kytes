@@ -70,14 +70,14 @@ docker-compose down --rmi all && docker system prune -f && docker-compose build 
 sleep 5 && docker ps -a
 
 # - 1 - Je dois relancer le conteneur qui créée et initialise le replicaSet mongoDB, dès que mongoDB est disponible :
-checkHealth $NOM_CONTENEUR_BDD_ROCKETCHAT
-docker start $NOM_CONTENEUR_INIT_REPLICASET_BDD_ROCKETCHAT
+# checkHealth $NOM_CONTENEUR_BDD_ROCKETCHAT
+# docker start $NOM_CONTENEUR_INIT_REPLICASET_BDD_ROCKETCHAT
 
 # - 2 - Maintenant que le replicaSet Existe, je peux re-démarrer le conteneur rocketchat : 
 #       cela se fait tout seul, parce que rocketchat est en restart=always dans le dokcer-compose.yml
 # docker-compose up -d $NOM_CONTENEUR_ROCKETCHAT
 # sleep 3 && docker ps -a
-docker logs $NOM_CONTENEUR_ROCKETCHAT
+# docker logs $NOM_CONTENEUR_ROCKETCHAT
 # -->> À terme, je voudrais, au lieu de re-démarrer de force le service rocketchat, le laisser re-démarrer, et vérifier que
 #      Rocket Chat est dans un état "Healthy", avant de créer manuellement le USER utilisé par le service HUBOT ensuite :
 #           pour cela, il faudra donc faire un HEALTHCHECK rocketchat, et invoquer la focntion [checkHealth] de ce script : 
