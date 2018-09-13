@@ -78,6 +78,10 @@ services:
     image: /mongo-replica-initializer:latest
     build: mongo-init-replica/construction/create-replicaset/
     container_name: 'mongo-init-replica'
+    # + Pour que le conteneur reste UP ' N 'RUNNING, y compris lorsque le replicaSet a été créé avec succès, et
+    # + le HEALTHCHECK est joué après le succès pour exposer un statut "healthy", ce
+    # + qui déclenche le démarrage du conteneur RocketChat
+    tty: true
     # + il FAUDRA remplacer ce sleep par une meilleure solution
     # command: 'mongo mongo/rocketchat --eval "rs.initiate({ _id: ''rs0'', members: [ { _id: 0, host: ''localhost:27017'' } ]})"'
     # command: 'mongo mongo/rocketchat --eval "rs.initiate({ _id: ''rs0'', members: [ { _id: 0, host: ''mongo:27017'' } ]})"'
