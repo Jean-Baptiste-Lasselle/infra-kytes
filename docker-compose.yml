@@ -90,7 +90,8 @@ services:
       - mongo
 #     restart: always
   rocketchat:
-    image: rocketchat/rocket.chat:latest
+    image: coquelicot/rocket.chat:1.0.0
+    build: ./rocketchat/construction/
 #     hostname: 'rocketchat'
     container_name: 'rocketchat'
     volumes:
