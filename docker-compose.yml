@@ -126,9 +126,7 @@ services:
       # - ROCKETCHAT_ROOM=devops
       # ce channel RocketChat est à crééer avec le client Web RocketChat, comme l'utlisateur "ROCKETCHAT_USER"
       - ROCKETCHAT_ROOM=canal-de-test-jbl
-      # - ROCKETCHAT_USER=rocket.cat
       - ROCKETCHAT_USER=jbl
-      # - ROCKETCHAT_PASSWORD=bot
       - ROCKETCHAT_PASSWORD=jbl
       - ROCKETCHAT_AUTH=password
       - BOT_NAME=jbl
