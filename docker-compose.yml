@@ -76,7 +76,7 @@ services:
   mongo-init-replica:
     # image: mongo:3.2
     image: /mongo-replica-initializer:latest
-    build: mongo-init-replica/construction/create-replicaset/
+    build: ./mongo-init-replica/construction/create-replicaset/
     container_name: 'mongo-init-replica'
     # + Pour que le conteneur reste UP ' N 'RUNNING, y compris lorsque le replicaSet a été créé avec succès, et
     # + le HEALTHCHECK est joué après le succès pour exposer un statut "healthy", ce
