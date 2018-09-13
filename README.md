@@ -91,13 +91,16 @@ Lorsque vous exécuterez ces commandes, vous serez guidé interactivement :
   ![Menu Administration > Integrations > New Intregration](https://github.com/Jean-Baptiste-Lasselle/coquelicot/raw/master/documentation/images/rocketchat-incoming-webhook-menus-3.png)
   Et enfin, cliquer sur le bouton "Incoming Webhook", pour crééer un webhook entrant  : 
   ![créer un "Incoming Webhook", ou un "Outgoing Webhook"](https://github.com/Jean-Baptiste-Lasselle/coquelicot/raw/master/documentation/images/rocketchat-incoming-webhook-menus-4.png)
+  
   * Ce webhook entrant devra être configuré Pour l'utilisateur RocketChat que le HUBOT va utiliser, avec le formulaire qui s'affiche
   * Ce webhook doit être configuré de manière à utiliser le script "Incoming Webhook" que vous avez écris : 
   ![Textfield Scripts Webhook Entrants RocketChat](https://github.com/Jean-Baptiste-Lasselle/coquelicot/raw/master/documentation/images/rocketchat-incoming-webhook-script.png)
-  * À chaque étape, n'oubliez pas de sauvegarder ave les boutons `save` de RocketChat.
-* Vous presserez la touche entrée
-* La recette se terminera, et vous pourrez constater la sortie log suivante, et attestant du succès de la connexion du HUBOT dans le serveur RocketChat : 
-
+  ![N'oubliez pas de sauvegarder ave les boutons Save de RocketChat](https://github.com/Jean-Baptiste-Lasselle/coquelicot/raw/master/documentation/images/rocketchat-incoming-webhook-menus-5-moyens-de-test-donnes-par-rocketchat.png)
+* Maintenant RocketChat correctmeent démarré, et le Webhook entrant créé et configuré, la recette puet se terminer : ELle va tout simplement redémarrer le `hubot` (cf. `./docker-compose.yml`). Il vous suffit de presser la touche entrée, pour laisser la recette se terminer.
+* La recette se termine, et vous pourrez constater la sortie log suivante (pour le conteneur `hubot`), et attestant du succès de la connexion du HUBOT dans le serveur RocketChat : 
+```bash
+$ docker logs -f hubot
+``` 
 ```bash
 npm info install hubot-rocketchat@1.0.11
 npm info postinstall hubot-rocketchat@1.0.11
@@ -125,7 +128,7 @@ npm info ok
 Your hubot-scripts.json is empty, so you just need to remove it.
 ```
 
-Seul manque de ce repo Git : 
+Manques de ce repo Git : 
 
 *  Il reste à appliquer les instructions en fin de cette page, pour customiser les webhooks Gitlab. Pour ce faire, je vais donc utiliser l'inteface graphique web de rocketchat, pour aller à l'admin et créer un "incoming webhook", et ce en utilisant le script suivant : 
 ```javascript
@@ -355,7 +358,10 @@ See: ${data.object_attributes.url}`
 	}
 }
 ```
-Qui est une simple petite modification du script donné en fin de cette docuementation. Cette modification permet de définir des messages particuliers qui seront rapidement reconnaissables, quand postés par le `hubot`. La création du webhook entrant, devra être configurée par rapport à un canal rocketchat qui doit avoir été préalablement créé (par n'importe quel autre utilisateur, par forcément l'adminsitrateur qui créée le webhook). Enfin, Gitlab devra marcher, et un repo git devra y être créé, pour être ensuite utilsié, et arrvier à déclencher mon hubot sur le raocketchat.
+Qui est une simple petite modification du script donné en fin de cette documentation. Cette modification permet de définir des messages particuliers qui seront rapidement reconnaissables, quand postés par le `hubot`, dans RocketChat, suite à un évènement Gitlab.
+
+#### Tests IAAC
+
 Voici un exemple de résultat de test que j'ai mené, après avoir ainsi manuellement créé un canal RocketChat, et un webhook entrant, pour ensuite envoyer la requête CURL suivante (qui simule une émission d'évènement d'une instance GITLAB ) : 
 
 ```bash
@@ -363,7 +369,9 @@ curl -X POST -H "x-gitlab-event: Pipeline Hook" --data-urlencode 'payload={   "o
 {"success":false,"error":"Invalid integration id or token provided."}
 ```
 
-étant donné l'erreur qui m'est donnée en retourpar le hubot, je cherche donc à modifier le token envoyé dans la requête. Je prends la valeur mentionnée dans le `./docker-compose.yml`, pour configurer le `hubot`, avec les variables d'environnement `GITLAB_TOKEN` / `GITLAB_API_KEY` , et j'exécute ma requête modifiée : 
+Etant donné l'erreur qui m'est donnée en retour par le `hubot`, je cherche donc à modifier le token envoyé dans la requête.
+
+Je prends la valeur mentionnée dans le `./docker-compose.yml`, pour configurer le `hubot`, avec les variables d'environnement `GITLAB_TOKEN` / `GITLAB_API_KEY` , et j'exécute ma requête modifiée : 
 
 ```bash
 curl -X POST -H "x-gitlab-event: Pipeline Hook" --data-urlencode 'payload={   "object_kind": "pipeline",   "object_attributes":{      "id": 31,      "ref": "master",      "tag": f    "sha": "bcbb5ec396a2c0f828686f14fac9b80b780504f2",      "before_sha": "bcbb5ec396a2c0f828686f14fac9b80b780504f2",      "status": "success",      "stages":[         "build",         "test",         "deploy"      ],      "created_at": "2016-08-12 15:23:28 UTC",      "finished_at": "2016-08-12 15:26:29 UTC",      "duration": 63   },   "user":{      "name": "Administrator",      "username": "root",      "avatar_url": "http://www.gravatar.com/avatar/e32bd13e2add097461cb96824b7a829c?s=80\u0026d=identicon"   },   "project":{      "name": "Gitlab Test",      "description": "Atque in sunt eos similique dolores voluptatem.",      "web_url": "http://192.168.64.1:3005/gitlab-org/gitlab-test",      "avatar_url": null,      "git_ssh_url": "git@192.168.64.1:gitlab-org/gitlab-test.git",      "git_http_url": "http://192.168.64.1:3005/gitlab-org/gitlab-test.git",      "namespace": "Gitlab Org",      "visibility_level": 20,      "path_with_namespace": "gitlab-org/gitlab-test",      "default_branch": "master"   },   "commit":{      "id": "bcbb5ec396a2c0f828686f14fac9b80b780504f2",      "message": "test",      "timestamp": "2016-08-12T17:23:21+02:00",      "url": "http://example.com/gitlab-org/gitlab-test/commit/bcbb5ec396a2c0f828686f14fac9b80b780504f2",      "author":{         "name": "User",         "email": "user@gitlab.com"      }   },   "builds":[      {         "id": 380,         "stage": "deploy",         "name": "production",         "status": "skipped",         "created_at": "2016-08-12 15:23:28 UTC",         "started_at": null,         "finished_at": null,         "when": "manual",         "manual": true,         "user":{            "name": "Administrator",            "username": "root",            "avatar_url": "http://www.gravatar.com/avatar/e32bd13e2add097461cb96824b7a829c?s=80\u0026d=identicon"         },         "runner": null,         "artifacts_file":{            "filename": null,            "size": null         }      },      {         "id": 377,         "stage": "test",         "name": "test-image",         "status": "success",         "created_at": "2016-08-12 15:23:28 UTC",         "started_at": "2016-08-12 15:26:12 UTC",         "finished_at": null,         "when": "on_success",         "manual": false,         "user":{            "name": "Administrator",            "username": "root",            "avatar_url": "http://www.gravatar.com/avatar/e32bd13e2add097461cb96824b7a829c?s=80\u0026d=identicon"         },         "runner": null,         "artifacts_file":{            "filename": null,            "size": null         }      },      {         "id": 378,         "stage": "test",         "name": "test-build",         "status": "success",         "created_at": "2016-08-12 15:23:28 UTC",         "started_at": "2016-08-12 15:26:12 UTC",         "finished_at": "2016-08-12 15:26:29 UTC",         "when": "on_success",         "manual": false,         "user":{            "name": "Administrator",            "username": "root",            "avatar_url": "http://www.gravatar.com/avatar/e32bd13e2add097461cb96824b7a829c?s=80\u0026d=identicon"         },         "runner": null,         "artifacts_file":{            "filename": null,            "size": null         }      },      {         "id": 376,         "stage": "build",         "name": "build-image",         "status": "success",         "created_at": "2016-08-12 15:23:28 UTC",         "started_at": "2016-08-12 15:24:56 UTC",         "finished_at": "2016-08-12 15:25:26 UTC",         "when": "on_success",         "manual": false,         "user":{            "name": "Administrator",            "username": "root",            "avatar_url": "http://www.gravatar.com/avatar/e32bd13e2add097461cb96824b7a829c?s=80\u0026d=identicon"         },         "runner": null,         "artifacts_file":{            "filename": null,            "size": null         }      },      {         "id": 379,         "stage": "deploy",         "name": "staging",         "status": "created",         "created_at": "2016-08-12 15:23:28 UTC",         "started_at": null,         "finished_at": null,         "when": "on_success",         "manual": false,         "user":{            "name": "Administrator",            "username": "root",            "avatar_url": "http://www.gravatar.com/avatar/e32bd13e2add097461cb96824b7a829c?s=80\u0026d=identicon"         },         "runner": null,         "artifacts_file":{            "filename": null,            "size": null         }      }   ]}' http://rocketchat.marguerite.io:8090/hooks/cNhsExCcNhsExicNhsExx
@@ -614,6 +622,12 @@ et là, j'obtiens une réponse tout à fait différente du serveur RoketChat, un
 	</body>
 	</html>
 ```
+
+OK,  il faut ré-impléenter ce test sur son principe : 
+Il faut pouvoir créer des requêtes CURL, qui correspondraient exactement à des requêtes qu'enverrait mon Gitlab, avec des webhooks etc..
+Il me manque pour l'instant l'itégration Gitlab, etje dois donc la mocker, pour tester l'intégration hubot RokcetChat, indépendammant de l'intégration Gitlab HUBOT .
+C'est du test d'intégration infra typique.
+
 
 
 
