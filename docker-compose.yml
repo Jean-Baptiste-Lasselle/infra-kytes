@@ -101,7 +101,8 @@ services:
 #       - 27017
     depends_on:
       - mongo
-#     restart: always
+    # + Pour qu'il re-démarre, après un essai infructueux de création du Replica SET Mongo DB, validé par le HEALTHCHECK
+    restart: always
   rocketchat:
     image: coquelicot/rocket.chat:1.0.0
     build: ./rocketchat/construction/
