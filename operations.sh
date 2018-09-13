@@ -62,9 +62,10 @@ sleep 5 && docker ps -a
 checkHealth $NOM_CONTENEUR_BDD_ROCKETCHAT
 docker start $NOM_CONTENEUR_INIT_REPLICASET_BDD_ROCKETCHAT
 
-# - 2 - Maintenant que le replicaSet Existe, je peux re-démarrer le conteneur rocketchat
-docker-compose up -d $NOM_CONTENEUR_ROCKETCHAT
-sleep 3 && docker ps -a
+# - 2 - Maintenant que le replicaSet Existe, je peux re-démarrer le conteneur rocketchat : 
+#       cela se fait tout seul, parce que rocketchat est en restart=always dans le dokcer-compose.yml
+# docker-compose up -d $NOM_CONTENEUR_ROCKETCHAT
+# sleep 3 && docker ps -a
 docker logs $NOM_CONTENEUR_ROCKETCHAT
 # -->> À terme, je voudrais, au lieu de re-démarrer de force le service rocketchat, le laisser re-démarrer, et vérifier que
 #      Rocket Chat est dans un état "Healthy", avant de créer manuellement le USER utilisé par le service HUBOT ensuite :
@@ -79,8 +80,8 @@ echo "  "
 echo " ---------------------------------------------------------------------- "
 echo "  Please Create a user in rocketchat, with the following  credentials : "
 echo " ---------------------------------------------------------------------- "
-echo "    - username : \"UTILISATEUR_HUBOT_ROCKETCHAT_USERNAME\" "
-echo "    - password : \"UTILISATEUR_HUBOT_ROCKETCHAT_PWD\" "
+echo "    - username : \"UTILISATEUR_HUBOT_ROCKETCHAT_USERNAME=$UTILISATEUR_HUBOT_ROCKETCHAT_USERNAME\" "
+echo "    - password : \"UTILISATEUR_HUBOT_ROCKETCHAT_PWD=$UTILISATEUR_HUBOT_ROCKETCHAT_PWD\" "
 echo "  "
 echo "  Pressez la touche entrée lorsque cela sera fait, le  "
 echo "  service HUBOT/ROCKETCHAT sera re-démarré "
@@ -89,6 +90,7 @@ echo "  "
 read ATTENTE_CREATION_UTILISATEUR_ROCKETCHAT
 
 # - 4 - Maintenant que l'utilisateur dont le hubot a besoin existe, on re-démarre le hubot : 
+checkHealth $NOM_CONTENEUR_ROCKETCHAT
 docker-compose up -d $NOM_CONTENEUR_HUBOT
 sleep 3 && docker ps -a
 # - Maintenant, examinons les logs du conteneur hubot :
