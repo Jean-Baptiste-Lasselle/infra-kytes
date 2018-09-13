@@ -638,8 +638,11 @@ C'est du test d'intégration infra typique.
 Finalement, Les Jenkins pipelines utiliseront aussi leur propre HUBOT pour poster des messages aux dévelopepurs par exemple.
 
 
-Améliorations : 
-* Utiliser un HEALTHCHECK RocketChat, pour faire patienter le processus bash qui terminera ensuite en re-démarrant le service
+Notez : 
+* J'ai ajouté deux HEALTHCHECK élémentaire pour les conteneurs MongoDB et RocketChat :
+  * Pour MongoDB, Le conteneur `mongo-init-replica` doit attendre que le serveur MongoDB, soit dispoinible, pour faire son travail :  créer le replicaSet que RocketChat va Utiliser.
+  * De plus, Le serveur MongoDB, doit 
+  * Pour RocketChat, on doit attendre que le service soit disponible, avant de redémarrer le service Hubot (piloté par Gitlab). 
 * Trouver le moyent de faire focntionner les depends_on avec les HEALTHCHECK de chaque conteneur. Y compris le contneur qui initialise le replicaset : Quand il a terminé son travail, alors seulement l'instance applicative RocketChat peut démarrer.
 
 
@@ -937,7 +940,11 @@ docker logs mongo-init-replica
 ```
 On constate que ce conteneur a échoué dans sa tâche, et ce parceque la connexion lui a été refusée. La tâche accomplie par ce conteneur est d'initialiser  le "replicaSet" MongoDB, donc le "replicaSet" n'est pas initialisé correctement, et la connexion  utilisée par `rocketchat`, configurée avec la variable `MONGO_OPLOG_URL`, échoue, parce qu'elle nécessite l'initialisation du replicaSet.
 
-J'ai encorea pprofondi l'étude, et ai découvert que la valeur de `MONGO_OPLOG_URL`, doit préciser le nom du repilicaSet mongoDb, avec un paramètre HTTP/get : 
+J'ai encore approfondi l'étude, et ai découvert que la valeur de `MONGO_OPLOG_URL`, doit correspondre au nom du replicaSet MongoDB créé par le conteneur `mongo-init-replica`, avec le client mongo, à l'aide de la commande :
+```bash
+mongo mongo/rocketchat --eval "rs.initiate({ _id: ''rs0'', members: [ { _id: 0, host: ''mongo:27017'' } ]})"
+```
+Cette requête TCP a pour effet de créer le replicaSet de nom `rs0` dans MongoDB, et c'est la raison pour laquelle elle est utilisée pour définir la commande d'exécution du conteneur `mongo-init-replica` (précisée dans un Dockerfile , avec la syntaxe `CMD ["/chemin/quel/conque/fichier-executable"]`) : 
 
 ```bash
 version: '3'
@@ -974,13 +981,14 @@ services:
     networks:
       - devops
     restart: always
-
 ```
-On remarquera aussi que le nom du replica Set, créé avec le conteneur `mongo-init-replica`, doit être le nom du replicaSet mentionné par `MONGO_OPLOG_URL` (ci-dessus, `rs0`).
 
-Une fois relancé l'emsble du docker-compose, on constate que de nouveaux problèmes se manifestent : 
-* D'abord, le conteneur `mongo-init-replica` échoue toujours à sa première tntative de création du replicaSet, parce que le conteneur `mongodb` n'est pas prêt. On peut donc relancer l'exécution du conteneur `mongo-init-replica`, afin de crééer le replicaSet : `docker start mongo-ibit-replica`
+Ainsi, ci-dessus, `rs0`, le nom du replicaSet créé avec le conteneur `mongo-init-replica`, doit être le nom du replicaSet mentionné par `MONGO_OPLOG_URL`.
+
+Une fois relancé l'ensemble du docker-compose, on constate que de nouveaux problèmes se manifestent : 
+* D'abord, le conteneur `mongo-init-replica` échoue toujours à sa première tentative de création du replicaSet, parce que le conteneur `mongodb` n'est pas prêt. On peut donc relancer l'exécution du conteneur `mongo-init-replica`, afin de crééer le replicaSet : `docker start mongo-ibit-replica`
 * Une fois cela fait, on peut alors suivre les logs du conteneur rocketchat, qui démarre effectivmeent, mais tout en émettant des avertissements qu'il faudra traiter comme des erreurs. Sortie standard de ces erreurs : 
+
 ```bash
 /app/bundle/programs/server/node_modules/fibers/future.js:313
 						throw(ex);
