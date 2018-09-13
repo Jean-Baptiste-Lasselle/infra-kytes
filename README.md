@@ -594,6 +594,35 @@ ActionController::InvalidAuthenticityToken (ActionController::InvalidAuthenticit
 
 ```
 
+
+#### Piste 
+
+J'ai trouvé [ici](https://gitlab.com/gitlab-org/omnibus-gitlab/issues/1628) sur le oueb : 
+
+```bash
+ Pablo @pablolarrimbe · 1 year ago
+
+@tyranron Thanks for the response. As you can see, without setting that parameter, most of my images still display OK, because I set up the proxy parameter as per: nginx['proxy_set_headers'] = { "Host" => "https://gitlab.reverse-proxy.domain.com", "X-Forwarded-Proto" => "https", "X-Forwarded-Ssl" => "on" }
+
+The problem that I have if I change the external URL is that then my reverse proxy can't talk with the nginx server, as this creates an HTTP conflict.
+Tyranron
+Tyranron @tyranron · 1 year ago
+
+@pablolarrimbe what kind of HTTP conflict appears? Would you be so kind to provide some logs with correspondent errors?
+
+I have similar setup in Kubernetes cluster where Nginx acts as reverse-proxy. Following strait-forward config works like a charm and no troubles with uploaded images exist:
+
+external_url 'https://gitlab.reverse-proxy.domain.com'  # corrected according to your domains
+nginx['listen_port'] = 80
+nginx['listen_https'] = false
+nginx['proxy_set_headers'] = {
+  'X-Forwarded-Proto' => 'https',
+  'X-Forwarded-Ssl' => 'on'
+}
+
+In my case SSL termination happens on reverse-proxy and traffic between reverse-proxy and Gitlab is not secured (there is no need in my case). But as far as I see you are using nginx['redirect_http_to_https'] = true option and it seems that you want to have inner traffic also be secured. Is it critical?
+```
+
 ### Plus en détails
 
 Pour tout détruire et nettoyer : 
