@@ -27,6 +27,16 @@ Afin:
   
 * de la faire évoluer, pour qu'elle peremette un calcul des SLA, et un déploiment Kubernetes, le service mpongo DB étant automatiquement "scalé" par le scale-up Kuibernetes, en cohérence avec le recplicaset créé pour rocketchat, mentionné dans la configuration du service rocketchat.
 
+Sur [cette page](https://github.com/RocketChat/hubot-rocketchat/issues/81), j'ai trouvé une info intéressante : 
+```
+LISTEN_ON_ALL_PUBLIC will work if you set ROCKET_CHATROOM= ... with nothing after the =.
+
+LISTEN_ON_ALL_PUBLIC also activates DM - so no need to set both. When doing DM, remember to address the bot - i.e. bot pug me instead of pug me.
+
+Updating the doc and closing this ticket.
+
+Please open another ticket if you want to change the default GENERAL channel.
+```
 
 # Utilisation
 
