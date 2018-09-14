@@ -56,7 +56,7 @@ Ci-dessus :  le nouveau HEALTHCHECK pourrait vérifier :
     # + Quand le conteneur aura créé le user et la chatroom, il terminera son exécution avec succès, et 
     # + ne re-démarrera pas. Pour terminer, le HUBOT est lui en "--restart=always", et sera HEALTHY, lorsque son
     # + healthcheck en attestera (il faut donc un healthcheck aussi pour le conteneur HUBOT)
-    restart: on-failure[:10]
+    restart: on-failure:10
     depends_on:
     # + Logique:  le contneur a besoin que rocketChat soit UP'N RUNNING, pour pouvoir créer le user et la chatroom
       - rocketchat
