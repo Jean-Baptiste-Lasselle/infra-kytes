@@ -8,6 +8,7 @@ export NOM_CONTENEUR_INIT_REPLICASET_BDD_ROCKETCHAT=mongo-init-replica
 export UTILISATEUR_HUBOT_ROCKETCHAT_USERNAME=jbl
 export UTILISATEUR_HUBOT_ROCKETCHAT_PWD=jbl
 
+
 # - Fonctions
 # --------------------------------------------------------------------------------------------------------------------------------------------
 # 
