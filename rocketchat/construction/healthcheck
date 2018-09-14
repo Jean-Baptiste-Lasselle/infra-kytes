@@ -2,4 +2,5 @@
 
 
 # The base native RocketChat App healthcheck: if I get a HTTP 200 from localhost:3000, then RocketChat is Up N Running
+curl -f http://localhost:3000/ || exit 1
 
