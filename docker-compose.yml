@@ -80,8 +80,8 @@ services:
     container_name: 'mongo-init-replica'
     # + Pour que le conteneur reste UP ' N 'RUNNING, y compris lorsque le replicaSet a été créé avec succès, et
     # + le HEALTHCHECK est joué après le succès pour exposer un statut "healthy", ce
-    # + qui déclenche le démarrage du conteneur RocketChat
-    tty: true
+    # + qui déclenche le démarrage du conteneur RocketChat => plus nécessaire, depuis restart onfailure
+    # tty: true
     # + il FAUDRA remplacer ce sleep par une meilleure solution
     # command: 'mongo mongo/rocketchat --eval "rs.initiate({ _id: ''rs0'', members: [ { _id: 0, host: ''localhost:27017'' } ]})"'
     # command: 'mongo mongo/rocketchat --eval "rs.initiate({ _id: ''rs0'', members: [ { _id: 0, host: ''mongo:27017'' } ]})"'
@@ -101,8 +101,9 @@ services:
 #       - 27017
     depends_on:
       - mongo
-    # + Pour qu'il re-démarre, après un essai infructueux de création du Replica SET Mongo DB, validé par le HEALTHCHECK
-    restart: always
+    # + Pour qu'il re-démarre, tant qu'il n'a pas réussit à initialiser le replicaSet
+    restart: onfailure:10
+    # restart: always
   rocketchat:
     image: coquelicot/rocket.chat:1.0.0
     build: ./rocketchat/construction/
