@@ -35,23 +35,28 @@ export RESULTAT_JSON_REQUETE_MONGO=$(mongo mongo/rocketchat --eval "rs.status({ 
 #     mongo mongo/rocketchat --eval "rs.status({ _id: ''rs0''})"
 # 
 # retourne une valeur, c'est que le replicaSet "rs0" existe. Si cette commande retourne la chîne de caractère vide ou
-# un truc du genre un objet JSON vide "{}", alors le replica set 'rs0' n'existe pas.
+# un truc du genre un objet JSON vide "{}", alors le replica set 'rs0' n'existe pas. (à vérifier: c'est peut-être un
+# JSON vide, et non la chaîne de caractère vide, qui est renvoyée quand le replicaSet n'existe pas).
 # 
 
-if [ "x$RESULTAT_REQUETE_MONGO" -eq "x" || "x$RESULTAT_REQUETE_MONGO" -eq "x{}"] then;
-# Alors le replplicaSet n'existe carrément pas. (à vérifier, c'est peut-êtrte un
-# JSON vide, et non la chaîne de caractère vide, qui est renvoyée)
+if [ "x$RESULTAT_REQUETE_MONGO" == "x" || "x$RESULTAT_REQUETE_MONGO" -eq "x{}"] then;
+# Alors le replplicaSet n'existe carrément pas. 
 echo " DEBUG - [RESULTAT_REQUETE_MONGO=$RESULTAT_REQUETE_MONGO] "
 echo "  => le replicaSet [rs0] n'a même pas encore été créé dans l'hôte MongoDB [mongo:27017]: Il faut le créer !  "
 
-# ==>> Comme dans le docker-compose.yml dictribué par l'équipe RocketChat : 
+# Il faut donc tenter de créer le replicaSet.
+# ==>> Comme dans le docker-compose.yml distribué par l'équipe RocketChat : 
 mongo mongo/rocketchat --eval "rs.initiate({ _id: ''rs0'', members: [ { _id: 0, host: ''mongo:27017'' } ]})"
 
 else
 export AFFICHAGE_JSON_REQUETE_MONGO=$(mongo mongo/rocketchat --eval "rs.status({ _id: ''rs0''}).pretty()")
-echo " Le replicaSet [rs0] existe, il ne faut pas ré-essayer de le créer, et laisser le HEALTHCHECK vérifier que son statut est  1 	\"PRIMARY\"   "
+echo " "
+echo " Le replicaSet [rs0] existe, il ne faut pas ré-essayer de le créer, et laisser la startup policy (définie dans"
+echo " le [docker-compose.yml] agir : "
+echo " Elle est en mode [onfailure:10], donc ce conteneur terminera son exécution avec succès, et docker ne le"
+echo " re-démarrera pas, parce que la dernière exécution ne s'est pas terminée sur un échec.  "
 echo " "
 echo "$AFFICHAGE_JSON_REQUETE_MONGO"
 echo " "
-
+# On retourne le code 0, indiquant ainsi à Docker que le processus s'est terminé avec succès: En effet, on vient de vérifier que le replicaSet existe
 fi
