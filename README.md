@@ -23,8 +23,28 @@ Donc, ce qu'il faut que je fasse, pour mon conteneur `mongo-init-replica` :
     # + Quand le conteneur aura créé le replicaSet
     - restart: on-failure[:max-retries]
 ```
-ALors, si je prends cette approche, le healthcheck qui vérifiera l'existence, et l'état du replicaSet, doit être placé dans le conteneur de la BDD MongoDB de RocketChat, et non dans le conteneur mongo-init-replica. Ainsi, de plus, on délcarera une seule dépendance, au lieu de deux, du conteneur RocketChat, vers le conteneur MongoDB. On supprime la dépendance du contneur `rocketchat`, pour le conteneur `mongo-init-replica`.
-Et en plsu , le contneur de abse de données expose un statu Healthy cohérent avec ce qu'attend, dans le principe, RocketChat : un replicaSet MongoDB UP N RUNNING.
+ALors, si je prends cette approche, le healthcheck qui vérifiera l'existence, et l'état du replicaSet, doit être placé dans le conteneur de la BDD MongoDB de RocketChat, et non dans le conteneur mongo-init-replica. Ainsi, de plus, on délcarera une seule dépendance, au lieu de deux, du conteneur RocketChat, vers le conteneur MongoDB. On supprime la dépendance du contneur `rocketchat`, pour le conteneur `mongo-init-replica`. Oui/ Non, il y a un super design pattern à résoudre là : parce que le contneur qui créée le replicaSet, lui, doit attendre non pas que le replicaSet soit existant et dans le statut PRIMARY, mais simplement que le serveur soit UP N RUNNING... Alors? Alors une possibilité est de retirer la dépedance du conteneur `mongo-init-replica`, pour le conteneur `mongo`, et mettre (dans le `./docker-compose.yml`) le conteneur `mongo-init-replica` en mode : 
+```yaml
+  mongo-init-replica:
+    # + Et comme cela, mon conteneur ne re-démarrera que si son exécution a terminé avec un code
+    # + d'erreur: si le replicaSet n'a pas été correctement créé.
+    # + Quand le conteneur aura créé le replicaSet, il terminera son exécution, et ne re-démarrera pas.
+    - restart: on-failure[:max-retries]
+```
+
+Et en plus , le contneur serveur de base de données `mongo` expose un statut Healthy cohérent avec ce qu'attend, dans le principe, RocketChat : un replicaSet MongoDB UP N RUNNING.
+
+Ce qui serait encore plus intéressant, serait de développer un healthcheck, qui permette d'atester qu'un utilisatuer avec :
+```yaml
+- ROCKETCHAT_USER=jbl
+- ROCKETCHAT_USER=jbl
+
+```
+a bien été créé dans RocjketChat. MAis pour cela, il suffit de le vérifer dans la Base de données mongoDB que RocketChat Utilise. Ok, On  a deux choix : soit on tape directeemnt dns la base de données, mais alors le HEALTHCHECK doit être fait par le HEALTHCHECK du `rocketchat`, donc en invoquant un conteneur depusi un autre conteneur, avec la résolution de noms de domaine propre à l'infrastrcuture. SOit je développe un tout petit module qui effectue l'autehtnification RocketChat à la Volée, avec le même code NodeJS que HUBOT utilise pour se logguer RocketChat.
+Enfin, il faudra automatiser la création de l'utiliateur initial RocketChat, et la création de l'utilisateur RocketChat que le HUBOT va utiliser. Cela pourrait aussi être un HEALTHCHECK du conteneur HUBOT directement, qui ainsi, s'il est "HEALTHY", on sait qu'il arrvie à se colnnecer et à se logguer. Dans le même goût, on pourra vérfier que la chatroom existe, et que le Bot a les autorisations attendues pour lire et/ou écrire dans la chatroom.
+Un robot pourrait très bien avoir uniquement possiibilité de lire, il pourrait envoyer un email, ou un message srur une autre chatroom, juste pour prévenir que quelqu'un a dit tel truc sur telle chatroom, en citant le nom du produit phare de l'entreprise dans la même phrase...
+
+
 
 Notons enfin que j'ai laissé le problème de l'initialisation Gitlab (code HTTP 402 au changement initial du mot de passe de l'utilisateur initial), de côté : je le traiterais en dernier, parce que je l'ai rencontré dans d'autres ocntextes, et le sais indépendant du présent contexte de travail.
 
