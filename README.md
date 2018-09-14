@@ -21,7 +21,7 @@ Donc, ce qu'il faut que je fasse, pour mon conteneur `mongo-init-replica` :
     # + Et comme cela, mon conteneur ne re-démarrera que si son exécution a terminé avec un code
     # + d'erreur: si le replicaSet n'a pas été correctement créé.
     # + Quand le conteneur aura créé le replicaSet
-    - restart: on-failure[:max-retries]
+    restart: on-failure[:max-retries]
 ```
 ALors, si je prends cette approche, le healthcheck qui vérifiera l'existence, et l'état du replicaSet, doit être placé dans le conteneur de la BDD MongoDB de RocketChat, et non dans le conteneur mongo-init-replica. Ainsi, de plus, on délcarera une seule dépendance, au lieu de deux, du conteneur RocketChat, vers le conteneur MongoDB. On supprime la dépendance du contneur `rocketchat`, pour le conteneur `mongo-init-replica`. Oui/ Non, il y a un super design pattern à résoudre là : parce que le contneur qui créée le replicaSet, lui, doit attendre non pas que le replicaSet soit existant et dans le statut PRIMARY, mais simplement que le serveur soit UP N RUNNING... Alors? Alors une possibilité est de retirer la dépedance du conteneur `mongo-init-replica`, pour le conteneur `mongo`, et mettre (dans le `./docker-compose.yml`) le conteneur `mongo-init-replica` en mode : 
 ```yaml
@@ -36,15 +36,44 @@ Et en plus , le contneur serveur de base de données `mongo` expose un statut He
 
 Ce qui serait encore plus intéressant, serait de développer un healthcheck, qui permette d'atester qu'un utilisatuer avec :
 ```yaml
-- ROCKETCHAT_USER=jbl
-- ROCKETCHAT_USER=jbl
+      - ROCKETCHAT_ROOM=canal-de-test-jbl
+      - ROCKETCHAT_USER=jbl
+      - ROCKETCHAT_PASSWORD=jbl
+      - ROCKETCHAT_AUTH=password
+      - BOT_NAME=jbl
 
 ```
-a bien été créé dans RocjketChat. MAis pour cela, il suffit de le vérifer dans la Base de données mongoDB que RocketChat Utilise. Ok, On  a deux choix : soit on tape directeemnt dns la base de données, mais alors le HEALTHCHECK doit être fait par le HEALTHCHECK du `rocketchat`, donc en invoquant un conteneur depusi un autre conteneur, avec la résolution de noms de domaine propre à l'infrastrcuture. SOit je développe un tout petit module qui effectue l'autehtnification RocketChat à la Volée, avec le même code NodeJS que HUBOT utilise pour se logguer RocketChat.
-Enfin, il faudra automatiser la création de l'utiliateur initial RocketChat, et la création de l'utilisateur RocketChat que le HUBOT va utiliser. Cela pourrait aussi être un HEALTHCHECK du conteneur HUBOT directement, qui ainsi, s'il est "HEALTHY", on sait qu'il arrvie à se colnnecer et à se logguer. Dans le même goût, on pourra vérfier que la chatroom existe, et que le Bot a les autorisations attendues pour lire et/ou écrire dans la chatroom.
-Un robot pourrait très bien avoir uniquement possiibilité de lire, il pourrait envoyer un email, ou un message srur une autre chatroom, juste pour prévenir que quelqu'un a dit tel truc sur telle chatroom, en citant le nom du produit phare de l'entreprise dans la même phrase...
+Ci-dessus :  le nouveau HEALTHCHECK pourrait vérifier : 
+- Avec le même module NodeJS / Meteor utilisé par HUBOT pour se logguer à RocketChat, qu'on arrive bel et bie à se connecter avec ce user, et ce mot de passe. Donc en mode SOFT, pour tester l'infrastructure de manière agnostique, et non en allant chercher un conteneu de Base de données, pour l'interpréter comme attestant de la création d'un utilisateur et de la validité de son mot de passe.
+- Que la chatroom `$ROCKETCHAT_ROOM` a bien été créée dans RocketChat. Pour cela, on peut cehrcehr les modules HUBOT qui permettent d'entrer et/oou de sortir d'une chatroom, avec le HUBOT. Et utiliser ce module pour verifier l'existence de la chatroom.
+- Enfin, il faudra automatiser la création de l'utiliateur initial RocketChat, et la création de l'utilisateur RocketChat que le HUBOT va utiliser. Cela pourrait aussi être un HEALTHCHECK du conteneur HUBOT directement, qui ainsi, s'il est "HEALTHY", on sait qu'il arrvie à se colnnecer et à se logguer. Dans le même goût, on pourra vérfier non seulement que la chatroom existe, mais aussi que le Bot a les autorisations attendues pour lire et/ou écrire dans la chatroom.
+
+* UNEIDEE DE PATTERN : je fais un conteneur hyper léger, qu ne va faire que continuellement essayer de créer le user et la CHATROOM rocketchat, pour le fonctionnement du HUBOT. Ce conteneur va faire un peu comme j'ai fait avec mon conteneur `mongo-init-replica`, il va continuellement tenter d'initialiser ce qu'il y a à initialiser (la  CHATROOM, et le user que HUBOT va utiliser dans RocketChat), jusqu'à réussir. Pour obtenir ce comportement, on utilise la config : 
+```yaml
+  hubot-init-rocketchat:
+    # + Et comme cela, mon conteneur ne re-démarrera que si son exécution a terminé avec un code
+    # + d'erreur: si le user ou la chatroom  n'ont pas été correctement créés dans RoocketChat.
+    # + Quand le conteneur aura créé le user et la chatroom, il terminera son exécution avec succès, et 
+    # + ne re-démarrera pas. Pour terminer, le HUBOT est lui en "--restart=always", et sera HEALTHY, lorsque son
+    # + healthcheck en attestera (il faut donc un healthcheck aussi pour le conteneur HUBOT)
+    restart: on-failure[:10]
+    depends_on:
+    # + Logique:  le contneur a besoin que rocketChat soit UP'N RUNNING, pour pouvoir créer le user et la chatroom
+      - rocketchat
+```
+Reste un problème: Comment le contneur HUBOT est il notifié que le conteneur `hubot-init-rocketchat` a bien terminé son travail avec succès (que le user et la chatroom RocketChat ont bien été créés)?
+
+Je pense à la réponse suivante: le conteneur HUBOT va lui aussi continuellement redémarrer, mais en mod erestart=always, et il va comprendre un HEALTHCHEK, qui testera : 
+* Que l'on arrive bel et bien à se connecter au serveur RocketCHat, et à s'y authentifier avec les USER et PWD précisés par configuration du HUBOT. LE user existe donc et a bien été créé par le conteneur `hubot-init-rockerchat`
+* Que le user, maitenant que l'on sait qu'il existe, et permet de s'authentifier, dispose bien des droits pour lire et/ou érire comme souhaités dans la chatroom créée.
+* Et le contneur Gitlab, aura un `depends_on` sur le conteneur `hubot`, si bien que lorsque Gitlab démarrera, il sera assuré de pouvori s'exprimer sur les chatops. CEtte dépendance est tout de même assez forte, peut-être trop: on pourrait s'en passer et considérer que Gitlab peut commencer à travailler sans disposer de son petit bot rocketchat. D4ailleurs on pourrait penser à mettrte en oeuvre uen recette de déploieemnt qui "dépose" toute cette infra avec ROckatChat, sur un Gitlab déjà existant et exploité depuis des mois. 
+
+Rq: 
+
+Un robot pourrait très bien avoir uniquement possibilité de lire, il pourrait envoyer un email, ou un message sur une autre chatroom, juste pour prévenir que quelqu'un a dit tel truc sur telle chatroom, en citant le nom du produit phare de l'entreprise dans la même phrase...
 
 
+Reste à faire.
 
 Notons enfin que j'ai laissé le problème de l'initialisation Gitlab (code HTTP 402 au changement initial du mot de passe de l'utilisateur initial), de côté : je le traiterais en dernier, parce que je l'ai rencontré dans d'autres ocntextes, et le sais indépendant du présent contexte de travail.
 
