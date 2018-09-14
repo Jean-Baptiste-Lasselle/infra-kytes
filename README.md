@@ -67,7 +67,7 @@ Je pense à la réponse suivante: le conteneur HUBOT va lui aussi continuellemen
 * Que l'on arrive bel et bien à se connecter au serveur RocketCHat, et à s'y authentifier avec les USER et PWD précisés par configuration du HUBOT. LE user existe donc et a bien été créé par le conteneur `hubot-init-rockerchat`
 * Que le user, maitenant que l'on sait qu'il existe, et permet de s'authentifier, dispose bien des droits pour lire et/ou érire comme souhaités dans la chatroom créée.
 * Et le contneur Gitlab, aura un `depends_on` sur le conteneur `hubot`, si bien que lorsque Gitlab démarrera, il sera assuré de pouvori s'exprimer sur les chatops. CEtte dépendance est tout de même assez forte, peut-être trop: on pourrait s'en passer et considérer que Gitlab peut commencer à travailler sans disposer de son petit bot rocketchat. D4ailleurs on pourrait penser à mettrte en oeuvre uen recette de déploieemnt qui "dépose" toute cette infra avec ROckatChat, sur un Gitlab déjà existant et exploité depuis des mois. 
-
+NOM DU DESIGN PATTERN : SOUDEUR / PLONGEUR 
 Rq: 
 
 Un robot pourrait très bien avoir uniquement possibilité de lire, il pourrait envoyer un email, ou un message sur une autre chatroom, juste pour prévenir que quelqu'un a dit tel truc sur telle chatroom, en citant le nom du produit phare de l'entreprise dans la même phrase...
