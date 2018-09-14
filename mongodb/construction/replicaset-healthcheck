@@ -1,0 +1,66 @@
+#!/bin/bash
+
+# - 1 - On commence par récuperer le statut du replicaSet : un objet JSON sera renvoyé.
+# export RESULTAT_JSON_REQUETE_MONGO=mongo mongo/rocketchat --eval "rs.status()"
+# (à tester) : 
+# export RESULTAT_JSON_REQUETE_MONGO=mongo mongo/rocketchat --eval "rs.status({ _id: ''rs0'', members: [ { _id: 0, host: ''localhost:27017'' } ]})"
+
+export RESULTAT_JSON_REQUETE_MONGO=$(mongo mongo/rocketchat --eval "rs.status({ _id: ''rs0''})")
+
+# - 2 - Ensuite, on vérifie que dans le JSON, on trouve bien mention de l'ID du replicaSet, et on vérifie son statut, le
+#       tout en "parsant" le JSON. Pour cela, on doit utiliser la structure de l'output de cette commande, précisé
+#       par la documentation ofiicielle : https://docs.mongodb.com/manual/reference/command/replSetGetStatus/#rs-status-output
+# -------------------------------------------------------------------------------------------------------------------------
+# -- d'après la doc officielle, le JSON retourné coontient l'info du nom de replicaSet, et de son statut "myState" :
+# 
+# -------------------------------------------------------------------------------------------------------------------------
+#           {
+#              "set" : "replset",
+#              "date" : ISODate("2018-05-13T16:36:54.319Z"),
+#              "myState" : 1,
+#              etc...
+#
+# -------------------------------------------------------------------------------------------------------------------------
+# 
+#    il est donc possible de parcourir l'arbre JSON à l'aide de commandes mongoDB, du genre du find(), pour
+#    retrouver le name et le "myState" du replicaSet `rs0`
+
+
+# -------------------------------------------------------------------------------------------------------------------------
+# Donc, si  : 
+# 
+#     mongo mongo/rocketchat --eval "rs.status({ _id: ''rs0''})"
+# 
+# retourne une valeur, c'est que le replicaSet "rs0" existe.
+# D'après [https://docs.mongodb.com/manual/reference/replica-states/], si le replicaSet existe, il
+# doit être dans l'état 1 "PRIMARY", pour que le replicaSet, formé d'une seule réplique, soit prêt à l'emploi pour
+# RocketChat :  
+# -------------------------------------------------------------------------------------------------------------------------
+# Number 	Name 	State Description
+# 0 	STARTUP 	Not yet an active member of any set. All members start up in this state. The 
+#                       mongod parses the replica # set configuration document while in STARTUP.
+# 1 	PRIMARY 	The member in state primary is the only member that can accept write operations. Eligible to vote.
+# -------------------------------------------------------------------------------------------------------------------------
+# Pour résumer, on attend que la commande retourne une valeur, et même la valeur "1". dans tous les autres cas, on fait
+# un "exit 1"
+
+
+if [ "x$RESULTAT_REQUETE_MONGO" -eq "x" ] then;
+# Alors le replplicaSet n'existe carrément pas. (à vérifier, c'est peut-êtrte un
+# JSON vide, et non la chaîne de caractère vide, qui est renvoyée)
+echo " DEBUG - [RESULTAT_REQUETE_MONGO=$RESULTAT_REQUETE_MONGO] "
+echo " KO ! => le replicaSet [rs0] n'a même pas encore été créé dans l'hôte MongoDB [mongo:27017] !  "
+exit 1
+else
+echo " Le replicaSet [rs0] existe, il faut maitenant vérifier que son statut est  1 	\"PRIMARY\"   "
+exit 1
+fi
+
+if [ "$RESULTAT_REQUETE_MONGO" -eq "1" ] then;
+echo " DEBUG - [RESULTAT_REQUETE_MONGO=$RESULTAT_REQUETE_MONGO] "
+echo " Ok, le replicaSet [rs0] a bien été créé dans l'hôte MongoDB [localhost:27017]  "
+exit 0
+else
+echo " Le replicaSet [rs0] n'est pas encore prêt, dans l'hôte MongoDB [localhost:27017]  "
+exit 1
+fi
