@@ -3,11 +3,12 @@
 # La valeur de ces 3 variables est passée en argument par le script ./operations.sh
 # Le script ./operations.sh déduit du fichier docker-compose.yml, la valeur de ces variables, en parsant
 # les variables d'environnement déclarées pour chaque définition de service dans le [docker-compose.yml].
+# Pour ces variables d'envrionnement, je vais utiliser le ficheir de conf de varibles globales docker-compose :
+# le fichier [.env] , cf. doc officielle [https://docs.docker.com/compose/environment-variables/#the-env-file]
 # -------------------------------------------------------------------------------------------------------------------------
-export UTILISATEUR_ROCKETCHAT_HUBOT=$1
-export UTILISATEUR_ROCKETCHAT_HUBOT_MDP=$2
-export CHATROOM_ROCKETCHAT_HUBOT=$3
-
+# export UTILISATEUR_ROCKETCHAT_HUBOT=$1
+# export UTILISATEUR_ROCKETCHAT_HUBOT_MDP=$2
+# export CHATROOM_ROCKETCHAT_HUBOT=$3
 
 
 # Ce healthcheck vérifiera : 
