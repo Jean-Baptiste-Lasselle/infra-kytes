@@ -35,7 +35,7 @@
 # 
 # -------------------------------------------------------------------------------------------------------------------------
 
-export RESULTAT_TENTATIVE_AUTH=aimplementer
+export RESULTAT_TENTATIVE_AUTH=monprrogrammeNodeJSquiTesteAuthRocketChat $UTILISATEUR_ROCKETCHAT_HUBOT $UTILISATEUR_ROCKETCHAT_HUBOT_MDP $CHATROOM_ROCKETCHAT_HUBOT 
 
 if [ "x$RESULTAT_TENTATIVE_AUTH" -eq "x" ] then;
 # Alors le user n'existe pas.
