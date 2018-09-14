@@ -77,6 +77,32 @@ Reste à faire.
 
 Notons enfin que j'ai laissé le problème de l'initialisation Gitlab (code HTTP 402 au changement initial du mot de passe de l'utilisateur initial), de côté : je le traiterais en dernier, parce que je l'ai rencontré dans d'autres ocntextes, et le sais indépendant du présent contexte de travail.
 
+# Une technique pour des variables d'environnement globlaes.
+
+En dehors des varibles d'environnement utilisées dans le doker-compose.yml et déclarées dans les Dockerfiles, Cette recette utilise un certain nombre de variables globales, au sens qu'elles sont utilisées, dans le docker-compose.yml, pour
+définir plusieurs services différents.
+
+Par exemple, l'utilisateur ROCKETCHAT que le HUBOT utilise, est utilisé par le conteneur `rocketchat`, pour l'exécution de son healthcheck "plongueur", mais aussi pour la définition du conteneur `hubot`.
+
+Voici la liste des variables d'enviornements, et détail de leur utilisation : 
+
+## Référence doc. officielle Docker
+
+cf. doc officielle [https://docs.docker.com/compose/environment-variables/#the-env-file]
+
+#### The “.env” file
+
+You can set default values for any environment variables referenced in the Compose file, or used to configure Compose, in an environment file named .env:
+```yaml
+$ cat .env
+TAG=v1.5
+
+$ cat docker-compose.yml
+version: '3'
+services:
+  web:
+    image: "webapp:${TAG}"
+```
 
 
 # Un petit i-robot, bombardé de fleurs françaises...
