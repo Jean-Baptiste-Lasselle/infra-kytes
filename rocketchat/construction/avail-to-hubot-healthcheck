@@ -1,0 +1,48 @@
+#!/bin/bash
+
+# La valeur de ces 3 variables est passée en argument par le script ./operations.sh
+# Le script ./operations.sh déduit du fichier docker-compose.yml, la valeur de ces variables, en parsant
+# les variables d'environnement déclarées pour chaque définition de service dans le [docker-compose.yml].
+# -------------------------------------------------------------------------------------------------------------------------
+export UTILISATEUR_ROCKETCHAT_HUBOT=$1
+export UTILISATEUR_ROCKETCHAT_HUBOT_MDP=$2
+export CHATROOM_ROCKETCHAT_HUBOT=$3
+
+
+
+# Ce healthcheck vérifiera : 
+# -------------------------------------------------------------------------------------------------------------------------
+# -- Que le user RocketChat, que le HUBOT va utiliser, est bien créé,
+# -- Que j'arrive bien à l'authentifier auprès de RocketChat avec le user et le mot de passe qui seront utilisés par le HUBOT:
+# -- Que la Chatroom que le HUBOT va utiliser, est bien créée, que j'arrive à entrer (j'ai les permissions suffisantes) dans 
+#    cette Chatroom, avec le user et le mot de passe testés précédemment.
+
+# -------------------------------------------------------------------------------------------------------------------------
+# Pour ce faire, ce HealthCheck Utilisera : 
+# -------------------------------------------------------------------------------------------------------------------------
+# - l'exacte même bibliothèque que le HUBOT distribué par RocketCHat, utilise pour s'authentifier à RockerChat
+# - et le distribution management de ce cette recette docker-compose, healthcheck, doit permettre de garantir que : 
+#     ++ le numéro de version $VERSION_LIB_AUTH_ROCKET_HUBOT, de la biliothèque utilisée dans le HUBOT de cette recette
+#       et
+#     ++ le numéro de version $VERSION_LIB_AUTH_ROCKET_HEALTHCHECK, de la biliothèque utilisée dans ce HEALTHCHECK
+#       sont égaux, et cette recette devra même permettre de fixer cette valeur avec un seul et même paramètre de
+#       configuration, qui sera la version de HUBOT.
+#       Ainsi, la version de HUBOT doit permettre de résoudre la dépendance : $VERSION_LIB_AUTH_ROCKET_HEALTHCHECK
+#       Et donc ce Healtcheck est elligible à être versionné en tant que dépendance, dans un repo git distinct de 
+#       cette recette, pour la souplesse des tests.
+# -------------------------------------------------------------------------------------------------------------------------
+# 
+# -------------------------------------------------------------------------------------------------------------------------
+
+export RESULTAT_TENTATIVE_AUTH=aimplementer
+
+if [ "x$RESULTAT_TENTATIVE_AUTH" -eq "x" ] then;
+# Alors le user n'existe pas.
+echo " DEBUG - [RESULTAT_REQUETE_MONRESULTAT_REQUETEGO=$RESULTAT_REQUETE] "
+echo " KO ! => le user [$UTILISATEUR_ROCKETCHAT_HUBOT] n'a même pas encore été créé dans l'hôte MongoDB [mongo:27017] !  "
+exit 0
+else
+echo " Le user [$UTILISATEUR_ROCKETCHAT_HUBOT] existe, il faut maitenant ...  "
+exit 1
+fi
+
