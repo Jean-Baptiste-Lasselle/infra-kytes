@@ -64,6 +64,8 @@ echo "  "
 read DEBUGJBL
 # - Je rends exéutable les fichiers de script utilisés dans le build de l'image MongoDB qui doivent l'être : 
 chmod +x ./mongodb/construction/mongo-healthcheck
+# - cf. ./mongodb/construction/Dockerfile 
+chmod +x ./mongodb/construction/replicaset-healthcheck 
 
 # - Je créée "tout"
 docker-compose down --rmi all && docker system prune -f && docker-compose build && docker-compose up -d 
