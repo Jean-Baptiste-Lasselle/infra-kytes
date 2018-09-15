@@ -48,15 +48,22 @@ checkHealth () {
 
 # - Je récupère, dans le fichier 'docker-compose.yml', les valeurs de configuration pour le username et le password
 
-export UTILISATEUR_HUBOT_ROCKETCHAT_USERNAME=$(cat ./docker-compose.yml|grep ROCKETCHAT_USER | awk -F = '{print $2}')
-export UTILISATEUR_HUBOT_ROCKETCHAT_PWD=$(cat ./docker-compose.yml|grep ROCKETCHAT_PASSWORD | awk -F = '{print $2}')
+# export UTILISATEUR_HUBOT_ROCKETCHAT_USERNAME=$(cat ./docker-compose.yml|grep ROCKETCHAT_USER | awk -F = '{print $2}')
+# export UTILISATEUR_HUBOT_ROCKETCHAT_PWD=$(cat ./docker-compose.yml|grep ROCKETCHAT_PASSWORD | awk -F = '{print $2}')
+
+# Depuis l'utiliation du fichier de variables globales [.env]
+export UTILISATEUR_HUBOT_ROCKETCHAT_USERNAME=$(cat ./.env|grep UTILISATEUR_ROCKETCHAT_HUBOT | awk -F = '{print $2}')
+export UTILISATEUR_HUBOT_ROCKETCHAT_PWD=$(cat ./.env|grep ROCKETCHAT_PASSWORD | awk -F = '{print $2}')
+
 clear
 echo "  "
 echo " ---------------------------------------------------------------------- "
 echo "  DEBUG : "
 echo " ---------------------------------------------------------------------- "
 echo "    - username : \"UTILISATEUR_HUBOT_ROCKETCHAT_USERNAME=$UTILISATEUR_HUBOT_ROCKETCHAT_USERNAME\" "
-echo "    - password : \"UTILISATEUR_HUBOT_ROCKETCHAT_PWD=$UTILISATEUR_HUBOT_ROCKETCHAT_PWD\" "
+echo "    - password : \"UTILISATEUR_HUBOT_ROCKETCHAT_PWD=$UTILISATEUR_ROCKETCHAT_HUBOT_MDP\" "
+echo "  "
+echo "   REMARQUE IMPORTANTE: la création de ce user pourra êtree automatisée avec la REST API RocketChat"
 echo "  "
 echo "  Pressez la touche entrée.  "
 echo " ---------------------------------------------------------------------- "
