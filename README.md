@@ -1,4 +1,131 @@
 # TODO urgent : finir de corriger les script HEALTHCHECK et CMD du conteneur `mongo-init-replica`
+Voilà toutes les données vérifiées pour mettre en oeuvre la création du replicaSet mongo, et la vérfifcation que le replicaSet est existant et dasn l'état "1" PRIMARY : 
+
+```bash
+#   
+#   
+# J'ai pu vérifier qu e c'est exactement la commande suivante, qui permet de créer le replicaSet : 
+#    
+#         mongo mongo/rocketchat --eval "rs.initiate({ _id: 'rs0', members: [ { _id: 0, host: 'localhost:27017' } ]})"
+#                              
+# Et qu'avec cette commande, la réponse JSON de l'API est : 
+# 
+# 
+# [jibl@pc-100 coquelicot]$ docker exec -it mongo sh -c "mongo mongo/rocketchat --eval \"rs.initiate({ _id: 'rs0', members: [ { _id: 0, host: 'localhost:27017' } ]})\""
+# MongoDB shell version v4.0.2
+# connecting to: mongodb://mongo:27017/rocketchat
+# MongoDB server version: 4.0.2
+# {
+# 	"ok" : 1,
+# 	"operationTime" : Timestamp(1537042226, 1),
+# 	"$clusterTime" : {
+# 		"clusterTime" : Timestamp(1537042226, 1),
+# 		"signature" : {
+# 			"hash" : BinData(0,"AAAAAAAAAAAAAAAAAAAAAAAAAAA="),
+# 			"keyId" : NumberLong(0)
+# 		}
+# 	}
+# }
+
+# 
+#  
+
+# export RESULTAT_JSON_REQUETE_MONGO=$(mongo mongo/rocketchat --eval "rs.initiate({ _id: 'rs0', members: [ { _id: 0, host: 'localhost:27017' } ]})")
+
+# + J'ai aussi vérifié qu'alors, la commande permettant de vérfiier l'existence et le statut du ce replicaSet est 
+#                               mongo mongo/rocketchat --eval "rs.status({ _id: 'rs0'})"
+# Et qu'avec cette commande, la réponse JSON de l'API est : 
+# - AVANT l'initialisation du replicaSet   : 
+# {
+# 	"operationTime" : Timestamp(0, 0),
+# 	"ok" : 0,
+# 	"errmsg" : "no replset config has been received",
+# 	"code" : 94,
+# 	"codeName" : "NotYetInitialized",
+# 	"$clusterTime" : {
+# 		"clusterTime" : Timestamp(0, 0),
+# 		"signature" : {
+# 			"hash" : BinData(0,"AAAAAAAAAAAAAAAAAAAAAAAAAAA="),
+## 			"keyId" : NumberLong(0)
+# 		}
+# 	}
+# }
+# - APRES l'initialisation du replicaSet   : 
+# 
+# [jibl@pc-100 coquelicot]$ docker exec -it mongo sh -c "mongo mongo/rocketchat --eval \"rs.status({ _id: 'rs0'})\""
+# 
+# MongoDB shell version v4.0.2
+# connecting to: mongodb://mongo:27017/rocketchat
+# MongoDB server version: 4.0.2
+# {
+# 	"set" : "rs0",
+# 	"date" : ISODate("2018-09-15T20:13:11.266Z"),
+# 	"myState" : 1,
+# 	"term" : NumberLong(1),
+# 	"syncingTo" : "",
+# 	"syncSourceHost" : "",
+# 	"syncSourceId" : -1,
+# 	"heartbeatIntervalMillis" : NumberLong(2000),
+# 	"optimes" : {
+# 		"lastCommittedOpTime" : {
+# 			"ts" : Timestamp(1537042388, 1),
+# 			"t" : NumberLong(1)
+# 		},
+# 		"readConcernMajorityOpTime" : {
+# 			"ts" : Timestamp(1537042388, 1),
+# 			"t" : NumberLong(1)
+# 		},
+# 		"appliedOpTime" : {
+# 			"ts" : Timestamp(1537042388, 1),
+# 			"t" : NumberLong(1)
+# 		},
+# 		"durableOpTime" : {
+# 			"ts" : Timestamp(1537042388, 1),
+# 			"t" : NumberLong(1)
+# 		}
+# 	},
+# 	"lastStableCheckpointTimestamp" : Timestamp(1537042348, 1),
+# 	"members" : [
+# 		{
+# 			"_id" : 0,
+# 			"name" : "localhost:27017",
+# 			"health" : 1,
+# 			"state" : 1,
+# 			"stateStr" : "PRIMARY",
+# 			"uptime" : 877,
+# 			"optime" : {
+# 				"ts" : Timestamp(1537042388, 1),
+# 				"t" : NumberLong(1)
+# 			},
+# 			"optimeDate" : ISODate("2018-09-15T20:13:08Z"),
+# 			"syncingTo" : "",
+# 			"syncSourceHost" : "",
+# 			"syncSourceId" : -1,
+# 			"infoMessage" : "",
+# 			"electionTime" : Timestamp(1537042226, 2),
+# 			"electionDate" : ISODate("2018-09-15T20:10:26Z"),
+# 			"configVersion" : 1,
+# 			"self" : true,
+# 			"lastHeartbeatMessage" : ""
+# 		}
+# 	],
+# 	"ok" : 1,
+# 	"operationTime" : Timestamp(1537042388, 1),
+# 	"$clusterTime" : {
+# 		"clusterTime" : Timestamp(1537042388, 1),
+# 		"signature" : {
+# 			"hash" : BinData(0,"AAAAAAAAAAAAAAAAAAAAAAAAAAA="),
+# 			"keyId" : NumberLong(0)
+# 		}
+# 	}
+# }
+
+
+# Enfin, pour vérifier que l'état du replicaSet est "1" (PRIMARY), on peut exécuter l'instrcution suivante (testée)
+# export ETAT_DU_REPLICASET=$(mongo mongo/rocketchat --eval "rs.status({ _id: 'rs0'}).myState" | grep -v mongo|grep -v Mongo)
+```
+
+
 
 Vraiment merci Github: un pârfait exemple pour illuster les design pattern Scalable dans un Kubernetes, avec NodeJS
 Exctement ce que je devrai trouver dans mon bootiemachin...
