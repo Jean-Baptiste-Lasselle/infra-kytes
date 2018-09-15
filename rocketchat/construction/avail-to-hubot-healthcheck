@@ -40,7 +40,7 @@
 # ===>>>>> Test CURL pour vérifier l'auth avec le user $UTILISATEUR_ROCKETCHAT_HUBOT et le mot de passe $UTILISATEUR_ROCKETCHAT_HUBOT_MDP
 # ===>>>>> Test CURL pour vérifier l'existence de la CHATROOM $CHATROOM_ROCKETCHAT_HUBOT
 # ===>>>>> Test CURL pour vérifier que l'utilisateur $UTILISATEUR_ROCKETCHAT_HUBOT a les permissions pour entrer dans la $CHATROOM_ROCKETCHAT_HUBOT
-
+echo "Pour l'instant, le HEALTHCHECK USER Et CHATROMM ROKETCHAT POUR HUBOT, EST ENCORE à implémenter"
 # export RESULTAT_TENTATIVE_AUTH=monprrogrammeNodeJSquiTesteAuthRocketChat $UTILISATEUR_ROCKETCHAT_HUBOT $UTILISATEUR_ROCKETCHAT_HUBOT_MDP $CHATROOM_ROCKETCHAT_HUBOT 
 # if [ "condition" ] then;
 # # Alors le user n'existe pas.
