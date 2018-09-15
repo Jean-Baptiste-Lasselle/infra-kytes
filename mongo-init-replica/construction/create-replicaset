@@ -1,13 +1,5 @@
 #!/bin/bash
 
-# - 1 - On commence par récuperer le statut du replicaSet : un objet JSON sera renvoyé.
-# export RESULTAT_JSON_REQUETE_MONGO=mongo mongo/rocketchat --eval "rs.status()"
-# (à tester) : 
-# export RESULTAT_JSON_REQUETE_MONGO=mongo mongo/rocketchat --eval "rs.status({ _id: ''rs0'', members: [ { _id: 0, host: ''mongo:27017'' } ]})"
-
-# - si la command mopngo retourne un code différent de zéro, une erreur, alors ce process ne sortira pas et ne retournera pas
-# un code différent de zéro, une erreur, à ce processus, qui est le rpocessus exécuté par le conteneur docker 'mongo-init-replica'
-# Le conteneur ne stoppera donc pas 
 
 
 #   
@@ -128,16 +120,38 @@
 # 	}
 # }
 
+# - 1 - On commence par récuperer le statut du replicaSet : un objet JSON sera renvoyé.
+export RESULTAT_JSON_REQUETE_MONGO_RS_EXISTE=$(mongo mongo/rocketchat --eval "rs.status({ _id: 'rs0'}).ok"|grep -v mongo|grep -v Mongo)
+export ETAT_DU_REPLICASET=$(mongo mongo/rocketchat --eval "rs.status({ _id: 'rs0'}).myState" | grep -v mongo|grep -v Mongo)
+# - la commande mongo retournera un JSON, que l ereplicaSet existe, ou non, et quelque soit son état.
+# - si la commande mongo échoue, ce n'est donc pas en raison de l'inexistence du replicaSet, alors un
+#   code de retour entier, et non un JSON, sera retourné et stocké dans $RESULTAT_JSON_REQUETE_MONGO
 
-# Enfin, pour vérifier que l'état du replicaSet est "1" (PRIMARY), on peut exécuter l'instrcution suivante (testée)
+echo " MONGO-IINIT-REPLICA >>> CREATE-REPLICASET ===>>> Je vérifie si le replicaSet a déjà été créé "
+if [[ $RESULTAT_JSON_REQUETE_MONGO_RS_EXISTE = *"}"* ]]; then
+  echo " MONGO-IINIT-REPLICA >>> CREATE-REPLICASET ===>>> On a bien un retour JSON, on vérifie si le replicaSet existe déjà ou non "
+  echo " DEBUG - [RESULTAT_REQUETE_MONGO=$RESULTAT_REQUETE_MONGO] "
+  # si la ligne "ok", contient le chiffre "0", c'est que le replicaSet 'rs0' n'a pas encore été initialisé
+  if [ "$RESULTAT_JSON_REQUETE_MONGO_RS_EXISTE" == "1" ]; then
+    # le replicaSet existe déjà, on ne vérifie pas son état avec la commande :
+    # export ETAT_DU_REPLICASET=$(mongo mongo/rocketchat --eval "rs.status({ _id: 'rs0'}).myState" | grep -v mongo|grep -v Mongo)
+    # parce que c'est la healthcheck qui doit faire cette vérification
+    # Le replicaSet existe bel et bien, on sort donc avec le code de retour zéro.
+    exit 0
+  else
+    echo "  => le replicaSet [rs0] n'a même pas encore été créé dans l'hôte MongoDB [mongo:27017]: Il est temps de le créer !  "
+  fi
+else
+  echo " MONGO-IINIT-REPLICA >>> CREATE-REPLICASET ===>>> La commande mondo a foiré, mais pas parce que le replicaSet est inexistantOn a bien un retour JSON "
+  exit 1
+fi
+
+
+# Enfin, pour vérifier que l'état du replicaSet est "1" (PRIMARY), on peut exécuter l'instruction suivante (testée)
 # export ETAT_DU_REPLICASET=$(mongo mongo/rocketchat --eval "rs.status({ _id: 'rs0'}).myState" | grep -v mongo|grep -v Mongo)
+# -> pour l'instant, on se content de vérifer son existence
 
 
-echo " DEBUG : "
-echo " ------------------------------------------------------------------------------- "
-echo " RESULTAT_JSON_REQUETE_MONGO=$RESULTAT_JSON_REQUETE_MONGO "
-echo " ------------------------------------------------------------------------------- "
-echo "        "
 
 # - 2 - Ensuite, on vérifie que dans le JSON, on trouve bien mention de l'ID du replicaSet, et on vérifie son statut, le
 #       tout en "parsant" le JSON. Pour cela, on doit utiliser la structure de l'output de cette commande, précisé
@@ -168,24 +182,27 @@ echo "        "
 # JSON vide, et non la chaîne de caractère vide, qui est renvoyée quand le replicaSet n'existe pas).
 # 
 
-if [ "x$RESULTAT_REQUETE_MONGO" == "x" || "x$RESULTAT_REQUETE_MONGO" -eq "x{}"] then;
-# Alors le replplicaSet n'existe carrément pas. 
-echo " DEBUG - [RESULTAT_REQUETE_MONGO=$RESULTAT_REQUETE_MONGO] "
-echo "  => le replicaSet [rs0] n'a même pas encore été créé dans l'hôte MongoDB [mongo:27017]: Il faut le créer !  "
 
 # Il faut donc tenter de créer le replicaSet.
-# ==>> Comme dans le docker-compose.yml distribué par l'équipe RocketChat : 
-mongo mongo/rocketchat --eval "rs.initiate({ _id: ''rs0'', members: [ { _id: 0, host: ''mongo:27017'' } ]})"
 
+
+
+echo " MONGO-IINIT-REPLICA >>> CREATE-REPLICASET ===>>> Je tente de créer le replicaset 'rs0' "
+
+# ==>> Comme dans le docker-compose.yml distribué par l'équipe RocketChat : 
+export RESULTAT_JSON_REQUETE_MONGO=$(mongo mongo/rocketchat --eval "rs.initiate({ _id: 'rs0', members: [ { _id: 0, host: 'mongo:27017' } ]})")
+
+if [[ $RESULTAT_JSON_REQUETE_MONGO = *"}"* ]]; then
+  echo "  "
+  echo " MONGO-IINIT-REPLICA >>> CREATE-REPLICASET ===>>> On a bien un retour JSON, le healthcheck vérifiera la création et l'état du replicaSet..."
+  echo "  "
+  echo "$AFFICHAGE_JSON_REQUETE_MONGO"
+  echo "  "
+  exit 0
 else
-export AFFICHAGE_JSON_REQUETE_MONGO=$(mongo mongo/rocketchat --eval "rs.status({ _id: 'rs0'})")
-echo " "
-echo " Le replicaSet [rs0] existe, il ne faut pas ré-essayer de le créer, et laisser la startup policy (définie dans"
-echo " le [docker-compose.yml] agir : "
-echo " Elle est en mode [onfailure:10], donc ce conteneur terminera son exécution avec succès, et docker ne le"
-echo " re-démarrera pas, parce que la dernière exécution ne s'est pas terminée sur un échec.  "
-echo " "
-echo "$AFFICHAGE_JSON_REQUETE_MONGO"
-echo " "
-# On retourne le code 0, indiquant ainsi à Docker que le processus s'est terminé avec succès: En effet, on vient de vérifier que le replicaSet existe
+  echo "  "
+  echo " MONGO-IINIT-REPLICA >>> CREATE-REPLICASET ===>>> La commande mondo a foiré, mais pas parce que le replicaSet est inexistantOn a bien un retour JSON "
+  echo "  "
+  exit 1
 fi
+
