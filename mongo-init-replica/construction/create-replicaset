@@ -119,7 +119,8 @@
 # 		}
 # 	}
 # }
-
+# pour que le processus dure 6 secondes, et que s'il re-démarre 40 fois, il essaie donc pedant une durée de 240 secondes, soit 4 minutes 
+sleep 6
 # - 1 - On commence par récuperer le statut du replicaSet : un objet JSON sera renvoyé.
 export RESULTAT_JSON_REQUETE_MONGO_RS_EXISTE=$(mongo mongo/rocketchat --eval "rs.status({ _id: 'rs0'}).ok"|grep -v mongo|grep -v Mongo)
 # export ETAT_DU_REPLICASET=$(mongo mongo/rocketchat --eval "rs.status({ _id: 'rs0'}).myState" | grep -v mongo|grep -v Mongo)
