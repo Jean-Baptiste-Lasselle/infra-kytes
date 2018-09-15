@@ -36,89 +36,78 @@
 # Voire même, il faurdrait utiliser la REST AP I de Rocket Chat , qui permet à l’application mobile, de réaliser l’authentification.
 # Encore jsute des requêtes HTTP CURL, qu ece soit pour vérifier le user, ou vérifer l’existence de la CHATROOM
 # -------------------------------------------------------------------------------------------------------------------------
-
+echo " ------------------------------------------------------------ "
+echo "  "
+echo "  DEBUG  :  dans le HEALTH CHECK DNS LE CONTENEUR ROCKETCHAT : pour  le HUBOT / AVANT TOUTE COMMANDE "
+echo " ------------------------------------------------------------ "
+echo "  "
+echo "  VERIF [UTILISATEUR_ROCKETCHAT_HUBOT=$UTILISATEUR_ROCKETCHAT_HUBOT]"
+echo "  "
+echo "  VERIF [UTILISATEUR_ROCKETCHAT_HUBOT_MDP=$UTILISATEUR_ROCKETCHAT_HUBOT_MDP]"
+echo "  "
+echo "  VERIF [CHATROOM_ROCKETCHAT_HUBOT=$CHATROOM_ROCKETCHAT_HUBOT]"
+echo "  "
+echo " ------------------------------------------------------------ "
+echo "  "
+echo "  "
+echo " ------------------------------------------------------------ "
+echo "  "
+echo "  "
+echo "  "
 # ===>>>>> Test CURL pour vérifier l'auth avec le user $UTILISATEUR_ROCKETCHAT_HUBOT et le mot de passe $UTILISATEUR_ROCKETCHAT_HUBOT_MDP
 # cf. https://rocket.chat/docs/developer-guides/rest-api/authentication/login/
 # D'après cette doc, il faudrait que j'ajoute une option curl pour préciser un apiTken ou un truc comme ça, comme celui que
 # RocketChat Me Donne Quand je créée un incoming webhook
 # -> SI la requête curl échoue, alors "exit 1" sera évalué, et donc le processus d'exécution de script s'interrompt, et retourne le code d'erreur 1
-curl http://localhost:3000/api/v1/login -d "username=$UTILISATEUR_ROCKETCHAT_HUBOT&password=$UTILISATEUR_ROCKETCHAT_HUBOT_MDP" || exit 1
-# ===>>>>> Test CURL pour vérifier l'existence de la CHATROOM $CHATROOM_ROCKETCHAT_HUBOT
-curl http://localhost:3000/api/v1/login -d "username=$UTILISATEUR_ROCKETCHAT_HUBOT&password=$UTILISATEUR_ROCKETCHAT_HUBOT_MDP" || exit 1
-# ===>>>>> Test CURL pour vérifier que l'utilisateur $UTILISATEUR_ROCKETCHAT_HUBOT a les permissions pour entrer dans la $CHATROOM_ROCKETCHAT_HUBOT
-echo "Pour l'instant, le HEALTHCHECK USER Et CHATROMM ROKETCHAT POUR HUBOT, EST ENCORE à implémenter. DOnc le test échoue par défaut d'implémentation".
-exit 1
-
-
-# - Exterait de la doc Officielle RocketChat : 
-
-# Notes
-
-# -> You will need to provide the authToken and userId for any of the authenticated methods.
-# -> If your user has two-factor(2FA) authentication enabled, you must send a request like this.
-# -> If LDAP authentication is enabled, you must maintain the login in the same way as you normally do. Similarly if 2FA is enabled for an LDAP user. Everything stays the same.
-# Example Call - As Form Data
-# 
-# curl http://localhost:3000/api/v1/login \
-#      -d "username=myusername&password=mypassword"
-# 
-# curl http://localhost:3000/api/v1/login \
-#      -d "user=myusername&password=mypassword"
-# 
-# curl http://localhost:3000/api/v1/login \
-#      -d "user=my@email.com&password=mypassword"
-# 
-# Example Call - As JSON
-# 
-# curl -H "Content-type:application/json" \
-#       http://localhost:3000/api/v1/login \
-#       -d '{ "username": "myusername", "password": "mypassword" }'
-# 
-# curl -H "Content-type:application/json" \
-#       http://localhost:3000/api/v1/login \
-#       -d '{ "user": "myusername", "password": "mypassword" }'
-# 
-# curl -H "Content-type:application/json" \
-#       http://localhost:3000/api/v1/login \
-#       -d '{ "user": "my@email.com", "password": "mypassword" }'
-
-# Example Call - When two-factor(2FA) authentication is enabled
-# 
-# curl -H "Content-type:application/json" \
-#       http://localhost:3000/api/v1/login \
-#       -d '{ "totp": { "login": { "user": {"email": "rocket.cat@rocket.chat"}, "password": "password" }, "code": "224610" } }# 
-# 
-# curl -H "Content-type:application/json" \
-#       http://localhost:3000/api/v1/login \
-#       -d '{ "totp": { "login": { "user": {"username": "rocket.cat"}, "password": "password" }, "code": "224610" } }# 
-# 
-# Result
-# 
-# {
-#  "status": "success",
-#   "data": {
+export JSON_RECUPERE=""
 #       "authToken": "9HqLlyZOugoStsXCUfD_0YdwnNnunAJF8V47U3QHXSq",
-#       "userId": "aobEdbYhXfu5hkeqG",
-#       "me": {
-#             "_id": "aYjNnig8BEAWeQzMh",
-#             "name": "Rocket Cat",
-#             "emails": [
-#                 {
-#                   "address": "rocket.cat@rocket.chat",
-#                   "verified": false
-#                 }
-#             ],
-#             "status": "offline",
-#             "statusConnection": "offline",
-#             "username": "rocket.cat",
-#             "utcOffset": -3,
-#             "active": true,
-#             "roles": [
-#                 "admin"
-#             ],
-#             "settings": {
-#                 "preferences": {}
-#               }
-#         }
-#    }
-# }
+#       "userId": "aobEdbYhXfu5hkeqG",    
+export AUTH_TOKEN_RECUPERE=9HqLlyZOugoStsXCUfD_0YdwnNnunAJF8V47U3QHXSq
+export USER_ID_RECUPERE=9HqLlyZOugoStsXCUfD_0YdwnNnunAJF8V47U3QHXSq
+# export CHATROOM_HUBOT_ROOM_ID=ByehQjC44FwMeiLbX
+
+curl http://localhost:3000/api/v1/login -d "username=$UTILISATEUR_ROCKETCHAT_HUBOT&password=$UTILISATEUR_ROCKETCHAT_HUBOT_MDP" || exit 1
+
+JSON_RECUPERE=$(curl http://localhost:3000/api/v1/login -d "username=$UTILISATEUR_ROCKETCHAT_HUBOT&password=$UTILISATEUR_ROCKETCHAT_HUBOT_MDP")
+
+export JSON_RECUPERE
+# ------------------ anti-slash point, pour "sourcer" les deux sous process $(...)
+AUTH_TOKEN_RECUPERE=\.$(echo "$JSON_RECUPERE"|grep authToken| awk -F '{print $2}')
+USER_ID_RECUPERE=\.$(echo "$JSON_RECUPERE"|grep userId| awk -F '{print $2}')
+# - TODO:  récupérer la valeur de l'AuthToken retourné (de même on récupèrera l'ID de la CHATROOM créée pour le hubot avec le REST API 
+echo " ------------------------------------------------------------ "
+echo "  "
+echo "  DEBUG  :  dans le HEALTH CHECK DNS LE CONTENEUR ROCKETCHAT : pour  le HUBOT "
+echo " ------------------------------------------------------------ "
+echo "  "
+echo "  VERIF [JSON_RECUPERE=$JSON_RECUPERE]"
+echo "  "
+echo "  VERIF [AUTH_TOKEN_RECUPERE=$AUTH_TOKEN_RECUPERE]"
+echo "  "
+echo "  VERIF [USER_ID_RECUPERE=$USER_ID_RECUPERE]"
+echo "  "
+echo " ------------------------------------------------------------ "
+echo "  "
+echo "  "
+echo " ------------------------------------------------------------ "
+echo "  "
+echo "  "
+echo "  "
+
+
+# ===>>>>> Test CURL pour vérifier l'existence de la CHATROOM $CHATROOM_ROCKETCHAT_HUBOT
+curl -H "X-Auth-Token: $AUTH_TOKEN_RECUPERE" \
+     -H "X-User-Id: $USER_ID_RECUPERE" \
+     http://localhost:3000/api/v1/channels.info?roomName=$CHATROOM_ROCKETCHAT_HUBOT \
+     || exit 1
+     # http://localhost:3000/api/v1/channels.info?roomId=$CHATROOM_HUBOT_ROOM_ID \ # Si le romoName est fourni, le roomId est Optionnel 
+     
+     
+     
+# https://rocket.chat/docs/developer-guides/rest-api/channels/open/ ===>> APPARREMENT, IL FAUT AJOUTER UN CHANNEL A UN UTILISATEUR
+
+
+# ===>>>>> Test CURL pour vérifier que l'utilisateur $UTILISATEUR_ROCKETCHAT_HUBOT a les permissions pour entrer dans la $CHATROOM_ROCKETCHAT_HUBOT
+# echo "Pour l'instant, le HEALTHCHECK USER Et CHATROMM ROKETCHAT POUR HUBOT, EST ENCORE à implémenter. DOnc le test échoue par défaut d'implémentation".
+# exit 1
+
