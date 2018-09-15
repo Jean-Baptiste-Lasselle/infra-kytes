@@ -106,7 +106,8 @@ services:
     # restart: always
   rocketchat:
     image: coquelicot/rocket.chat:1.0.0
-    build: ./rocketchat/construction/
+    build: 
+      context: ./rocketchat/construction/
       args:
         # - HEALTHCHECK ENV. => devrait être dans un conteneur Père, dont celui ci hérite, avec les BUILD ARGS déjà fixés.
         # Les variables globales de nom identique, sont définies dans le fichier ".env", propre à Docker Compose
