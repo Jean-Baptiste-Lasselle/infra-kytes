@@ -122,7 +122,7 @@
 # pour que le processus dure 6 secondes, et que s'il re-démarre 40 fois, il essaie donc pedant une durée de 240 secondes, soit 4 minutes 
 sleep 6
 # - 1 - On commence par récuperer le statut du replicaSet : un objet JSON sera renvoyé.
-export RESULTAT_JSON_REQUETE_MONGO_RS_EXISTE=$(mongo mongo/rocketchat --eval "rs.status({ _id: 'rs0'}).ok"|grep -v mongo|grep -v Mongo)
+export RESULTAT_JSON_REQUETE_MONGO_RS_EXISTE=$(mongo mongo/rocketchat --eval "rs.status({ _id: 'rs0'})")
 # export ETAT_DU_REPLICASET=$(mongo mongo/rocketchat --eval "rs.status({ _id: 'rs0'}).myState" | grep -v mongo|grep -v Mongo)
 # - la commande mongo retournera un JSON, que l ereplicaSet existe, ou non, et quelque soit son état.
 # - si la commande mongo échoue, ce n'est donc pas en raison de l'inexistence du replicaSet, alors un
@@ -130,12 +130,13 @@ export RESULTAT_JSON_REQUETE_MONGO_RS_EXISTE=$(mongo mongo/rocketchat --eval "rs
 
 echo " MONGO-IINIT-REPLICA >>> CREATE-REPLICASET ===>>> Je vérifie si le replicaSet a déjà été créé "
 if [[ $RESULTAT_JSON_REQUETE_MONGO_RS_EXISTE = *"}"* ]]; then
-  echo " MONGO-IINIT-REPLICA >>> CREATE-REPLICASET ===>>> On a bien un retour JSON, on vérifie si le replicaSet existe déjà ou non "
-  echo " DEBUG - [RESULTAT_REQUETE_MONGO=$RESULTAT_REQUETE_MONGO] "
+  echo " MONGO-IINIT-REPLICA >>> CREATE-REPLICASET ===>>> Si on trouve une accolade, On a bien un retour JSON, et on vérifie si le replicaSet existe déjà ou non. Sinon, c'est que la commande mongo a échoué, mais pas parceque le replicaSet n'existe pas. "
+  echo " DEBUG - [RESULTAT_JSON_REQUETE_MONGO_RS_EXISTE=$RESULTAT_JSON_REQUETE_MONGO_RS_EXISTE] "
   # si la ligne "ok", contient le chiffre "0", c'est que le replicaSet 'rs0' n'a pas encore été initialisé
+  RESULTAT_JSON_REQUETE_MONGO_RS_EXISTE=$(mongo mongo/rocketchat --eval "rs.status({ _id: 'rs0'}).ok")
   if [ "$RESULTAT_JSON_REQUETE_MONGO_RS_EXISTE" == "1" ]; then
     # le replicaSet existe déjà, on ne vérifie pas son état avec la commande :
-    # export ETAT_DU_REPLICASET=$(mongo mongo/rocketchat --eval "rs.status({ _id: 'rs0'}).myState" | grep -v mongo|grep -v Mongo)
+    # export ETAT_DU_REPLICASET=$(mongo mongo/rocketchat --eval "rs.status({ _id: 'rs0'}).myState")
     # parce que c'est la healthcheck qui doit faire cette vérification
     # Le replicaSet existe bel et bien, on sort donc avec le code de retour zéro.
     exit 0
@@ -143,7 +144,11 @@ if [[ $RESULTAT_JSON_REQUETE_MONGO_RS_EXISTE = *"}"* ]]; then
     echo "  => le replicaSet [rs0] n'a même pas encore été créé dans l'hôte MongoDB [mongo:27017]: Il est temps de le créer !  "
   fi
 else
+  echo "  "
+  echo " VERIF : RESULTAT_JSON_REQUETE_MONGO_RS_EXISTE=$RESULTAT_JSON_REQUETE_MONGO_RS_EXISTE "
+  echo "  "
   echo " MONGO-IINIT-REPLICA >>> CREATE-REPLICASET ===>>> La commande mondo a foiré, mais pas parce que le replicaSet est inexistantOn a bien un retour JSON "
+  echo "  "
   exit 1
 fi
 
