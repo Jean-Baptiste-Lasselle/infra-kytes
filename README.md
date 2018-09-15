@@ -1,3 +1,12 @@
+# A ranger
+
+### Comment récupérer l'adresse IP interne d'un conteneur
+
+```bash
+[jibl@pc-100 coquelicot]$ docker exec -it mongo bash -c "hostname --ip-address"
+172.24.0.5
+```
+
 # TODO urgent : finir de corriger les script HEALTHCHECK et CMD du conteneur `mongo-init-replica`
 Voilà toutes les données vérifiées pour mettre en oeuvre la création du replicaSet mongo, et la vérfifcation que le replicaSet est existant et dasn l'état "1" PRIMARY : 
 
