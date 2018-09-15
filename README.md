@@ -104,6 +104,93 @@ services:
     image: "webapp:${TAG}"
 ```
 
+### La Rest API RocketChat, pour écire le healthcheck RocketChat / HUBOT
+Petit extrait de la [doc officielle](https://rocket.chat/docs/developer-guides/rest-api/authentication/login/)
+
+
+#### Notes
+
+-> You will need to provide the authToken and userId for any of the authenticated methods.
+-> If your user has two-factor(2FA) authentication enabled, you must send a request like this.
+-> If LDAP authentication is enabled, you must maintain the login in the same way as you normally do. Similarly if 2FA is enabled for an LDAP user. Everything stays the same.
+
+* Example Call - As Form Data
+```bash
+curl http://localhost:3000/api/v1/login \
+     -d "username=myusername&password=mypassword"
+```
+```bash
+curl http://localhost:3000/api/v1/login \
+     -d "user=myusername&password=mypassword"
+```
+```bash
+curl http://localhost:3000/api/v1/login \
+     -d "user=my@email.com&password=mypassword"
+```
+
+* Example Call - As JSON
+
+
+```bash
+curl -H "Content-type:application/json" \
+      http://localhost:3000/api/v1/login \
+      -d '{ "username": "myusername", "password": "mypassword" }'
+```
+
+```bash
+curl -H "Content-type:application/json" \
+      http://localhost:3000/api/v1/login \
+      -d '{ "user": "myusername", "password": "mypassword" }'
+```
+
+```bash
+curl -H "Content-type:application/json" \
+      http://localhost:3000/api/v1/login \
+      -d '{ "user": "my@email.com", "password": "mypassword" }'
+```
+* Example Call - When two-factor(2FA) authentication is enabled
+```bash
+curl -H "Content-type:application/json" \
+      http://localhost:3000/api/v1/login \
+      -d '{ "totp": { "login": { "user": {"email": "rocket.cat@rocket.chat"}, "password": "password" }, "code": "224610" } }
+```
+```bash
+curl -H "Content-type:application/json" \
+      http://localhost:3000/api/v1/login \
+      -d '{ "totp": { "login": { "user": {"username": "rocket.cat"}, "password": "password" }, "code": "224610" } }
+```
+ Result
+
+```json
+{
+  "status": "success",
+  "data": {
+      "authToken": "9HqLlyZOugoStsXCUfD_0YdwnNnunAJF8V47U3QHXSq",
+      "userId": "aobEdbYhXfu5hkeqG",
+      "me": {
+            "_id": "aYjNnig8BEAWeQzMh",
+            "name": "Rocket Cat",
+            "emails": [
+                {
+                  "address": "rocket.cat@rocket.chat",
+                  "verified": false
+                }
+            ],
+            "status": "offline",
+            "statusConnection": "offline",
+            "username": "rocket.cat",
+            "utcOffset": -3,
+            "active": true,
+            "roles": [
+                "admin"
+            ],
+            "settings": {
+                "preferences": {}
+              }
+        }
+   }
+}
+```
 
 # Un petit i-robot, bombardé de fleurs françaises...
 
