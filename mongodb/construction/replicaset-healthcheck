@@ -5,7 +5,7 @@
 # (à tester) : 
 # export RESULTAT_JSON_REQUETE_MONGO=mongo mongo/rocketchat --eval "rs.status({ _id: ''rs0'', members: [ { _id: 0, host: ''localhost:27017'' } ]})"
 
-export RESULTAT_JSON_REQUETE_MONGO=$(mongo mongo/rocketchat --eval "rs.status({ _id: ''rs0''})")
+export RESULTAT_JSON_REQUETE_MONGO=$(mongo mongo/rocketchat --eval "rs.status({ _id: 'rs0'})")
 
 # - 2 - Ensuite, on vérifie que dans le JSON, on trouve bien mention de l'ID du replicaSet, et on vérifie son statut, le
 #       tout en "parsant" le JSON. Pour cela, on doit utiliser la structure de l'output de cette commande, précisé
