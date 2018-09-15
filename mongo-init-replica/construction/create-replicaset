@@ -122,7 +122,7 @@
 
 # - 1 - On commence par récuperer le statut du replicaSet : un objet JSON sera renvoyé.
 export RESULTAT_JSON_REQUETE_MONGO_RS_EXISTE=$(mongo mongo/rocketchat --eval "rs.status({ _id: 'rs0'}).ok"|grep -v mongo|grep -v Mongo)
-export ETAT_DU_REPLICASET=$(mongo mongo/rocketchat --eval "rs.status({ _id: 'rs0'}).myState" | grep -v mongo|grep -v Mongo)
+# export ETAT_DU_REPLICASET=$(mongo mongo/rocketchat --eval "rs.status({ _id: 'rs0'}).myState" | grep -v mongo|grep -v Mongo)
 # - la commande mongo retournera un JSON, que l ereplicaSet existe, ou non, et quelque soit son état.
 # - si la commande mongo échoue, ce n'est donc pas en raison de l'inexistence du replicaSet, alors un
 #   code de retour entier, et non un JSON, sera retourné et stocké dans $RESULTAT_JSON_REQUETE_MONGO
