@@ -8,7 +8,7 @@ FROM rocketchat/rocket.chat:latest
 #    Neither is it a dependency of the HUBOT developed by RocketChat Team, used in this recipe, to connect gitlab to RocketChat.
 #    So, to me, this HEALTHCHECK is an infrastructure dependency. It's like a RAID controller driver, to a Linux installed on a server.
 #    The it has to be resolved when building his infrastructure, i.e., when building a Docker Image, for example.
-#    And ther I end up setting up a Jenkins Pipeline, to build an app, to build an infrastructure, that will receive other apps.
+#    And there I end up setting up a Jenkins Pipeline, to build an app, to build an infrastructure, that will receive other apps.
 
 # And....
 # There you go.
