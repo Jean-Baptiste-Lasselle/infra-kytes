@@ -107,6 +107,12 @@ services:
   rocketchat:
     image: coquelicot/rocket.chat:1.0.0
     build: ./rocketchat/construction/
+      args:
+        # - HEALTHCHECK ENV. => devrait être dans un conteneur Père, dont celui ci hérite, avec les BUILD ARGS déjà fixés.
+        # Les variables globales de nom identique, sont définies dans le fichier ".env", propre à Docker Compose
+        - UTILISATEUR_ROCKETCHAT_HUBOT="$UTILISATEUR_ROCKETCHAT_HUBOT"
+        - UTILISATEUR_ROCKETCHAT_HUBOT_MDP="$UTILISATEUR_ROCKETCHAT_HUBOT_MDP"
+        - CHATROOM_ROCKETCHAT_HUBOT="$CHATROOM_ROCKETCHAT_HUBOT"
 #     hostname: 'rocketchat'
     container_name: 'rocketchat'
     volumes:
@@ -140,11 +146,11 @@ services:
       - ROCKETCHAT_URL=rocketchat:3000
       # - ROCKETCHAT_ROOM=devops
       # Ce channel RocketChat est à crééer avec le client Web RocketChat, comme l'utlisateur Rocketchat utilisé par ce hubot
-      - ROCKETCHAT_ROOM=canal-de-test-jbl
-      - ROCKETCHAT_USER=jbl
-      - ROCKETCHAT_PASSWORD=jbl
+      - ROCKETCHAT_ROOM="$CHATROOM_ROCKETCHAT_HUBOT"
+      - ROCKETCHAT_USER="$UTILISATEUR_ROCKETCHAT_HUBOT"
+      - ROCKETCHAT_PASSWORD="$UTILISATEUR_ROCKETCHAT_HUBOT_MDP"
       - ROCKETCHAT_AUTH=password
-      - BOT_NAME=jbl
+      - BOT_NAME=NonoCadeauDulysse
       - LISTEN_ON_ALL_PUBLIC=true
       - GITLAB_URL=http://marguerite_gitlab:8081/api/v3/
       # - EXTERNAL_SCRIPTS=hubot-help,hubot-seen,hubot-links,hubot-diagnostics,hubot-rocketchat-gitlab
