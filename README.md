@@ -77,7 +77,7 @@ Reste à faire.
 
 Notons enfin que j'ai laissé le problème de l'initialisation Gitlab (code HTTP 402 au changement initial du mot de passe de l'utilisateur initial), de côté : je le traiterais en dernier, parce que je l'ai rencontré dans d'autres ocntextes, et le sais indépendant du présent contexte de travail.
 
-# Une technique pour des variables d'environnement globlaes.
+## Une technique pour des variables d'environnement globales.
 
 En dehors des varibles d'environnement utilisées dans le doker-compose.yml et déclarées dans les Dockerfiles, Cette recette utilise un certain nombre de variables globales, au sens qu'elles sont utilisées, dans le docker-compose.yml, pour
 définir plusieurs services différents.
