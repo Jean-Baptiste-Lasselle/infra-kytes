@@ -38,17 +38,87 @@
 # -------------------------------------------------------------------------------------------------------------------------
 
 # ===>>>>> Test CURL pour vérifier l'auth avec le user $UTILISATEUR_ROCKETCHAT_HUBOT et le mot de passe $UTILISATEUR_ROCKETCHAT_HUBOT_MDP
+# cf. https://rocket.chat/docs/developer-guides/rest-api/authentication/login/
+# D'après cette doc, il faudrait que j'ajoute une option curl pour préciser un apiTken ou un truc comme ça, comme celui que
+# RocketChat Me Donne Quand je créée un incoming webhook
+# -> SI la requête curl échoue, alors "exit 1" sera évalué, et donc le processus d'exécution de script s'interrompt, et retourne le code d'erreur 1
+curl http://localhost:3000/api/v1/login -d "username=$UTILISATEUR_ROCKETCHAT_HUBOT&password=$UTILISATEUR_ROCKETCHAT_HUBOT_MDP" || exit 1
 # ===>>>>> Test CURL pour vérifier l'existence de la CHATROOM $CHATROOM_ROCKETCHAT_HUBOT
+curl http://localhost:3000/api/v1/login -d "username=$UTILISATEUR_ROCKETCHAT_HUBOT&password=$UTILISATEUR_ROCKETCHAT_HUBOT_MDP" || exit 1
 # ===>>>>> Test CURL pour vérifier que l'utilisateur $UTILISATEUR_ROCKETCHAT_HUBOT a les permissions pour entrer dans la $CHATROOM_ROCKETCHAT_HUBOT
 echo "Pour l'instant, le HEALTHCHECK USER Et CHATROMM ROKETCHAT POUR HUBOT, EST ENCORE à implémenter. DOnc le test échoue par défaut d'implémentation".
 exit 1
-# export RESULTAT_TENTATIVE_AUTH=monprrogrammeNodeJSquiTesteAuthRocketChat $UTILISATEUR_ROCKETCHAT_HUBOT $UTILISATEUR_ROCKETCHAT_HUBOT_MDP $CHATROOM_ROCKETCHAT_HUBOT 
-# if [ "condition" ] then;
-# # Alors le user n'existe pas.
-# echo " DEBUG - [RESULTAT_REQUETE_MONRESULTAT_REQUETEGO=$RESULTAT_REQUETE] "
-# echo " KO ! => le user [$UTILISATEUR_ROCKETCHAT_HUBOT] n'a même pas encore été créé dans l'hôte MongoDB [mongo:27017] !  "
-# exit 0
-# else
-# echo " Le user [$UTILISATEUR_ROCKETCHAT_HUBOT] existe, il faut maitenant ...  "
-# exit 1
-# fi
+
+
+# - Exterait de la doc Officielle RocketChat : 
+
+# Notes
+
+# -> You will need to provide the authToken and userId for any of the authenticated methods.
+# -> If your user has two-factor(2FA) authentication enabled, you must send a request like this.
+# -> If LDAP authentication is enabled, you must maintain the login in the same way as you normally do. Similarly if 2FA is enabled for an LDAP user. Everything stays the same.
+# Example Call - As Form Data
+# 
+# curl http://localhost:3000/api/v1/login \
+#      -d "username=myusername&password=mypassword"
+# 
+# curl http://localhost:3000/api/v1/login \
+#      -d "user=myusername&password=mypassword"
+# 
+# curl http://localhost:3000/api/v1/login \
+#      -d "user=my@email.com&password=mypassword"
+# 
+# Example Call - As JSON
+# 
+# curl -H "Content-type:application/json" \
+#       http://localhost:3000/api/v1/login \
+#       -d '{ "username": "myusername", "password": "mypassword" }'
+# 
+# curl -H "Content-type:application/json" \
+#       http://localhost:3000/api/v1/login \
+#       -d '{ "user": "myusername", "password": "mypassword" }'
+# 
+# curl -H "Content-type:application/json" \
+#       http://localhost:3000/api/v1/login \
+#       -d '{ "user": "my@email.com", "password": "mypassword" }'
+
+# Example Call - When two-factor(2FA) authentication is enabled
+# 
+# curl -H "Content-type:application/json" \
+#       http://localhost:3000/api/v1/login \
+#       -d '{ "totp": { "login": { "user": {"email": "rocket.cat@rocket.chat"}, "password": "password" }, "code": "224610" } }# 
+# 
+# curl -H "Content-type:application/json" \
+#       http://localhost:3000/api/v1/login \
+#       -d '{ "totp": { "login": { "user": {"username": "rocket.cat"}, "password": "password" }, "code": "224610" } }# 
+# 
+# Result
+# 
+# {
+#  "status": "success",
+#   "data": {
+#       "authToken": "9HqLlyZOugoStsXCUfD_0YdwnNnunAJF8V47U3QHXSq",
+#       "userId": "aobEdbYhXfu5hkeqG",
+#       "me": {
+#             "_id": "aYjNnig8BEAWeQzMh",
+#             "name": "Rocket Cat",
+#             "emails": [
+#                 {
+#                   "address": "rocket.cat@rocket.chat",
+#                   "verified": false
+#                 }
+#             ],
+#             "status": "offline",
+#             "statusConnection": "offline",
+#             "username": "rocket.cat",
+#             "utcOffset": -3,
+#             "active": true,
+#             "roles": [
+#                 "admin"
+#             ],
+#             "settings": {
+#                 "preferences": {}
+#               }
+#         }
+#    }
+# }
