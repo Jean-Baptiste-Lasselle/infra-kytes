@@ -32,18 +32,22 @@
 #       Et donc ce Healtcheck est elligible à être versionné en tant que dépendance, dans un repo git distinct de 
 #       cette recette, pour la souplesse des tests.
 # -------------------------------------------------------------------------------------------------------------------------
-# 
+# Noooon, ce quio est naturel ici, c’est d’utiliser les moyens que l’application RocketChat Elle-même, met à disposition, pour vérifier si un user existe bel et bien. Donc envoyer uen requête HTTPréalisant l’authentification, quitte à la choper à la volée,dans Firefox, avec la console réseau accessible F12.
+# Voire même, il faurdrait utiliser la REST AP I de Rocket Chat , qui permet à l’application mobile, de réaliser l’authentification.
+# Encore jsute des requêtes HTTP CURL, qu ece soit pour vérifier le user, ou vérifer l’existence de la CHATROOM
 # -------------------------------------------------------------------------------------------------------------------------
 
-export RESULTAT_TENTATIVE_AUTH=monprrogrammeNodeJSquiTesteAuthRocketChat $UTILISATEUR_ROCKETCHAT_HUBOT $UTILISATEUR_ROCKETCHAT_HUBOT_MDP $CHATROOM_ROCKETCHAT_HUBOT 
+# ===>>>>> Test CURL pour vérifier l'auth avec le user $UTILISATEUR_ROCKETCHAT_HUBOT et le mot de passe $UTILISATEUR_ROCKETCHAT_HUBOT_MDP
+# ===>>>>> Test CURL pour vérifier l'existence de la CHATROOM $CHATROOM_ROCKETCHAT_HUBOT
+# ===>>>>> Test CURL pour vérifier que l'utilisateur $UTILISATEUR_ROCKETCHAT_HUBOT a les permissions pour entrer dans la $CHATROOM_ROCKETCHAT_HUBOT
 
-if [ "x$RESULTAT_TENTATIVE_AUTH" -eq "x" ] then;
-# Alors le user n'existe pas.
-echo " DEBUG - [RESULTAT_REQUETE_MONRESULTAT_REQUETEGO=$RESULTAT_REQUETE] "
-echo " KO ! => le user [$UTILISATEUR_ROCKETCHAT_HUBOT] n'a même pas encore été créé dans l'hôte MongoDB [mongo:27017] !  "
-exit 0
-else
-echo " Le user [$UTILISATEUR_ROCKETCHAT_HUBOT] existe, il faut maitenant ...  "
-exit 1
-fi
-
+# export RESULTAT_TENTATIVE_AUTH=monprrogrammeNodeJSquiTesteAuthRocketChat $UTILISATEUR_ROCKETCHAT_HUBOT $UTILISATEUR_ROCKETCHAT_HUBOT_MDP $CHATROOM_ROCKETCHAT_HUBOT 
+# if [ "condition" ] then;
+# # Alors le user n'existe pas.
+# echo " DEBUG - [RESULTAT_REQUETE_MONRESULTAT_REQUETEGO=$RESULTAT_REQUETE] "
+# echo " KO ! => le user [$UTILISATEUR_ROCKETCHAT_HUBOT] n'a même pas encore été créé dans l'hôte MongoDB [mongo:27017] !  "
+# exit 0
+# else
+# echo " Le user [$UTILISATEUR_ROCKETCHAT_HUBOT] existe, il faut maitenant ...  "
+# exit 1
+# fi
