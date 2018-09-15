@@ -508,7 +508,7 @@ Il serait bon, pour la performance de votre cyle de tests, de ne télécharger q
 
 A chaque cycle, on pourra forcer la reconstruction build image docker locales, sans supprimezr les images déjà prêtes et téléchargées : 
 ```bash
-docker-compose down && docker system prune -f && docker-compose up -d --build
+docker-compose down && docker system prune -f && docker-compose up -d --build --force-recreate
 ```
 
 Lorsque vous exécuterez ces commandes, vous serez guidé interactivement : 
