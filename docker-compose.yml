@@ -131,7 +131,8 @@ services:
       - mongo
       # + Depuis utilisation d'un build image custom mongo avec HEALTHCHECK pour le
       # + conteneur 'mongo-init-replica', cf. ./mongo-init-replica/construction/replicaset-health-check
-      - mongo-init-replica
+      # + mais plus depusi l'avènement du soudeur
+      # - mongo-init-replica
     networks:
       - devops
 #       devops:
@@ -175,7 +176,9 @@ services:
       - devops
 #       devops:
 #         ipv4_address: 192.168.160.9
-
+    depends_on:
+      # + le prochain palier de remontée du plongueur, cf. HEALTHCHECK rocketchat
+      - rocketchat
   nginx:
     image: nginx
 #     hostname: "proxy"
