@@ -102,7 +102,7 @@ services:
     depends_on:
       - mongo
     # + Pour qu'il re-démarre, tant qu'il n'a pas réussit à initialiser le replicaSet
-    restart: onfailure:10
+    restart: on-failure:10
     # restart: always
   rocketchat:
     image: coquelicot/rocket.chat:1.0.0
