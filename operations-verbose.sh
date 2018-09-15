@@ -52,7 +52,7 @@ checkHealth () {
 # export UTILISATEUR_HUBOT_ROCKETCHAT_PWD=$(cat ./docker-compose.yml|grep ROCKETCHAT_PASSWORD | awk -F = '{print $2}')
 
 # Depuis l'utiliation du fichier de variables globales [.env]
-export UTILISATEUR_HUBOT_ROCKETCHAT_USERNAME=$(cat ./.env|grep UTILISATEUR_ROCKETCHAT_HUBOT | awk -F = '{print $2}')
+export UTILISATEUR_HUBOT_ROCKETCHAT_USERNAME=$(cat ./.env|grep UTILISATEUR_ROCKETCHAT_HUBOT | grep -v MDP | awk -F = '{print $2}')
 export UTILISATEUR_HUBOT_ROCKETCHAT_PWD=$(cat ./.env|grep UTILISATEUR_ROCKETCHAT_HUBOT_MDP | awk -F = '{print $2}')
 
 clear
@@ -61,7 +61,7 @@ echo " ---------------------------------------------------------------------- "
 echo "  DEBUG : "
 echo " ---------------------------------------------------------------------- "
 echo "    - username : \"UTILISATEUR_HUBOT_ROCKETCHAT_USERNAME=$UTILISATEUR_HUBOT_ROCKETCHAT_USERNAME\" "
-echo "    - password : \"UTILISATEUR_HUBOT_ROCKETCHAT_PWD=$UTILISATEUR_ROCKETCHAT_HUBOT_MDP\" "
+echo "    - password : \"UTILISATEUR_HUBOT_ROCKETCHAT_PWD=$UTILISATEUR_HUBOT_ROCKETCHAT_PWD\" "
 echo "  "
 echo "   REMARQUE IMPORTANTE: la création de ce user pourra êtree automatisée avec la REST API RocketChat"
 echo "  "
