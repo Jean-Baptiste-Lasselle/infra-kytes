@@ -54,7 +54,7 @@ checkHealth () {
 
 # Depuis l'utiliation du fichier de variables globales [.env]
 export UTILISATEUR_HUBOT_ROCKETCHAT_USERNAME=$(cat ./.env|grep UTILISATEUR_ROCKETCHAT_HUBOT | awk -F = '{print $2}')
-export UTILISATEUR_HUBOT_ROCKETCHAT_PWD=$(cat ./.env|grep ROCKETCHAT_PASSWORD | awk -F = '{print $2}')
+export UTILISATEUR_HUBOT_ROCKETCHAT_PWD=$(cat ./.env|grep UTILISATEUR_ROCKETCHAT_HUBOT_MDP | awk -F = '{print $2}')
 
 clear
 echo "  "
