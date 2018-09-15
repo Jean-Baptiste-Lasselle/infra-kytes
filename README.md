@@ -363,6 +363,24 @@ Ou, en mode verbeux :
 ```bash
 export PROVISIONING_HOME=$(pwd)/coquelicot && mkdir -p $PROVISIONING_HOME && cd $PROVISIONING_HOME && git clone "https://github.com/Jean-Baptiste-Lasselle/coquelicot" . && chmod +x ./operations-verbose.sh && ./operations-verbose.sh
 ```
+### Mode plus léger
+
+L'ensemble de l'infrastructure commence à peser, et notamment, pour optimiser le cycle de tests, il est bon de remarquer que cette recette implique : 
+
+```
+docker pull centos:7
+docker pull mongo:latest
+docker pull gitlab/gitlab-ce:latest
+docker pull gitlab/gitlab-runner:latest
+docker pull rocketchat/hubot-rocketchat:latest
+```
+C'est la liste des images téléchargées de l'extérieur.
+Il serait bon, pour la performance de votre cyle de tests, de ne télécharger qu'une seule t unique fois, à la première exécution dela recette.
+
+A chaque cycle, on pourra forcer la reconstruction build image docker locales, sans supprimezr les images déjà prêtes et téléchargées : 
+```bash
+docker-compose down && docker system prune -f && docker-compose up -d --build
+```
 
 Lorsque vous exécuterez ces commandes, vous serez guidé interactivement : 
 * La recette s'exécutera
