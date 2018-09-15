@@ -499,7 +499,9 @@ docker pull centos:7
 docker pull mongo:latest
 docker pull gitlab/gitlab-ce:latest
 docker pull gitlab/gitlab-runner:latest
+docker pull rocketchat/rocket.chat:latest
 docker pull rocketchat/hubot-rocketchat:latest
+docker pull nginx:latest
 ```
 C'est la liste des images téléchargées de l'extérieur.
 Il serait bon, pour la performance de votre cyle de tests, de ne télécharger qu'une seule t unique fois, à la première exécution dela recette.
