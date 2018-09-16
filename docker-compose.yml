@@ -192,8 +192,12 @@ services:
       - BOT_NAME=NonoCadeauDulysse
       - LISTEN_ON_ALL_PUBLIC=true
       - GITLAB_URL="http://$NOM_CONTENEUR_GITLAB:8081/api/v3/"
-      # + la "apiKey" Gitlab, qui doit être utilisée parle hubot, pour accéder à un compte Gitlab (et remonter des évènements tels que les pull request, comment on commit, etc...) 
+      # + La "apiKey" Gitlab, qui doit être utilisée parle hubot, pour accéder à un compte Gitlab (et remonter des évènements tels que les pull request, comment on commit, etc...) 
       - GITLAB_API_KEY="$HUBOT_GITLAB_API_KEY"
+      # + Le "Token" Gitlab, qui doit être utilisée parle hubot, pour accéder à un compte Gitlab (et remonter des évènements tels que les pull request, comment on commit, etc...) 
+      - GITLAB_TOKEN=cNhsExCcNhsExicNhsExx
+      # + Je pense qu'il s'agit du nombre maximal de messages consécutifs que le HUBOT pourra poster dans la chatroom (ANTI FLOOD)
+      - GITLAB_RECORD_LIMIT=100
       #
       # + EXTERNAL_SCRIPTS=hubot-help,hubot-seen,hubot-links,hubot-diagnostics,hubot-rocketchat-gitlab
       # + EXTERNAL_SCRIPTS=hubot-pugme,hubot-help,hubot-seen,hubot-links,hubot-diagnostics,hubot-rocketchat-gitlab
@@ -204,9 +208,7 @@ services:
       # + On eput donc ajouter n'importe quel nom, du moement qu'il s'agit d'une dépendance existante dans
       # + le registry NPM du contexte de déploiement
       - EXTERNAL_SCRIPTS=hubot-pugme,hubot-help
-      - GITLAB_API_KEY="cNhsExCcNhsExicNhsExx"
-      - GITLAB_TOKEN=cNhsExCcNhsExicNhsExx
-      - GITLAB_RECORD_LIMIT=100
+
 
 #     links:
 #       - rocketchat:rocketchat
