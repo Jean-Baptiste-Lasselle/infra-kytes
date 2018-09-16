@@ -78,7 +78,7 @@ chmod +x ./mongodb/construction/replicaset-healthcheck
 # - Je créée "tout"
 # docker-compose down --rmi all && docker system prune -f && docker-compose build && docker-compose up -d 
 # - Non: il y a un volume trop grand d'image téléchargées
-docker-compose down && docker system prune -f && docker-compose up -d --build --force-recreate
+docker-compose down && docker system prune -f && sudo rm -rf ./db/ && docker-compose up -d --build --force-recreate
 
 # - 1 - Je dois relancer le conteneur qui créée et initialise le replicaSet mongoDB, dès que mongoDB est disponible :
 # checkHealth $NOM_CONTENEUR_BDD_ROCKETCHAT
