@@ -348,19 +348,20 @@ Encore plus intéresant, il apparaît que dans cette dernière version distribu�
 https://github.com/RocketChat/Rocket.Chat/tree/develop/packages/rocketchat-internal-hubot) d'intégrer le Hubot directement à l'intérieur de l'application RocketChat. Je cite  :
 
 > 
-> Meteor doesn't interact really well with NPM and the NPM module loading mechanism which hubot uses for its scripts. So we've > > split out most of hubot's scripts into this separate module.
+> Meteor doesn't interact really well with NPM and the NPM module loading mechanism which hubot uses for its scripts. So we've
+> split out most of hubot's scripts into this separate module.
 > 
 > To add a new hubot script:
 > 
->     If it is packaged in npm (probably via the hubot-scripts organization on github), just add it to the package.json, for > > > example with:
+> * If it is packaged in npm (probably via the hubot-scripts organization on github), just add it to the package.json, for example with:
 > 
-> > $ npm install --save hubot-pugme
+>     $ npm install --save hubot-pugme
 > 
->     If it is included in the old hubot-scripts repository, just add it to the admin settings:
+> * If it is included in the old hubot-scripts repository, just add it to the admin settings:
 > 
-> > redis-brain.coffee,shipit.coffee,whatis.coffee,<new-script-name>.coffee
+>     redis-brain.coffee,shipit.coffee,whatis.coffee,<new-script-name>.coffee
 > 
->     If it is a custom script, or a forked/tweaked version of a script, add it to the scripts/ directory.
+> * If it is a custom script, or a forked/tweaked version of a script, add it to the scripts/ directory.
 > 
 
 
