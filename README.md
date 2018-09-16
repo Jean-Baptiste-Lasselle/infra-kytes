@@ -355,11 +355,11 @@ https://github.com/RocketChat/Rocket.Chat/tree/develop/packages/rocketchat-inter
 > 
 > * If it is packaged in npm (probably via the hubot-scripts organization on github), just add it to the package.json, for example with:
 > 
->     $ npm install --save hubot-pugme
+>     `$ npm install --save hubot-pugme`
 > 
 > * If it is included in the old hubot-scripts repository, just add it to the admin settings:
 > 
->     redis-brain.coffee,shipit.coffee,whatis.coffee,<new-script-name>.coffee
+>     `redis-brain.coffee,shipit.coffee,whatis.coffee,<new-script-name>.coffee`
 > 
 > * If it is a custom script, or a forked/tweaked version of a script, add it to the scripts/ directory.
 > 
