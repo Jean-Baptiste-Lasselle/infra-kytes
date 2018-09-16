@@ -105,6 +105,7 @@ services:
     restart: on-failure:40
     # restart: always
   rocketchat:
+    container_name: "$NOM_CONTENEUR_ROCKETCHAT"
     image: coquelicot/rocket.chat:1.0.0
     build: 
       context: ./rocketchat/construction/
@@ -115,7 +116,7 @@ services:
         - UTILISATEUR_ROCKETCHAT_HUBOT_MDP="$UTILISATEUR_ROCKETCHAT_HUBOT_MDP"
         - CHATROOM_ROCKETCHAT_HUBOT="$CHATROOM_ROCKETCHAT_HUBOT"
 #     hostname: 'rocketchat'
-    container_name: 'rocketchat'
+
     volumes:
       - ./rocketchat/uploads:/app/uploads
     environment:
