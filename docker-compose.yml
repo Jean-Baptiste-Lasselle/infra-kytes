@@ -72,7 +72,7 @@ services:
       - devops
 #       devops:
 #         ipv4_address: 192.168.160.6
-
+    
   mongo-init-replica:
     # image: mongo:3.2
     image: marguerite/mongo-replica-initializer:1.0.0
@@ -139,6 +139,21 @@ services:
 #       devops:
 #         ipv4_address: 192.168.160.8
     restart: always
+
+  # le soudeur qui créée user et chatroom rocketchat, pour le HUBOT
+  hubot-init-rocketchat:
+    # image: mongo:3.2
+    image: marguerite/hubot-rocketchat-initializer:1.0.0
+    build: ./hubot-init-rocketcha/construction/
+    container_name: 'hubot-rocketchat-initializer'
+    networks:
+      - devops
+    depends_on:
+    # + Pour qu'il ne démarre, que lorsque le soudeur précédent a terminé son trvail
+      - mongo
+    # + Pour qu'il re-démarre, tant qu'il n'a pas réussit à créé user et chatroom rocketchat
+    restart: on-failure:40
+
   # hubot, the popular chatbot (add the bot user first and change the password before starting this image)
   hubot:
     image: rocketchat/hubot-rocketchat:latest
