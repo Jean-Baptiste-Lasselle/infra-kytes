@@ -3,7 +3,7 @@
 # - 1 - On commence par récuperer le statut du replicaSet : un objet JSON sera renvoyé.
 # export RESULTAT_JSON_REQUETE_MONGO=mongo mongo/rocketchat --eval "rs.status()"
 # (à tester) : 
-# export RESULTAT_JSON_REQUETE_MONGO=mongo mongo/rocketchat --eval "rs.status({ _id: ''rs0'', members: [ { _id: 0, host: ''localhost:27017'' } ]})"
+# export RESULTAT_JSON_REQUETE_MONGO=mongo mongo/rocketchat --eval "rs.status({ _id: ''rs0'', members: [ { _id: 0, host: ''mongo:27017'' } ]})"
 
 export RESULTAT_JSON_REQUETE_MONGO=$(mongo mongo/rocketchat --eval "rs.status({ _id: 'rs0'})")
 
@@ -32,8 +32,8 @@ export RESULTAT_JSON_REQUETE_MONGO=$(mongo mongo/rocketchat --eval "rs.status({ 
 #     mongo mongo/rocketchat --eval "rs.status({ _id: ''rs0''})"
 # 
 # retourne une valeur, c'est que le replicaSet "rs0" existe.
-# D'après [https://docs.mongodb.com/manual/reference/replica-states/], si le replicaSet existe, il
-# doit être dans l'état 1 "PRIMARY", pour que le replicaSet, formé d'une seule réplique, soit prêt à l'emploi pour
+# D'après [https://docs.mongodb.com/manual/reference/replica-states/], si le replmicaSet existe, il
+# doit être dans l'état 1 "PRIMARY", pour que le replicaSet, formé d'une seule réplique, soti prêt à l'emploi pour
 # RocketChat :  
 # -------------------------------------------------------------------------------------------------------------------------
 # Number 	Name 	State Description
@@ -44,35 +44,35 @@ export RESULTAT_JSON_REQUETE_MONGO=$(mongo mongo/rocketchat --eval "rs.status({ 
 # Pour résumer, on attend que la commande retourne une valeur, et même la valeur "1". dans tous les autres cas, on fait
 # un "exit 1"
 
+
 # - 1 - On commence par récuperer le statut du replicaSet : un objet JSON sera renvoyé.
 export RESULTAT_JSON_REQUETE_MONGO_RS_EXISTE=$(mongo mongo/rocketchat --eval "rs.status({ _id: 'rs0'})")
+# export ETAT_DU_REPLICASET=$(mongo mongo/rocketchat --eval "rs.status({ _id: 'rs0'}).myState" | grep -v mongo|grep -v Mongo)
+
 # - la commande mongo retournera un JSON, que l ereplicaSet existe, ou non, et quelque soit son état.
 # - si la commande mongo échoue, ce n'est donc pas en raison de l'inexistence du replicaSet, alors un
 #   code de retour entier, et non un JSON, sera retourné et stocké dans $RESULTAT_JSON_REQUETE_MONGO
 
-echo " MONGO-IINIT-REPLICA >>> CREATE-REPLICASET ===>>> Je vérifie si le replicaSet a déjà été créé "
+echo " MONGO-IINIT-REPLICA >>> HEALTHCHECK-REPLICASET ===>>> Je vérifie si le replicaSet a déjà été créé "
 if [[ $RESULTAT_JSON_REQUETE_MONGO_RS_EXISTE = *"}"* ]]; then
-  echo " MONGO-IINIT-REPLICA >>> CREATE-REPLICASET ===>>> Si on trouve une accolade, On a bien un retour JSON, et on vérifie si le replicaSet existe déjà ou non. Sinon, c'est que la commande mongo a échoué, mais pas parceque le replicaSet n'existe pas. "
-  echo " DEBUG - [RESULTAT_JSON_REQUETE_MONGO_RS_EXISTE=$RESULTAT_JSON_REQUETE_MONGO_RS_EXISTE] "
+  echo " MONGO-IINIT-REPLICA >>> HEALTHCHECK-REPLICASET ===>>> On a bien un retour JSON, on vérifie si le replicaSet existe déjà ou non "
+  echo " DEBUG - [RESULTAT_REQUETE_MONGO=$RESULTAT_REQUETE_MONGO] "
   # si la ligne "ok", contient le chiffre "0", c'est que le replicaSet 'rs0' n'a pas encore été initialisé
-  RESULTAT_JSON_REQUETE_MONGO_RS_EXISTE=$(mongo mongo/rocketchat --eval "rs.status({ _id: 'rs0'}).ok")
+  RESULTAT_JSON_REQUETE_MONGO_RS_EXISTE=$(mongo mongo/rocketchat --eval "rs.status({ _id: 'rs0'}).ok"|grep -v mongo|grep -v Mongo)
   if [ "$RESULTAT_JSON_REQUETE_MONGO_RS_EXISTE" == "1" ]; then
-    # le replicaSet existe déjà, on  vérifie son état avec la commande :
-    export ETAT_DU_REPLICASET=$(mongo mongo/rocketchat --eval "rs.status({ _id: 'rs0'}).myState")
-    if [ "$REPLICASET" == "1" ]; then
-      # Le replicaSet existe bel et bien, dans l'état "1" (PRIMARY), donc on sort donc avec le code de retour zéro.
+    # le replicaSet existe déjà, on vérifie son état avec la commande :
+    export ETAT_DU_REPLICASET=$(mongo mongo/rocketchat --eval "rs.status({ _id: 'rs0'}).myState" | grep -v mongo|grep -v Mongo)
+    if [ "$RESULTAT_JSON_REQUETE_MONGO_RS_EXISTE" == "1" ]; then
+      echo " Le replicaSet existe bel et bien, et est dans l'état "1" (PRIMARY) on sort donc avec le code de retour zéro."
       exit 0
     else
-      # Le replicaSet existe bel et bien, mais n'est pas dans l'état "1" (PRIMARY), donc on sort donc avec le code de retour 1.
+      echo "Le replicaSet existe bel et bien, et est dans l'état \"1\" (PRIMARY) on sort donc avec le code de retour 1."
       exit 1
+    fi
+  else
+    echo "  => le replicaSet [rs0] n'a même pas encore été créé dans l'hôte MongoDB [localhost:27017]: Il est temps de le créer !  "
   fi
 else
-  echo "  "
-  echo " VERIF : RESULTAT_JSON_REQUETE_MONGO_RS_EXISTE=$RESULTAT_JSON_REQUETE_MONGO_RS_EXISTE "
-  echo "  "
-  echo " MONGO-IINIT-REPLICA >>> CREATE-REPLICASET ===>>> La commande mondo a foiré, mais pas parce que le replicaSet est inexistantOn a bien un retour JSON "
-  echo "  "
+  echo " MONGO-IINIT-REPLICA >>> HEALTHCHECK-REPLICASET ===>>> La commande mondo a foiré, mais pas parce que le replicaSet est inexistant "
   exit 1
 fi
-
-
