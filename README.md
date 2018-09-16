@@ -41,134 +41,6 @@ EMAIL_UTILISATEUR_ADMIN_INITIAL=jbl@jbl.io
 ```
 
 
-# TODO urgent : finir de corriger les script HEALTHCHECK et CMD du conteneur `mongo-init-replica`
-Voilà toutes les données vérifiées pour mettre en oeuvre la création du replicaSet mongo, et la vérfifcation que le replicaSet est existant et dasn l'état "1" PRIMARY : 
-
-```bash
-#   
-#   
-# J'ai pu vérifier qu e c'est exactement la commande suivante, qui permet de créer le replicaSet : 
-#    
-#         mongo mongo/rocketchat --eval "rs.initiate({ _id: 'rs0', members: [ { _id: 0, host: 'localhost:27017' } ]})"
-#                              
-# Et qu'avec cette commande, la réponse JSON de l'API est : 
-# 
-# 
-# [jibl@pc-100 coquelicot]$ docker exec -it mongo sh -c "mongo mongo/rocketchat --eval \"rs.initiate({ _id: 'rs0', members: [ { _id: 0, host: 'localhost:27017' } ]})\""
-# MongoDB shell version v4.0.2
-# connecting to: mongodb://mongo:27017/rocketchat
-# MongoDB server version: 4.0.2
-# {
-# 	"ok" : 1,
-# 	"operationTime" : Timestamp(1537042226, 1),
-# 	"$clusterTime" : {
-# 		"clusterTime" : Timestamp(1537042226, 1),
-# 		"signature" : {
-# 			"hash" : BinData(0,"AAAAAAAAAAAAAAAAAAAAAAAAAAA="),
-# 			"keyId" : NumberLong(0)
-# 		}
-# 	}
-# }
-
-# 
-#  
-
-# export RESULTAT_JSON_REQUETE_MONGO=$(mongo mongo/rocketchat --eval "rs.initiate({ _id: 'rs0', members: [ { _id: 0, host: 'localhost:27017' } ]})")
-
-# + J'ai aussi vérifié qu'alors, la commande permettant de vérfiier l'existence et le statut du ce replicaSet est 
-#                               mongo mongo/rocketchat --eval "rs.status({ _id: 'rs0'})"
-# Et qu'avec cette commande, la réponse JSON de l'API est : 
-# - AVANT l'initialisation du replicaSet   : 
-# {
-# 	"operationTime" : Timestamp(0, 0),
-# 	"ok" : 0,
-# 	"errmsg" : "no replset config has been received",
-# 	"code" : 94,
-# 	"codeName" : "NotYetInitialized",
-# 	"$clusterTime" : {
-# 		"clusterTime" : Timestamp(0, 0),
-# 		"signature" : {
-# 			"hash" : BinData(0,"AAAAAAAAAAAAAAAAAAAAAAAAAAA="),
-## 			"keyId" : NumberLong(0)
-# 		}
-# 	}
-# }
-# - APRES l'initialisation du replicaSet   : 
-# 
-# [jibl@pc-100 coquelicot]$ docker exec -it mongo sh -c "mongo mongo/rocketchat --eval \"rs.status({ _id: 'rs0'})\""
-# 
-# MongoDB shell version v4.0.2
-# connecting to: mongodb://mongo:27017/rocketchat
-# MongoDB server version: 4.0.2
-# {
-# 	"set" : "rs0",
-# 	"date" : ISODate("2018-09-15T20:13:11.266Z"),
-# 	"myState" : 1,
-# 	"term" : NumberLong(1),
-# 	"syncingTo" : "",
-# 	"syncSourceHost" : "",
-# 	"syncSourceId" : -1,
-# 	"heartbeatIntervalMillis" : NumberLong(2000),
-# 	"optimes" : {
-# 		"lastCommittedOpTime" : {
-# 			"ts" : Timestamp(1537042388, 1),
-# 			"t" : NumberLong(1)
-# 		},
-# 		"readConcernMajorityOpTime" : {
-# 			"ts" : Timestamp(1537042388, 1),
-# 			"t" : NumberLong(1)
-# 		},
-# 		"appliedOpTime" : {
-# 			"ts" : Timestamp(1537042388, 1),
-# 			"t" : NumberLong(1)
-# 		},
-# 		"durableOpTime" : {
-# 			"ts" : Timestamp(1537042388, 1),
-# 			"t" : NumberLong(1)
-# 		}
-# 	},
-# 	"lastStableCheckpointTimestamp" : Timestamp(1537042348, 1),
-# 	"members" : [
-# 		{
-# 			"_id" : 0,
-# 			"name" : "localhost:27017",
-# 			"health" : 1,
-# 			"state" : 1,
-# 			"stateStr" : "PRIMARY",
-# 			"uptime" : 877,
-# 			"optime" : {
-# 				"ts" : Timestamp(1537042388, 1),
-# 				"t" : NumberLong(1)
-# 			},
-# 			"optimeDate" : ISODate("2018-09-15T20:13:08Z"),
-# 			"syncingTo" : "",
-# 			"syncSourceHost" : "",
-# 			"syncSourceId" : -1,
-# 			"infoMessage" : "",
-# 			"electionTime" : Timestamp(1537042226, 2),
-# 			"electionDate" : ISODate("2018-09-15T20:10:26Z"),
-# 			"configVersion" : 1,
-# 			"self" : true,
-# 			"lastHeartbeatMessage" : ""
-# 		}
-# 	],
-# 	"ok" : 1,
-# 	"operationTime" : Timestamp(1537042388, 1),
-# 	"$clusterTime" : {
-# 		"clusterTime" : Timestamp(1537042388, 1),
-# 		"signature" : {
-# 			"hash" : BinData(0,"AAAAAAAAAAAAAAAAAAAAAAAAAAA="),
-# 			"keyId" : NumberLong(0)
-# 		}
-# 	}
-# }
-
-
-# Enfin, pour vérifier que l'état du replicaSet est "1" (PRIMARY), on peut exécuter l'instrcution suivante (testée)
-# export ETAT_DU_REPLICASET=$(mongo mongo/rocketchat --eval "rs.status({ _id: 'rs0'}).myState" | grep -v mongo|grep -v Mongo)
-```
-
-
 
 Vraiment merci Github: un pârfait exemple pour illuster les design pattern Scalable dans un Kubernetes, avec NodeJS
 Exctement ce que je devrai trouver dans mon bootiemachin...
@@ -178,11 +50,16 @@ Oh :
 
 ```bash
 Docker supports the following restart policies:
-Policy 	Result
-no 	Do not automatically restart the container when it exits. This is the default.
-on-failure[:max-retries] 	Restart only if the container exits with a non-zero exit status. Optionally, limit the number of restart retries the Docker daemon attempts.
-always 	Always restart the container regardless of the exit status. When you specify always, the Docker daemon will try to restart the container indefinitely. The container will also always start on daemon startup, regardless of the current state of the container.
-unless-stopped 	Always restart the container regardless of the exit status, including on daemon startup, except if the container was put into a stopped state before the Docker daemon was stopped.
+Policy 				Result
+no 				Do not automatically restart the container when it exits. This is the default.
+on-failure[:max-retries] 	Restart only if the container exits with a non-zero exit status. Optionally, limit the
+                                number of restart retries the Docker daemon attempts.
+always 				Always restart the container regardless of the exit status. When you specify always, the
+                                Docker daemon will try to restart the container indefinitely. The container will also 
+				always start on daemon startup, regardless of the current state of the container.
+unless-stopped 			Always restart the container regardless of the exit status, including on daemon 
+				startup, except if the container was put into a stopped state before the Docker
+				daemon was stopped.
 ```
 
 Donc, ce qu'il faut que je fasse, pour mon conteneur `mongo-init-replica` :
@@ -193,7 +70,7 @@ Donc, ce qu'il faut que je fasse, pour mon conteneur `mongo-init-replica` :
     # + Quand le conteneur aura créé le replicaSet
     restart: on-failure[:max-retries]
 ```
-ALors, si je prends cette approche, le healthcheck qui vérifiera l'existence, et l'état du replicaSet, doit être placé dans le conteneur de la BDD MongoDB de RocketChat, et non dans le conteneur mongo-init-replica. Ainsi, de plus, on délcarera une seule dépendance, au lieu de deux, du conteneur RocketChat, vers le conteneur MongoDB. On supprime la dépendance du contneur `rocketchat`, pour le conteneur `mongo-init-replica`. Oui/ Non, il y a un super design pattern à résoudre là : parce que le contneur qui créée le replicaSet, lui, doit attendre non pas que le replicaSet soit existant et dans le statut PRIMARY, mais simplement que le serveur soit UP N RUNNING... Alors? Alors une possibilité est de retirer la dépedance du conteneur `mongo-init-replica`, pour le conteneur `mongo`, et mettre (dans le `./docker-compose.yml`) le conteneur `mongo-init-replica` en mode : 
+Alors, si je prends cette approche, le healthcheck qui vérifiera l'existence, et l'état du replicaSet, doit être placé dans le conteneur de la BDD MongoDB de RocketChat, et non dans le conteneur mongo-init-replica. Ainsi, de plus, on délcarera une seule dépendance, au lieu de deux, du conteneur RocketChat, vers le conteneur MongoDB. On supprime la dépendance du contneur `rocketchat`, pour le conteneur `mongo-init-replica`. Oui/ Non, il y a un super design pattern à résoudre là : parce que le contneur qui créée le replicaSet, lui, doit attendre non pas que le replicaSet soit existant et dans le statut PRIMARY, mais simplement que le serveur soit UP N RUNNING... Alors? Alors une possibilité est de retirer la dépedance du conteneur `mongo-init-replica`, pour le conteneur `mongo`, et mettre (dans le `./docker-compose.yml`) le conteneur `mongo-init-replica` en mode : 
 ```yaml
   mongo-init-replica:
     # + Et comme cela, mon conteneur ne re-démarrera que si son exécution a terminé avec un code
@@ -204,16 +81,17 @@ ALors, si je prends cette approche, le healthcheck qui vérifiera l'existence, e
 
 Et en plus , le contneur serveur de base de données `mongo` expose un statut Healthy cohérent avec ce qu'attend, dans le principe, RocketChat : un replicaSet MongoDB UP N RUNNING.
 
-Ce qui serait encore plus intéressant, serait de développer un healthcheck, qui permette d'atester qu'un utilisatuer avec :
+Ce qui serait encore plus intéressant, serait de développer un healthcheck, qui permette d'attester l'existence d'un utilisateur spécifié comme ci-dessous :
 ```yaml
       - ROCKETCHAT_ROOM=canal-de-test-jbl
       - ROCKETCHAT_USER=jbl
       - ROCKETCHAT_PASSWORD=jbl
       - ROCKETCHAT_AUTH=password
       - BOT_NAME=jbl
-
 ```
-Ci-dessus :  le nouveau HEALTHCHECK pourrait vérifier : 
+
+Le nouveau HEALTHCHECK pourrait vérifier : 
+
 - Avec le même module NodeJS / Meteor utilisé par HUBOT pour se logguer à RocketChat, qu'on arrive bel et bie à se connecter avec ce user, et ce mot de passe. Donc en mode SOFT, pour tester l'infrastructure de manière agnostique, et non en allant chercher un conteneu de Base de données, pour l'interpréter comme attestant de la création d'un utilisateur et de la validité de son mot de passe.
 - Que la chatroom `$ROCKETCHAT_ROOM` a bien été créée dans RocketChat. Pour cela, on peut cehrcehr les modules HUBOT qui permettent d'entrer et/oou de sortir d'une chatroom, avec le HUBOT. Et utiliser ce module pour verifier l'existence de la chatroom.
 - Enfin, il faudra automatiser la création de l'utiliateur initial RocketChat, et la création de l'utilisateur RocketChat que le HUBOT va utiliser. Cela pourrait aussi être un HEALTHCHECK du conteneur HUBOT directement, qui ainsi, s'il est "HEALTHY", on sait qu'il arrvie à se colnnecer et à se logguer. Dans le même goût, on pourra vérfier non seulement que la chatroom existe, mais aussi que le Bot a les autorisations attendues pour lire et/ou écrire dans la chatroom.
@@ -231,7 +109,7 @@ Ci-dessus :  le nouveau HEALTHCHECK pourrait vérifier :
     # + Logique:  le contneur a besoin que rocketChat soit UP'N RUNNING, pour pouvoir créer le user et la chatroom
       - rocketchat
 ```
-Reste un problème: Comment le contneur HUBOT est il notifié que le conteneur `hubot-init-rocketchat` a bien terminé son travail avec succès (que le user et la chatroom RocketChat ont bien été créés)?
+Reste un problème: Comment le conteneur HUBOT est il notifié que le conteneur `hubot-init-rocketchat` a bien terminé son travail avec succès (que le user et la chatroom RocketChat ont bien été créés)?
 
 Je pense à la réponse suivante: le conteneur HUBOT va lui aussi continuellement redémarrer, mais en mod erestart=always, et il va comprendre un HEALTHCHEK, qui testera : 
 * Que l'on arrive bel et bien à se connecter au serveur RocketCHat, et à s'y authentifier avec les USER et PWD précisés par configuration du HUBOT. LE user existe donc et a bien été créé par le conteneur `hubot-init-rockerchat`
@@ -245,7 +123,7 @@ Un robot pourrait très bien avoir uniquement possibilité de lire, il pourrait 
 
 Reste à faire.
 
-Notons enfin que j'ai laissé le problème de l'initialisation Gitlab (code HTTP 402 au changement initial du mot de passe de l'utilisateur initial), de côté : je le traiterais en dernier, parce que je l'ai rencontré dans d'autres ocntextes, et le sais indépendant du présent contexte de travail.
+J'ai laissé le problème de l'initialisation Gitlab (code HTTP 402 au changement initial du mot de passe de l'utilisateur initial), de côté : je le traiterais en dernier, parce que je l'ai rencontré dans d'autres ocntextes, et le sais indépendant du présent contexte de travail.
 
 ## Une technique pour des variables d'environnement globales.
 
