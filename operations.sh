@@ -74,7 +74,7 @@ read DEBUGJBL
 chmod +x ./mongo-init-replica/construction/*
 # - cf. ./mongodb/construction/Dockerfile 
 chmod +x ./mongodb/construction/* 
-
+chmod +x ./rocketcha/construction/* 
 # - Je créée "tout"
 # docker-compose down --rmi all && docker system prune -f && docker-compose build && docker-compose up -d 
 # - Non: il y a un volume trop grand d'image téléchargées
@@ -103,7 +103,7 @@ echo " ---------------------------------------------------------------------- "
 echo "  Please Create a user in rocketchat, with the following  credentials : "
 echo " ---------------------------------------------------------------------- "
 echo "    - username : \"UTILISATEUR_HUBOT_ROCKETCHAT_USERNAME=$UTILISATEUR_HUBOT_ROCKETCHAT_USERNAME\" "
-echo "    - password : \"UTILISATEUR_HUBOT_ROCKETCHAT_PWD=$UTILISATEUR_HUBOT_ROCKETCHAT_PWDD\" "
+echo "    - password : \"UTILISATEUR_HUBOT_ROCKETCHAT_PWD=$UTILISATEUR_HUBOT_ROCKETCHAT_PWD\" "
 echo "  "
 echo "  Pressez la touche entrée lorsque cela sera fait, le  "
 echo "  service HUBOT/ROCKETCHAT sera re-démarré "
