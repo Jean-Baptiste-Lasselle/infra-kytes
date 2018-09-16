@@ -36,7 +36,7 @@
 # Voire même, il faurdrait utiliser la REST AP I de Rocket Chat , qui permet à l’application mobile, de réaliser l’authentification.
 # Encore jsute des requêtes HTTP CURL, qu ece soit pour vérifier le user, ou vérifer l’existence de la CHATROOM
 # -------------------------------------------------------------------------------------------------------------------------
-echo " ------------------------------------------------------------ "
+# echo " ------------------------------------------------------------ "
 echo "  "
 echo "  DEBUG  :  dans le HEALTH CHECK DNS LE CONTENEUR ROCKETCHAT : pour  le HUBOT / AVANT TOUTE COMMANDE "
 echo " ------------------------------------------------------------ "
@@ -68,12 +68,12 @@ export USER_ID_RECUPERE=9HqLlyZOugoStsXCUfD_0YdwnNnunAJF8V47U3QHXSq
 
 curl --fail http://localhost:3000/api/v1/login -d "username=$UTILISATEUR_ROCKETCHAT_HUBOT&password=$UTILISATEUR_ROCKETCHAT_HUBOT_MDP" || exit 1
 
-JSON_RECUPERE=$(curl http://localhost:3000/api/v1/login -d "username=$UTILISATEUR_ROCKETCHAT_HUBOT&password=$UTILISATEUR_ROCKETCHAT_HUBOT_MDP")
+JSON_RECUPERE=$(curl --fail http://localhost:3000/api/v1/login -d "username=$UTILISATEUR_ROCKETCHAT_HUBOT&password=$UTILISATEUR_ROCKETCHAT_HUBOT_MDP")
 
 export JSON_RECUPERE
 # ------------------ anti-slash point, pour "sourcer" les deux sous process $(...)
-AUTH_TOKEN_RECUPERE=\.$(echo "$JSON_RECUPERE"|grep authToken| awk -F '{print $2}')
-USER_ID_RECUPERE=\.$(echo "$JSON_RECUPERE"|grep userId| awk -F '{print $2}')
+AUTH_TOKEN_RECUPERE=$(echo "$JSON_RECUPERE"|grep authToken| awk -F '{print $2}')
+USER_ID_RECUPERE=$(echo "$JSON_RECUPERE"|grep userId| awk -F '{print $2}')
 # - TODO:  récupérer la valeur de l'AuthToken retourné (de même on récupèrera l'ID de la CHATROOM créée pour le hubot avec le REST API 
 # echo " ------------------------------------------------------------ "
 # echo "  "
