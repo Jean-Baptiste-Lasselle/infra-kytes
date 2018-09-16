@@ -1153,6 +1153,19 @@ Notez :
 
 ### Dernière erreur obtenue dans ma pile de travail
 
+#### Latest
+Je cherche à faire marcher mon HEALTHCHECK MONGODB
+Pour cela, je démarre tout, et je fais le test suivant : 
+```bash
+# - 
+# Le fichier exécutable "replicaset-health-check" constitue le healthcheck, et 
+# est déjà présent dans le conteneur, dnas le répertoire [/usr/local/bin]
+# - 
+docker exec -it mongo bash -c "mkdir testlive && cp /usr/local/bin/replicaset-health-check ./testlive/"
+docker exec -it mongo bash -c "./testlive/replicaset-health-check"
+```
+
+#### Secondaire 
 C'est mon Gitlab qui me pose problème, notamment lorsque je dois changer le mot de passe de l'utilisateur initial, j'obitens une erreur 402, et les logs suivants sur le serveur : 
 
 ```bash
