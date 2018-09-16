@@ -82,6 +82,7 @@ if [[ $RESULTAT_JSON_REQUETE_MONGO_RS_EXISTE = *"}"* ]]; then
       exit 1
     fi
   else
+    export pourtermineraclesinstructionsinutiles
     # echo " MONGO-IINIT-REPLICA >>> HEALTHCHECK-REPLICASET ===>>>  le replicaSet [rs0] n'a même pas encore été créé dans l'hôte MongoDB [localhost:27017]: Il est temps de le créer !  " 
   fi
 else
