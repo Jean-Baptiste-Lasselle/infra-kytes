@@ -1153,9 +1153,15 @@ Notez :
 
 ### Dernière erreur obtenue dans ma pile de travail
 
-#### Latest
+#### Débogguer un HEALTH_CHECK s'exécutant dans un conteneur
+
 Je cherche à faire marcher mon HEALTHCHECK MONGODB
-Pour cela, je démarre tout, et je fais le test suivant : 
+Pour visualiser les logs de l'exécution du healthcheck : 
+```bash
+docker inspect --format "{{json .State.Health }}" mongo
+```
+
+J'ai aussi le test suivant : 
 ```bash
 # - 
 # Le fichier exécutable "replicaset-health-check.silencieux" constitue le healthcheck, et 
@@ -1165,6 +1171,7 @@ Pour cela, je démarre tout, et je fais le test suivant :
 # présent dans le  conteneur, dans le répertoire "/testlive" : 
 # - 
 docker exec -it mongo bash -c "./testlive/replicaset-health-check"
+
 ```
 
 #### Secondaire 
