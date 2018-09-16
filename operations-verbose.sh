@@ -69,7 +69,13 @@ echo "  Pressez la touche entrée.  "
 echo " ---------------------------------------------------------------------- "
 echo "  "
 read DEBUGJBL
-# - Je rends exéutable les fichiers de script utilisés dans le build de l'image MongoDB qui doivent l'être : 
+
+# - Je rends exécutables les scripts invoqués dans la présente recette
+chmod +x ./initialisation-iaac-cible-deploiement.sh
+# J'initialise tout de suite la cible de déploiement
+./initialisation-iaac-cible-deploiement.sh
+
+# - Je rends exéutable les fichiers de script utilisés dans les builds d'images Docker qui doivent l'être : 
 chmod +x ./mongo-init-replica/construction/*
 chmod +x ./mongodb/construction/*
 chmod +x ./rocketchat/construction/* 
