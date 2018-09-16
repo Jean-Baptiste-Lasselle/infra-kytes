@@ -133,7 +133,7 @@ if [[ $RESULTAT_JSON_REQUETE_MONGO_RS_EXISTE = *"}"* ]]; then
   echo " MONGO-IINIT-REPLICA >>> CREATE-REPLICASET ===>>> Si on trouve une accolade, On a bien un retour JSON, et on vérifie si le replicaSet existe déjà ou non. Sinon, c'est que la commande mongo a échoué, mais pas parceque le replicaSet n'existe pas. "
   echo " DEBUG - [RESULTAT_JSON_REQUETE_MONGO_RS_EXISTE=$RESULTAT_JSON_REQUETE_MONGO_RS_EXISTE] "
   # si la ligne "ok", contient le chiffre "0", c'est que le replicaSet 'rs0' n'a pas encore été initialisé
-  RESULTAT_JSON_REQUETE_MONGO_RS_EXISTE=$(mongo mongo/rocketchat --eval "rs.status({ _id: 'rs0'}).ok")
+  RESULTAT_JSON_REQUETE_MONGO_RS_EXISTE=$(mongo mongo/rocketchat --eval "rs.status({ _id: 'rs0'}).ok"|grep -v Mongo|grep -v mongo)
   if [ "$RESULTAT_JSON_REQUETE_MONGO_RS_EXISTE" == "1" ]; then
     # le replicaSet existe déjà, on ne vérifie pas son état avec la commande :
     # export ETAT_DU_REPLICASET=$(mongo mongo/rocketchat --eval "rs.status({ _id: 'rs0'}).myState")
