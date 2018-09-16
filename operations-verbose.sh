@@ -70,8 +70,10 @@ echo " ---------------------------------------------------------------------- "
 echo "  "
 read DEBUGJBL
 # - Je rends exéutable les fichiers de script utilisés dans le build de l'image MongoDB qui doivent l'être : 
-chmod +x ./mongodb/construction/mongo-healthcheck
-
+chmod +x ./mongo-init-replica/construction/*
+chmod +x ./mongodb/construction/*
+chmod +x ./rocketchat/construction/* 
+chmod +x ./hubot-init-rocketcha/construction/* 
 # - Je créée "tout"
 # docker-compose down --rmi all && docker system prune -f && docker-compose --verbose build && docker-compose --verbose up -d 
 # Non, le volume d'images téléchargées est trop grand.
