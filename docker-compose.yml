@@ -149,7 +149,8 @@ services:
     container_name: 'hubot-rocketchat-initializer'
     # image: mongo:3.2
     image: marguerite/hubot-rocketchat-initializer:1.0.0
-    build: ./hubot-init-rocketcha/construction/
+    build: 
+      context: ./hubot-init-rocketcha/construction/
       args:
         # + le user RocketChat Admin, qui sera utilisé pour créer le user "$UTILISATEUR_ROCKETCHAT_HUBOT" et "$CHATROOM_ROCKETCHAT_HUBOT"
         - USERNAME_UTILISATEUR_ADMIN_INITIAL="$USERNAME_UTILISATEUR_ADMIN_INITIAL" 
