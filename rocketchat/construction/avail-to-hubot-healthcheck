@@ -66,7 +66,7 @@ export AUTH_TOKEN_RECUPERE=9HqLlyZOugoStsXCUfD_0YdwnNnunAJF8V47U3QHXSq
 export USER_ID_RECUPERE=9HqLlyZOugoStsXCUfD_0YdwnNnunAJF8V47U3QHXSq
 # export CHATROOM_HUBOT_ROOM_ID=ByehQjC44FwMeiLbX
 
-curl http://localhost:3000/api/v1/login -d "username=$UTILISATEUR_ROCKETCHAT_HUBOT&password=$UTILISATEUR_ROCKETCHAT_HUBOT_MDP" || exit 1
+curl --fail http://localhost:3000/api/v1/login -d "username=$UTILISATEUR_ROCKETCHAT_HUBOT&password=$UTILISATEUR_ROCKETCHAT_HUBOT_MDP" || exit 1
 
 JSON_RECUPERE=$(curl http://localhost:3000/api/v1/login -d "username=$UTILISATEUR_ROCKETCHAT_HUBOT&password=$UTILISATEUR_ROCKETCHAT_HUBOT_MDP")
 
@@ -75,28 +75,28 @@ export JSON_RECUPERE
 AUTH_TOKEN_RECUPERE=\.$(echo "$JSON_RECUPERE"|grep authToken| awk -F '{print $2}')
 USER_ID_RECUPERE=\.$(echo "$JSON_RECUPERE"|grep userId| awk -F '{print $2}')
 # - TODO:  récupérer la valeur de l'AuthToken retourné (de même on récupèrera l'ID de la CHATROOM créée pour le hubot avec le REST API 
-echo " ------------------------------------------------------------ "
-echo "  "
-echo "  DEBUG  :  dans le HEALTH CHECK DNS LE CONTENEUR ROCKETCHAT : pour  le HUBOT "
-echo " ------------------------------------------------------------ "
-echo "  "
-echo "  VERIF [JSON_RECUPERE=$JSON_RECUPERE]"
-echo "  "
-echo "  VERIF [AUTH_TOKEN_RECUPERE=$AUTH_TOKEN_RECUPERE]"
-echo "  "
-echo "  VERIF [USER_ID_RECUPERE=$USER_ID_RECUPERE]"
-echo "  "
-echo " ------------------------------------------------------------ "
-echo "  "
-echo "  "
-echo " ------------------------------------------------------------ "
-echo "  "
-echo "  "
-echo "  "
+# echo " ------------------------------------------------------------ "
+# echo "  "
+# echo "  DEBUG  :  dans le HEALTH CHECK DNS LE CONTENEUR ROCKETCHAT : pour  le HUBOT "
+# echo " ------------------------------------------------------------ "
+# echo "  "
+# echo "  VERIF [JSON_RECUPERE=$JSON_RECUPERE]"
+# echo "  "
+# echo "  VERIF [AUTH_TOKEN_RECUPERE=$AUTH_TOKEN_RECUPERE]"
+# echo "  "
+# echo "  VERIF [USER_ID_RECUPERE=$USER_ID_RECUPERE]"
+# echo "  "
+# echo " ------------------------------------------------------------ "
+# echo "  "
+# echo "  "
+# echo " ------------------------------------------------------------ "
+# echo "  "
+# echo "  "
+# echo "  "
 
 
 # ===>>>>> Test CURL pour vérifier l'existence de la CHATROOM $CHATROOM_ROCKETCHAT_HUBOT
-curl -H "X-Auth-Token: $AUTH_TOKEN_RECUPERE" \
+curl --fail -H "X-Auth-Token: $AUTH_TOKEN_RECUPERE" \
      -H "X-User-Id: $USER_ID_RECUPERE" \
      http://localhost:3000/api/v1/channels.info?roomName=$CHATROOM_ROCKETCHAT_HUBOT \
      || exit 1
