@@ -3,7 +3,7 @@ version: '3'
 services:
   gitlab:
     image: 'gitlab/gitlab-ce:latest'
-    container_name: 'marguerite_gitlab'
+    container_name: "$NOM_CONTENEUR_GITLAB"
     restart: always
 #     hostname: "gitlab"
     environment:
@@ -190,7 +190,7 @@ services:
       - ROCKETCHAT_AUTH=password
       - BOT_NAME=NonoCadeauDulysse
       - LISTEN_ON_ALL_PUBLIC=true
-      - GITLAB_URL=http://marguerite_gitlab:8081/api/v3/
+      - GITLAB_URL="http://$NOM_CONTENEUR_GITLAB:8081/api/v3/"
       # - EXTERNAL_SCRIPTS=hubot-help,hubot-seen,hubot-links,hubot-diagnostics,hubot-rocketchat-gitlab
       # - EXTERNAL_SCRIPTS=hubot-pugme,hubot-help,hubot-seen,hubot-links,hubot-diagnostics,hubot-rocketchat-gitlab
       # - cf. https://github.com/RocketChat/hubot-rocketchat#docker
