@@ -22,6 +22,24 @@ L'erreur obtenue sur le HEALTHCHECK :
 Ci-dessus, on voit que l'on passe de "connection refused", à "Unauthorized"
 Quant au soudeur, il n'est même pas encore dans le docker-compose.yml.
 
+### L'utilisateur initial RocketChat, et l'utilisateur RocketChat utilisé par HUBOT
+
+Grâce à https://rocket.chat/docs/administrator-guides/create-the-first-admin/, cette reette créée un premier utilisateur Administrateur RocketChat, qui sera utilisé pour ensuite crééer l'utilisateur qui sera utilisé par le HUBOT.
+
+La création d'utilisateur est faite avec : https://rocket.chat/docs/developer-guides/rest-api/users/create/
+
+
+```bash
+UTILISATEUR_ROCKETCHAT_HUBOT=jbl
+UTILISATEUR_ROCKETCHAT_HUBOT_MDP=jbl
+CHATROOM_ROCKETCHAT_HUBOT=receptionyooma
+# L'utilisateur initial, n'est plus l'utiliateur RocketChat que HUBOT utilise: il créée l'utilisateur utilisé par HUBOT
+# cf. [https://rocket.chat/docs/administrator-guides/create-the-first-admin/]
+USERNAME_UTILISATEUR_ADMIN_INITIAL=jb
+MDP_UTILISATEUR_ADMIN_INITIAL=jbl
+EMAIL_UTILISATEUR_ADMIN_INITIAL=jbl@jbl.io
+```
+
 
 # TODO urgent : finir de corriger les script HEALTHCHECK et CMD du conteneur `mongo-init-replica`
 Voilà toutes les données vérifiées pour mettre en oeuvre la création du replicaSet mongo, et la vérfifcation que le replicaSet est existant et dasn l'état "1" PRIMARY : 
