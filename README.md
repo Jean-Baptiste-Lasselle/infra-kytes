@@ -1,6 +1,6 @@
 # A ranger
 
-### Comment récupérer l'adresse IP interne d'un conteneur
+### Comment récupérer l'adresse IP interne d'un conteneur
 
 ```bash
 [jibl@pc-100 coquelicot]$ docker exec -it mongo bash -c "hostname --ip-address"
@@ -8,6 +8,33 @@
 ```
 
 # Reprise
+
+* tester mes changements dans [hubot-init-rocketcha/construction/initialiser-rocketchat-pour-hubot]
+
+* OUIIIIIIIIIIIII ça y est , j'arrvie à faire un user register  :   
+```bash
+curl http://localhost:3000/api/v1/users.register -d "username=jibjib&email=superjib@kytes.io&pass=superjib&name=couillon"
+```
+* Référecnes du fix RocketChat : [le fix sur git.agiri.ninja ](https://git.agiri.ninja/Agiri/Rocket.Chat/commit/b45bb41ea1282628e6b6c87e5971109a6ceb5ec3), la [doc offcielle indiquant d'utiliser la variable `ADMIN_USER` ](https://rocket.chat/docs/administrator-guides/create-the-first-admin/), la [doc officielle endpoint users.register indiquant une commande qui ne marche pas, avec payload JSON au lieu de form data](https://rocket.chat/docs/developer-guides/rest-api/users/register/), et [le fix users.register fait par le CEO lui-même (Gabriel Engel)](https://github.com/RocketChat/Rocket.Chat/issues/5467) : 
+
+![fix users.register fait par le CEO](https://github.com/Jean-Baptiste-Lasselle/coquelicot/raw/master/documentation/images/rocketchat-fix-users-rgister-REST-API-CEO-himself.png)
+
+* J'ai trouvé le endpoint users.register : la doc induit en erreur, il faut forcément l'appeler en mode FORM DATA, et non envoyer une requête REST : parce que le endpoint "users.rgister", ne doit pas être un endpoint, mais un controleur de formulaire.
+
+```bash
+rocketchat@69c762fb5897:/app/bundle$ curl http://localhost:3000/api/v1/users.register -d '{ "username": "jibjib" }' -d '{ "email": "superjib@kytes.io" }' -d '{ "pass": "superjib" }' -d '{ "name": "Utilisateur cr par Jbl" }'
+{"success":false,"error":"Match error: Missing key 'username'"}
+``` 
+
+* Pour tester l'existence d'un utilisateur avec les logs du healthcheck rocketchat : 
+```bash
+docker exec -it sondereseau bash -c "curl http://rocketchat:3000/api/v1/login -d 'username=jibjib&password=superjib'"
+``` 
+
+* Pour inspecter les logs de HEALTHCHECK :
+```bash
+docker inspect --format "{{json .State.Health }}" rocketchat
+```
 
 Le healthcheck Rocketchat, ainsi que son soudeur, ne sont pas encore opérationnels.
 L'erreur obtenue sur le HEALTHCHECK : 
@@ -342,10 +369,27 @@ J'ai pu vérifier que la dernière verison distribuée par l'équipe RockerChat,
 
 https://github.com/RocketChat/Rocket.Chat
 
-D'autres instructions sont présentes ici : 
+D'autres instructions sont présentes  [ici](https://github.com/RocketChat/Rocket.Chat.Ops)
 
-https://github.com/RocketChat/Rocket.Chat.Ops
+Encore plus intéresant, il apparaît que dans cette dernière version distribuée par RocketChat, [l'équipe Rocket Chat a décidé](
+https://github.com/RocketChat/Rocket.Chat/tree/develop/packages/rocketchat-internal-hubot) d'intégrer le Hubot directement à l'intérieur de l'application RocketChat. Je cite  :
 
+> 
+> Meteor doesn't interact really well with NPM and the NPM module loading mechanism which hubot uses for its scripts. So we've
+> split out most of hubot's scripts into this separate module.
+> 
+> To add a new hubot script:
+> 
+> * If it is packaged in npm (probably via the hubot-scripts organization on github), just add it to the package.json, for example with:
+> 
+>     `$ npm install --save hubot-pugme`
+> 
+> * If it is included in the old hubot-scripts repository, just add it to the admin settings:
+> 
+>     `redis-brain.coffee,shipit.coffee,whatis.coffee,<new-script-name>.coffee`
+> 
+> * If it is a custom script, or a forked/tweaked version of a script, add it to the scripts/ directory.
+> 
 
 
 J'ai pu entre autres vérifier qu'une upgrade majeure du hubot-rocketchat avait été publiée, ce qui pourrait expliquer les problématiques que j'ai rencontrées.
@@ -396,6 +440,7 @@ https://www.chatbots.org/chatbot/a.l.i.c.e/
 
 # Utilisation
 
+Pour exécuter cette recette une première fois : 
 
 ```bash
 export PROVISIONING_HOME=$(pwd)/coquelicot
@@ -405,16 +450,33 @@ git clone "https://github.com/Jean-Baptiste-Lasselle/coquelicot" .
 chmod +x ./operations.sh
 ./operations.sh
 ```
-Ou en une seule ligne : 
+Soit, en une seule ligne : 
 
 ```bash
 export PROVISIONING_HOME=$(pwd)/coquelicot && mkdir -p $PROVISIONING_HOME && cd $PROVISIONING_HOME && git clone "https://github.com/Jean-Baptiste-Lasselle/coquelicot" . && chmod +x ./operations.sh && ./operations.sh
 ```
-Ou, en mode verbeux : 
+
+Lorsque vous aurez exécuté une première fois l'instruction en une ligne ci-dessus, vous pourrez faire un cycle IAAC, sans re-télécharger d'image extérieures, en reconstruisant toutes les images qui ne sont pas téléchargées, avec : 
+
+```bash
+export PROVISIONING_HOME=$(pwd)/coquelicot && docker-compose down && cd .. && sudo rm -rf $PROVISIONING_HOME && mkdir -p $PROVISIONING_HOME && cd $PROVISIONING_HOME && git clone "https://github.com/Jean-Baptiste-Lasselle/coquelicot" . && chmod +x ./operations.sh && ./operations.sh
+``` 
+La commande ci-dessus, modulo une première exécution de commande, est idempotente
+
+
+Pour exécuter cette recette une première fois, en mode verbeux : 
 
 ```bash
 export PROVISIONING_HOME=$(pwd)/coquelicot && mkdir -p $PROVISIONING_HOME && cd $PROVISIONING_HOME && git clone "https://github.com/Jean-Baptiste-Lasselle/coquelicot" . && chmod +x ./operations-verbose.sh && ./operations-verbose.sh
 ```
+
+
+
+
+
+
+
+
 ### Mode plus léger
 
 L'ensemble de l'infrastructure commence à peser, et notamment, pour optimiser le cycle de tests, il est bon de remarquer que cette recette implique : 

@@ -16,14 +16,14 @@ services:
       - "8081:8081"
       - "4443:443"
       - "2222:222"
-    expose:
-      - "3000"
-      - "8081"
-      - "4443"
-      - "2222"
-      - "80"
-      - "222"
-      - "443"
+#     expose:
+#       - "3000"
+#       - "8081"
+#       - "4443"
+#       - "2222"
+#       - "80"
+#       - "222"
+#       - "443"
     volumes:
       - ./gitlab/config:/etc/gitlab
       - ./gitlab/logs:/var/log/gitlab
@@ -47,8 +47,8 @@ services:
       - GITLAB_HOST=marguerite_gitlab:8081
     ports:
       - "8000:8000"
-    expose:
-      - "8000"
+#     expose:
+#       - "8000"
     networks:
       - devops
 #       devops:
@@ -115,6 +115,9 @@ services:
         - UTILISATEUR_ROCKETCHAT_HUBOT="$UTILISATEUR_ROCKETCHAT_HUBOT"
         - UTILISATEUR_ROCKETCHAT_HUBOT_MDP="$UTILISATEUR_ROCKETCHAT_HUBOT_MDP"
         - CHATROOM_ROCKETCHAT_HUBOT="$CHATROOM_ROCKETCHAT_HUBOT"
+        - ADMIN_USERNAME="$USERNAME_UTILISATEUR_ADMIN_INITIAL" 
+        - ADMIN_PASS="$MDP_UTILISATEUR_ADMIN_INITIAL" 
+        - ADMIN_EMAIL="$UTILISATEUR_ROCKETCHAT_HUBOT_EMAIL" 
 #     hostname: 'rocketchat'
 
     volumes:
@@ -127,7 +130,7 @@ services:
       - MAIL_URL="smtp://smtp.google.com"
       - ADMIN_USERNAME="$USERNAME_UTILISATEUR_ADMIN_INITIAL" 
       - ADMIN_PASS="$MDP_UTILISATEUR_ADMIN_INITIAL" 
-      - ADMIN_EMAIL="$EMAIL_UTILISATEUR_ADMIN_INITIAL" 
+      - ADMIN_EMAIL="$UTILISATEUR_ROCKETCHAT_HUBOT_EMAIL" 
     ports:
       - 3000:3000
     expose:
@@ -159,7 +162,10 @@ services:
         # Les variables globales de nom identique, sont définies dans le fichier ".env", propre à Docker Compose
         - UTILISATEUR_ROCKETCHAT_HUBOT="$UTILISATEUR_ROCKETCHAT_HUBOT"
         - UTILISATEUR_ROCKETCHAT_HUBOT_MDP="$UTILISATEUR_ROCKETCHAT_HUBOT_MDP"
+        - UTILISATEUR_ROCKETCHAT_HUBOT_EMAIL="$UTILISATEUR_ROCKETCHAT_HUBOT_EMAIL"
         - CHATROOM_ROCKETCHAT_HUBOT="$CHATROOM_ROCKETCHAT_HUBOT"
+        - NUMERO_PORT_ECOUTE_ROCKETCHAT="$NUMERO_PORT_ECOUTE_ROCKETCHAT"
+        - NOM_DU_ROBOT_HUBOT_ROCKETCHAT="$NOM_DU_ROBOT_HUBOT_ROCKETCHAT"
     environment:
       # + le user RocketChat Admin, qui sera utilisé pour créer le user "$UTILISATEUR_ROCKETCHAT_HUBOT" et "$CHATROOM_ROCKETCHAT_HUBOT"
       - USERNAME_UTILISATEUR_ADMIN_INITIAL="$USERNAME_UTILISATEUR_ADMIN_INITIAL" 
@@ -167,7 +173,11 @@ services:
       # ++ Le soudeur créée l'utilisateur "$UTILISATEUR_ROCKETCHAT_HUBOT" , en utilisant l'utilisateur initial
       - UTILISATEUR_ROCKETCHAT_HUBOT="$UTILISATEUR_ROCKETCHAT_HUBOT"
       - UTILISATEUR_ROCKETCHAT_HUBOT_MDP="$UTILISATEUR_ROCKETCHAT_HUBOT_MDP"
+      - UTILISATEUR_ROCKETCHAT_HUBOT_EMAIL="$UTILISATEUR_ROCKETCHAT_HUBOT_EMAIL"
       - CHATROOM_ROCKETCHAT_HUBOT="$CHATROOM_ROCKETCHAT_HUBOT"
+      - NOM_DOMAINE_DOCKER_ROCKETCHAT="$NOM_CONTENEUR_ROCKETCHAT"
+      - NUMERO_PORT_ECOUTE_ROCKETCHAT="$NUMERO_PORT_ECOUTE_ROCKETCHAT"
+      - NOM_DU_ROBOT_HUBOT_ROCKETCHAT="$NOM_DU_ROBOT_HUBOT_ROCKETCHAT"
     networks:
       - devops
     depends_on:
