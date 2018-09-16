@@ -7,6 +7,19 @@
 172.24.0.5
 ```
 
+# Reprise
+
+Le healthcheck Rocketchat, ainsi que son soudeur, ne sont pas encore opérationnels.
+L'erreur obtenue sur le HEALTHCHECK : 
+```bash
+[jibl@pc-100 ~]$ docker inspect --format "{{json .State.Health }}" rocketchat
+{"Status":"unhealthy","FailingStreak":130,"Log":[{"Start":"2018-08-17T05:12:45.200233562+02:00","End":"2018-08-17T05:12:45.316681513+02:00","ExitCode":127,"Output":"/bin/sh: 1: avail-to-hubot-healthcheck: not found\n"},{"Start":"2018-08-17T05:12:46.323485376+02:00","End":"2018-08-17T05:12:46.423177169+02:00","ExitCode":127,"Output":"/bin/sh: 1: avail-to-hubot-healthcheck: not found\n"},{"Start":"2018-08-17T05:12:47.462058026+02:00","End":"2018-08-17T05:12:47.574117825+02:00","ExitCode":127,"Output":"/bin/sh: 1: avail-to-hubot-healthcheck: not found\n"},{"Start":"2018-08-17T05:12:48.675012712+02:00","End":"2018-08-17T05:12:48.774539918+02:00","ExitCode":127,"Output":"/bin/sh: 1: avail-to-hubot-healthcheck: not found\n"},{"Start":"2018-08-17T05:12:49.868224949+02:00","End":"2018-08-17T05:12:49.97108892+02:00","ExitCode":127,"Output":"/bin/sh: 1: avail-to-hubot-healthcheck: not found\n"}]}
+[jibl@pc-100 ~]$ 
+
+```
+Quant au soudeur, il n'est même pas encore dans le docker-compose.yml.
+
+
 # TODO urgent : finir de corriger les script HEALTHCHECK et CMD du conteneur `mongo-init-replica`
 Voilà toutes les données vérifiées pour mettre en oeuvre la création du replicaSet mongo, et la vérfifcation que le replicaSet est existant et dasn l'état "1" PRIMARY : 
 
