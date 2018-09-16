@@ -1,0 +1,264 @@
+# #!/bin/bash
+
+# 
+# - ENV. 
+# 
+# UTILISATEUR_ROCKETCHAT_HUBOT=jbl
+# UTILISATEUR_ROCKETCHAT_HUBOT_MDP=jbl
+# UTILISATEUR_ROCKETCHAT_HUBOT_EMAIL=jbl@jbl.io
+# 
+
+# - 
+# [.env]
+# CHATROOM_ROCKETCHAT_HUBOT=receptionyooma
+# # L'utilisateur initial, n'est plus l'utiliateur RocketChat que HUBOT utilise: il créée l'utilisateur utilisé par HUBOT
+# USERNAME_UTILISATEUR_ADMIN_INITIAL=jbl
+# MDP_UTILISATEUR_ADMIN_INITIAL=jbl
+# NUMERO_PORT_ECOUTE_REVERSE_PROXY=8090
+# ROOT_URL=http://rocketchat.marguerite.io:"$NUMERO_PORT_ECOUTE_REVERSE_PROXY"
+# NOM_CONTENEUR_ROCKETCHAT=rocketchat
+# NUMERO_PORT_ECOUTE_ROCKETCHAT=3000
+# ADRESSE_IP_HOTE_DOCKER=192.168.1.29
+# -
+# 
+
+
+echo "  "
+echo " ------------------------------------------------------------------------------------------------------- "
+echo "  HUBOT-INIT-ROCKETCHAT >>> DEBUT VERIFICATION VALEURS VARIABLES ENV   "
+echo " ------------------------------------------------------------------------------------------------------- "
+echo "  USERNAME_UTILISATEUR_ADMIN_INITIAL=$USERNAME_UTILISATEUR_ADMIN_INITIAL "
+echo " ------------------------------------------------------------------------------------------------------- "
+echo "  MDP_UTILISATEUR_ADMIN_INITIAL=$MDP_UTILISATEUR_ADMIN_INITIAL "
+# # 
+# ==========>>> authToken et userId n'ont pas encoré été récupérés.
+# # 
+# echo " ------------------------------------------------------------------------------------------------------- "
+# echo "  AUTH_TOKEN_UTILISATEUR_ADMIN_INITIAL=$AUTH_TOKEN_UTILISATEUR_ADMIN_INITIAL "
+# echo " ------------------------------------------------------------------------------------------------------- "
+# echo "  USER_ID_UTILISATEUR_ADMIN_INITIAL=$USER_ID_UTILISATEUR_ADMIN_INITIAL "
+echo " ------------------------------------------------------------------------------------------------------- "
+echo "  NOM_CONTENEUR_ROCKETCHAT=$NOM_CONTENEUR_ROCKETCHAT "
+echo " ------------------------------------------------------------------------------------------------------- "
+echo "  NUMERO_PORT_ECOUTE_ROCKETCHAT=$NUMERO_PORT_ECOUTE_ROCKETCHAT "
+echo " ------------------------------------------------------------------------------------------------------- "
+echo "  UTILISATEUR_ROCKETCHAT_HUBOT=$UTILISATEUR_ROCKETCHAT_HUBOT "
+echo " ------------------------------------------------------------------------------------------------------- "
+echo "  UTILISATEUR_ROCKETCHAT_HUBOT_MDP=$UTILISATEUR_ROCKETCHAT_HUBOT_MDP "
+echo " ------------------------------------------------------------------------------------------------------- "
+echo "  UTILISATEUR_ROCKETCHAT_HUBOT_EMAIL=$UTILISATEUR_ROCKETCHAT_HUBOT_EMAIL "
+echo " ------------------------------------------------------------------------------------------------------- "
+echo "  CHATROOM_ROCKETCHAT_HUBOT=$CHATROOM_ROCKETCHAT_HUBOT "
+# echo " ------------------------------------------------------------------------------------------------------- "
+# echo "  CCC=$CCCC "
+echo " ------------------------------------------------------------------------------------------------------- "
+echo "  "
+echo "  HUBOT-INIT-ROCKETCHAT >>> FIN VERIFICATION VALEURS VARIABLES ENV   "
+echo "  "
+
+
+
+# 
+# - 1 - récupérer AUTH_TOKEN et USER_ID de l'admin initial RocketChat, au moement du login
+# 
+# -     La résolution de noms réseau en adresses IP se fait de la manière suivante:
+# ->   chaque nom de contneur se resoud en l'adresse IP du contneur, dans un réseau Docker usant du pilote "Bridge"
+# 
+
+# 
+# - 
+# - Ceci n'est pas un healthcheck : 
+#   Au contraire des healthcheck, je veux ici que mon curl soit verbeux, s'il échoue (pas d'option "--fail")
+# 
+export RESULTAT_JSON_AUTH_USER_ROCKET_INITIAL=$(curl http://$NOM_CONTENEUR_ROCKETCHAT:$NUMERO_PORT_ECOUTE_ROCKETCHAT/api/v1/login \
+     -d "username=$USERNAME_UTILISATEUR_ADMIN_INITIAL&password=$MDP_UTILISATEUR_ADMIN_INITIAL" || exit 1)
+
+# 
+# - La requête retourne TOUJOURS du JSON, car si la commande curl échoue, alors le processus s'interrompt avec
+#   le "exit 1" ci-dessus.
+# 
+# De plus, ce conteneur A POUR DEPENDANCE, le user inital RocketChat, créé au lancement de RcoketChat : et
+# c'est le healthcheck RocketChat qui vérifie (même si on re-vérifie ici) si cet utilisateur initial a
+# bien été créé. Voici comment : 
+# - 
+# Si l'utilisateur $USERNAME_UTILISATEUR_ADMIN_INITIAL existe bel et bien, la 
+# réponse JSON doit indiquer un état "actif", i.e. { "active" : true ,}
+# - 
+# Si l'utilisateur $USERNAME_UTILISATEUR_ADMIN_INITIAL existe bel et bien, la 
+# réponse JSON doit indiquer un état "inactif", i.e. { "active" : false ,}
+# 
+# export RESULTAT_UTILISATEUR_INIT_ROCKETCHAT_EXISTE=$(echo "$RESULTAT_JSON_AUTH_USER_ROCKET_INITIAL" |grep active | awk -F ':' '{print $2}' |grep true)
+# if [ "x$RESULTAT_UTILISATEUR_INIT_ROCKETCHAT_EXISTE" == "x" ]; then
+#   # alors l'utilisateur initial  ROCKETCHAT est inactif (` "active" : false, `), et HEALTHCHECK DOIT ECHOUER silencieusement
+#   echo "alors l'utilisateur initial  ROCKETCHAT est inactif { \"active\" : false, } , il ne m'est pas possible de créer l'utilisateur dont HUBOT fera usage pour s'exprimer sur RocketChat "
+#   exit 1
+# fi
+# 
+
+export RESULTAT_UTILISATEUR_INIT_ROCKETCHAT_ACTIF=$(echo "$RESULTAT_JSON_AUTH_USER_ROCKET_INITIAL" |grep active | awk -F ':' '{print $2}' |grep true)
+if [ "x$RESULTAT_UTILISATEUR_INIT_ROCKETCHAT_ACTIF" == "x" ]; then
+  # alors l'utilisateur initial  ROCKETCHAT est inactif (` "active" : false, `), et HEALTHCHECK DOIT ECHOUER silencieusement
+  echo "alors l'utilisateur initial  ROCKETCHAT est inactif { \"active\" : false, } , il ne m'est pas possible de créer l'utilisateur dont HUBOT fera usage pour s'exprimer sur RocketChat "
+  exit 1
+fi
+
+# - Récupération AUTH_TOKEN  et USER_ID de l'utilisateur initial créé dans RocketCHat : il exxiste, il est actif, et est admin
+export AUTH_TOKEN_UTILISATEUR_ADMIN_INITIAL="9HqLlyZOugoStsXCUfD_0YdwnNnunAJF8V47U3QHXSq"
+export USER_ID_UTILISATEUR_ADMIN_INITIAL="aobEdbYhXfu5hkeqG"
+
+
+export AUTH_TOKEN_UTILISATEUR_ADMIN_INITIAL=$(echo "$RESULTAT_JSON_AUTH_USER_ROCKET_INITIAL" |grep authToken | awk -F ':' '{print $2}' | awk -F '"' '{print $2}')
+export USER_ID_UTILISATEUR_ADMIN_INITIAL=$(echo "$RESULTAT_JSON_AUTH_USER_ROCKET_INITIAL" |grep userId | awk -F ':' '{print $2}' | awk -F '"' '{print $2}')
+
+echo "  "
+echo " ------------------------------------------------------------------------------------------------------- "
+echo " L'utilisateur Initialement créé au lancement de l'applciation RocketChat, [$USERNAME_UTILISATEUR_ADMIN_INITIAL], existe bel et bien."
+echo " ------------------------------------------------------------------------------------------------------- "
+echo "  Voici la réponse JSOn de l'auth. avec l'utilisateur initial RocketChat (qui est adminsitrateur)  : "
+echo " ------------------------------------------------------------------------------------------------------- "
+echo ""
+echo " ------------------------------------------------------------------------------------------------------- "
+echo " Et voici ses authToken et userId associés :  "
+echo " ------------------------------------------------------------------------------------------------------- "
+echo "  AUTH_TOKEN_UTILISATEUR_ADMIN_INITIAL=$AUTH_TOKEN_UTILISATEUR_ADMIN_INITIAL "
+echo "  USER_ID_UTILISATEUR_ADMIN_INITIAL=$USER_ID_UTILISATEUR_ADMIN_INITIAL "
+echo " ------------------------------------------------------------------------------------------------------- "
+echo "  "
+
+# 
+# Example Result
+# 
+# {
+#   "status": "success",
+#   "data": {
+#       "authToken": "9HqLlyZOugoStsXCUfD_0YdwnNnunAJF8V47U3QHXSq",
+#       "userId": "aobEdbYhXfu5hkeqG",
+#       "me": {
+#             "_id": "aYjNnig8BEAWeQzMh",
+#             "name": "Rocket Cat",
+#             "emails": [
+#                 {
+#                   "address": "rocket.cat@rocket.chat",
+#                   "verified": false
+#                 }
+#             ],
+#             "status": "offline",
+#             "statusConnection": "offline",
+#             "username": "rocket.cat",
+#             "utcOffset": -3,
+#             "active": true,
+#             "roles": [
+#                 "admin"
+#             ],
+#             "settings": {
+#                 "preferences": {}
+#               }
+#         }
+#    }
+# }
+
+
+# 
+# - 2 - Créer l'utilisateur RocketChat "$UTILISATEUR_ROCKETCHAT_HUBOT", qui sera utilisé par HUBOT
+# ->    Donc avec l'utilisateur initial  Admin, "$USERNAME_UTILISATEUR_ADMIN_INITIAL" créé au
+#       lancement de l'applciation RocketChat, grâce au variables d'environnement
+# 
+# 
+
+curl -H "X-Auth-Token: $AUTH_TOKEN_UTILISATEUR_ADMIN_INITIAL" \
+     -H "X-User-Id: $USER_ID_UTILISATEUR_ADMIN_INITIAL" \
+     -H "Content-type:application/json" \
+     http://$NOM_CONTENEUR_ROCKETCHAT:$NUMERO_PORT_ECOUTE_ROCKETCHAT/api/v1/users.create \
+     -d '{"name": "name", "email": "$UTILISATEUR_ROCKETCHAT_HUBOT_EMAIL", "password": "$UTILISATEUR_ROCKETCHAT_HUBOT_MDP", "username": "$UTILISATEUR_ROCKETCHAT_HUBOT", "customFields": { "twitter": "@utilisateurHubotSurLeCompteYoomaTwitter" } }'
+
+# 
+# Example Call
+# 
+#  - https://rocket.chat/docs/developer-guides/rest-api/users/create/
+# 
+# curl -H "X-Auth-Token: 9HqLlyZOugoStsXCUfD_0YdwnNnunAJF8V47U3QHXSq" \
+#      -H "X-User-Id: aobEdbYhXfu5hkeqG" \
+#      -H "Content-type:application/json" \
+#      http://localhost:3000/api/v1/users.create \
+#      -d '{"name": "name", "email": "email@user.tld", "password": "anypassyouwant", "username": "uniqueusername", "customFields": { "twitter": "@userstwitter" } }'
+# 
+# Example Result
+# 
+# {
+#    "user": {
+#       "_id": "BsNr28znDkG8aeo7W",
+#       "createdAt": "2016-09-13T14:57:56.037Z",
+#       "services": {
+#          "password": {
+#             "bcrypt": "$2a$10$5I5nUzqNEs8jKhi7BFS55uFYRf5TE4ErSUH8HymMNAbpMAvsOcl2C"
+#          }
+#       },
+#       "username": "uniqueusername",
+#       "emails": [
+#          {
+#             "address": "email@user.tld",
+#             "verified": false
+#          }
+#       ],
+#       "type": "user",
+#       "status": "offline",
+#       "active": true,
+#       "roles": [
+#          "user"
+#       ],
+#       "_updatedAt": "2016-09-13T14:57:56.175Z",
+#       "name": "name",
+#       "customFields": {
+#          "twitter": "@userstwitter"
+#       }
+#    },
+#    "success": true
+# }
+# 
+# 
+
+# 
+# - 3 - Créer la Chatroom RocketChat "$CHATROOM_ROCKETCHAT_HUBOT", qui sera utilisée par HUBOT
+# ->    Donc avec l'utilisateur initial  Admin, "$USERNAME_UTILISATEUR_ADMIN_INITIAL" créé au
+#       lancement de l'applciation RocketChat, grâce au variables d'environnement
+# 
+# 
+
+curl -H "X-Auth-Token: $AUTH_TOKEN_UTILISATEUR_ADMIN_INITIAL" \
+     -H "X-User-Id: $USER_ID_UTILISATEUR_ADMIN_INITIAL" \
+     -H "Content-type:application/json" \
+     http://$NOM_CONTENEUR_ROCKETCHAT:$NUMERO_PORT_ECOUTE_ROCKETCHAT/api/v1/users.create \
+     -d '{"name": "name", "email": "$UTILISATEUR_ROCKETCHAT_HUBOT_EMAIL", "password": "$UTILISATEUR_ROCKETCHAT_HUBOT_MDP", "username": "$UTILISATEUR_ROCKETCHAT_HUBOT", "customFields": { "twitter": "@utilisateurHubotSurLeCompteYoomaTwitter" } }'
+
+# Example Result
+# 
+# {
+#    "channel": {
+#       "_id": "ByehQjC44FwMeiLbX",
+#       "name": "channelname",
+#       "t": "c",
+#       "usernames": [
+#          "example"
+#       ],
+#       "msgs": 0,
+#       "u": {
+#          "_id": "aobEdbYhXfu5hkeqG",
+#          "username": "example"
+#       },
+#       "ts": "2016-05-30T13:42:25.304Z"
+#    },
+#    "success": true
+# }
+# 
+# 
+
+
+
+
+
+
+
+# 
+# - 2 - Créer la chatroom RocketChat, qui sera utilisée par HUBOT
+# 
+# 
