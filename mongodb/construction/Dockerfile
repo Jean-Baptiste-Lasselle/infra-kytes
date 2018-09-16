@@ -17,7 +17,7 @@ COPY replicaset-health-check /usr/local/bin/
 # - -------------------------------------------------------------
 # RUN chmod +x /usr/local/bin/mongo-healthcheck
 # - -------------------------------------------------------------
-HEALTHCHECK --interval=1s --timeout=3s CMD ./replicaset-health-check
+HEALTHCHECK --interval=1s --timeout=10101010101010101010s --retries=150  CMD ./replicaset-health-check || exit 1
 
 # ENTRYPOINT [ "/app-entrypoint.sh" ]
 # CMD [ "/run.sh" ]
