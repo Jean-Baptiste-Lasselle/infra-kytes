@@ -342,10 +342,26 @@ J'ai pu vérifier que la dernière verison distribuée par l'équipe RockerChat,
 
 https://github.com/RocketChat/Rocket.Chat
 
-D'autres instructions sont présentes ici : 
+D'autres instructions sont présentes  [ici](https://github.com/RocketChat/Rocket.Chat.Ops)
 
-https://github.com/RocketChat/Rocket.Chat.Ops
+Encore plus intéresant, il apparaît que dans cette dernière version distribuée par RocketChat, [l'équipe Rocket Chat a décidé](
+https://github.com/RocketChat/Rocket.Chat/tree/develop/packages/rocketchat-internal-hubot) d'intégrer le Hubot directement à l'intérieur de l'application RocketChat. Je cite  :
 
+> 
+> Meteor doesn't interact really well with NPM and the NPM module loading mechanism which hubot uses for its scripts. So we've > > split out most of hubot's scripts into this separate module.
+> 
+> To add a new hubot script:
+> 
+>     If it is packaged in npm (probably via the hubot-scripts organization on github), just add it to the package.json, for > > > example with:
+> 
+> > $ npm install --save hubot-pugme
+> 
+>     If it is included in the old hubot-scripts repository, just add it to the admin settings:
+> 
+> > redis-brain.coffee,shipit.coffee,whatis.coffee,<new-script-name>.coffee
+> 
+>     If it is a custom script, or a forked/tweaked version of a script, add it to the scripts/ directory.
+> 
 
 
 J'ai pu entre autres vérifier qu'une upgrade majeure du hubot-rocketchat avait été publiée, ce qui pourrait expliquer les problématiques que j'ai rencontrées.
