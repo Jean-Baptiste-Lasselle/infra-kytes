@@ -150,12 +150,19 @@ services:
     image: marguerite/hubot-rocketchat-initializer:1.0.0
     build: ./hubot-init-rocketcha/construction/
       args:
+        # + le user RocketChat Admin, qui sera utilisé pour créer le user "$UTILISATEUR_ROCKETCHAT_HUBOT" et "$CHATROOM_ROCKETCHAT_HUBOT"
+        - USERNAME_UTILISATEUR_ADMIN_INITIAL="$USERNAME_UTILISATEUR_ADMIN_INITIAL" 
+        - MDP_UTILISATEUR_ADMIN_INITIAL="$MDP_UTILISATEUR_ADMIN_INITIAL" 
         # - BUILD ENV. => devrait être dans un conteneur Père, dont celui ci hérite, avec les BUILD ARGS déjà fixés.
         # Les variables globales de nom identique, sont définies dans le fichier ".env", propre à Docker Compose
         - UTILISATEUR_ROCKETCHAT_HUBOT="$UTILISATEUR_ROCKETCHAT_HUBOT"
         - UTILISATEUR_ROCKETCHAT_HUBOT_MDP="$UTILISATEUR_ROCKETCHAT_HUBOT_MDP"
         - CHATROOM_ROCKETCHAT_HUBOT="$CHATROOM_ROCKETCHAT_HUBOT"
     environment:
+      # + le user RocketChat Admin, qui sera utilisé pour créer le user "$UTILISATEUR_ROCKETCHAT_HUBOT" et "$CHATROOM_ROCKETCHAT_HUBOT"
+      - USERNAME_UTILISATEUR_ADMIN_INITIAL="$USERNAME_UTILISATEUR_ADMIN_INITIAL" 
+      - MDP_UTILISATEUR_ADMIN_INITIAL="$MDP_UTILISATEUR_ADMIN_INITIAL" 
+      # ++ Le soudeur créée l'utilisateur "$UTILISATEUR_ROCKETCHAT_HUBOT" , en utilisant l'utilisateur initial
       - UTILISATEUR_ROCKETCHAT_HUBOT="$UTILISATEUR_ROCKETCHAT_HUBOT"
       - UTILISATEUR_ROCKETCHAT_HUBOT_MDP="$UTILISATEUR_ROCKETCHAT_HUBOT_MDP"
       - CHATROOM_ROCKETCHAT_HUBOT="$CHATROOM_ROCKETCHAT_HUBOT"
