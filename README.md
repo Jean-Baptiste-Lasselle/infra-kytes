@@ -1158,10 +1158,12 @@ Je cherche à faire marcher mon HEALTHCHECK MONGODB
 Pour cela, je démarre tout, et je fais le test suivant : 
 ```bash
 # - 
-# Le fichier exécutable "replicaset-health-check" constitue le healthcheck, et 
+# Le fichier exécutable "replicaset-health-check.silencieux" constitue le healthcheck, et 
 # est déjà présent dans le conteneur, dnas le répertoire [/usr/local/bin]
+# Le fichier exécutable "replicaset-health-check" est exactement identique à son pendant silencieux, sauf qu'il
+# comprend des instructions echo, pour afficher des valeurs, en vue de leur vérification pour test. Il est déjà
+# présent dans le  conteneur, dans le répertoire "/testlive" : 
 # - 
-docker exec -it mongo bash -c "mkdir testlive && cp /usr/local/bin/replicaset-health-check ./testlive/"
 docker exec -it mongo bash -c "./testlive/replicaset-health-check"
 ```
 
