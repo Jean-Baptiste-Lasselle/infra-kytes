@@ -1,4 +1,14 @@
 #!/bin/bash
+set -eo pipefail
+
+host="$(hostname --ip-address || echo '127.0.0.1')"
+
+if mongo --quiet "$host/test" --eval 'quit(db.runCommand({ ping: 1 }).ok ? 0 : 2)'; then
+     echo "Alors tout va bien, le serveur de BDD mongo est disponible. On peut continuer les vérifications"
+else
+     echo "Le serveur mongoDB n'est pas encore disponible."
+     exit 1
+fi
 
 # - 1 - On commence par récuperer le statut du replicaSet : un objet JSON sera renvoyé.
 # export RESULTAT_JSON_REQUETE_MONGO=mongo mongo/rocketchat --eval "rs.status()"
