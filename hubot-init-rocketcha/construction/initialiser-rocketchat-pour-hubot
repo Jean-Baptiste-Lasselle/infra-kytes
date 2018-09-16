@@ -57,7 +57,19 @@ echo "  "
 echo "  HUBOT-INIT-ROCKETCHAT >>> FIN VERIFICATION VALEURS VARIABLES ENV   "
 echo "  "
 
+echo "  " 
+echo " + TESTS AVANT TOUT CURL "
+echo "   + test ping $NOM_DOMAINE_DOCKER_ROCKETCHAT "
+ping $NOM_DOMAINE_DOCKER_ROCKETCHAT
+echo "   + test ping mongo "
+ping mongo
+echo " "
+echo "   + test affichage adresse ip dans le résazeu docker "
+hostname --ip-address
+echo "  "
 
+echo "   Attente de 5 secondes, pour voir..."
+sleep 5
 
 # 
 # - 1 - récupérer AUTH_TOKEN et USER_ID de l'admin initial RocketChat, au moement du login

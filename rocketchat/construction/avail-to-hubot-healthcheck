@@ -66,9 +66,9 @@ export AUTH_TOKEN_RECUPERE=9HqLlyZOugoStsXCUfD_0YdwnNnunAJF8V47U3QHXSq
 export USER_ID_RECUPERE=9HqLlyZOugoStsXCUfD_0YdwnNnunAJF8V47U3QHXSq
 # export CHATROOM_HUBOT_ROOM_ID=ByehQjC44FwMeiLbX
 
-curl --fail http://localhost:3000/api/v1/login -d "username=$UTILISATEUR_ROCKETCHAT_HUBOT&password=$UTILISATEUR_ROCKETCHAT_HUBOT_MDP" || exit 1
+export JSON_RECUPERE=$(curl --fail http://localhost:3000/api/v1/login -d "username=$UTILISATEUR_ROCKETCHAT_HUBOT&password=$UTILISATEUR_ROCKETCHAT_HUBOT_MDP" || exit 1)
 
-export JSON_RECUPERE=$(curl --fail http://localhost:3000/api/v1/login -d "username=$UTILISATEUR_ROCKETCHAT_HUBOT&password=$UTILISATEUR_ROCKETCHAT_HUBOT_MDP")
+# export JSON_RECUPERE=$(curl --fail http://localhost:3000/api/v1/login -d "username=$UTILISATEUR_ROCKETCHAT_HUBOT&password=$UTILISATEUR_ROCKETCHAT_HUBOT_MDP")
 echo "   "
 echo " JIBL POUR DEBUG HEALTHCHECK_ROCKETCHAT / JSON_RECUPERE : "
 echo "   "
