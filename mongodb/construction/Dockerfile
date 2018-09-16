@@ -9,7 +9,9 @@ EXPOSE 27017
 # USER 1001
 
 # COPY mongo-healthcheck /usr/local/bin/
-COPY replicaset-health-check /usr/local/bin/
+RUN mkdir -p /testlive/
+COPY replicaset-health-check /testlive/
+COPY replicaset-health-check.silencieux /usr/local/bin/
 
 # - -------------------------------------------------------------
 # - Rendu exécutable par operations.sh à la place, ou devrait 
@@ -17,7 +19,7 @@ COPY replicaset-health-check /usr/local/bin/
 # - -------------------------------------------------------------
 # RUN chmod +x /usr/local/bin/mongo-healthcheck
 # - -------------------------------------------------------------
-HEALTHCHECK --interval=666666s --timeout=5s --retries=150  CMD /usr/local/bin/replicaset-health-check 
+HEALTHCHECK --interval=6s --timeout=5s --retries=150  CMD /usr/local/bin/replicaset-health-check.silencieux 
 
 # ENTRYPOINT [ "/app-entrypoint.sh" ]
 # CMD [ "/run.sh" ]
