@@ -74,7 +74,8 @@ read DEBUGJBL
 chmod +x ./mongo-init-replica/construction/*
 # - cf. ./mongodb/construction/Dockerfile 
 chmod +x ./mongodb/construction/* 
-chmod +x ./rocketcha/construction/* 
+chmod +x ./rocketchat/construction/* 
+chmod +x ./hubot-init-rocketcha/construction/* 
 # - Je créée "tout"
 # docker-compose down --rmi all && docker system prune -f && docker-compose build && docker-compose up -d 
 # - Non: il y a un volume trop grand d'image téléchargées
