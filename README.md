@@ -338,11 +338,15 @@ Ce repository Git vis à faire évoluer la recette du repo :
 
 https://github.com/RocketChat/Chat.Code.Ship
 
-Erratum : 
+J'ai pu vérifier que la dernière verison distribuée par l'équipe RockerChat, est : 
 
-J'ai pu vérifier que popur les dernières version de rocketchat  hubot, il faut utiliser les instrcutions présentes ici : 
+https://github.com/RocketChat/Rocket.Chat
+
+D'autres instructions sont présentes ici : 
 
 https://github.com/RocketChat/Rocket.Chat.Ops
+
+
 
 J'ai pu entre autres vérifier qu'une upgrade majeure du hubot-rocketchat avait été publiée, ce qui pourrait expliquer les problématiques que j'ai rencontrées.
 
