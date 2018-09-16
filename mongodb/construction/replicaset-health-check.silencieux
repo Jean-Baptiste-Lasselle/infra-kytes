@@ -8,6 +8,7 @@ if mongo --quiet "$host/test" --eval 'quit(db.runCommand({ ping: 1 }).ok ? 0 : 2
      export UNEINSTRUCTIONINUTILE
 else
      # echo "Le serveur mongoDB n'est pas encore disponible."
+     export uneautreinstructioninutile
      exit 1
 fi
 
