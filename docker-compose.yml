@@ -192,9 +192,15 @@ services:
       - BOT_NAME=NonoCadeauDulysse
       - LISTEN_ON_ALL_PUBLIC=true
       - GITLAB_URL="http://$NOM_CONTENEUR_GITLAB:8081/api/v3/"
-      # - EXTERNAL_SCRIPTS=hubot-help,hubot-seen,hubot-links,hubot-diagnostics,hubot-rocketchat-gitlab
-      # - EXTERNAL_SCRIPTS=hubot-pugme,hubot-help,hubot-seen,hubot-links,hubot-diagnostics,hubot-rocketchat-gitlab
-      # - cf. https://github.com/RocketChat/hubot-rocketchat#docker
+      #
+      # + EXTERNAL_SCRIPTS=hubot-help,hubot-seen,hubot-links,hubot-diagnostics,hubot-rocketchat-gitlab
+      # + EXTERNAL_SCRIPTS=hubot-pugme,hubot-help,hubot-seen,hubot-links,hubot-diagnostics,hubot-rocketchat-gitlab
+      # + cf. https://github.com/RocketChat/hubot-rocketchat#docker
+      # + ------------------------------------------------------------------------------------------------------------
+      # + J'ai appris à cette page : [https://github.com/RocketChat/Rocket.Chat/blob/develop/docker-compose.yml]
+      # + que les "external scripts" sont des identifiants d'artefacts NODEJS / NPM : 
+      # + On eput donc ajouter n'importe quel nom, du moement qu'il s'agit d'une dépendance existante dans
+      # + le registry NPM du contexte de déploiement
       - EXTERNAL_SCRIPTS=hubot-pugme,hubot-help
       - GITLAB_API_KEY="cNhsExCcNhsExicNhsExx"
       - GITLAB_TOKEN=cNhsExCcNhsExicNhsExx
