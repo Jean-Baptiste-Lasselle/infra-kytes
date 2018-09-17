@@ -161,8 +161,7 @@ services:
         - UTILISATEUR_ROCKETCHAT_HUBOT_MDP="$UTILISATEUR_ROCKETCHAT_HUBOT_MDP"
         - UTILISATEUR_ROCKETCHAT_HUBOT_EMAIL="$UTILISATEUR_ROCKETCHAT_HUBOT_EMAIL"
         - CHATROOM_ROCKETCHAT_HUBOT="$CHATROOM_ROCKETCHAT_HUBOT"
-        # - Comme toutes les applications développées avec le framwork Meteor, par défaut, le port d'écoute est le port 3000.
-        - NUMERO_PORT_ECOUTE_ROCKETCHAT=3000
+        - NUMERO_PORT_ECOUTE_ROCKETCHAT="$NUMERO_PORT_ECOUTE_ROCKETCHAT"
     environment:
       # + le user RocketChat Admin, qui sera utilisé pour créer le user "$UTILISATEUR_ROCKETCHAT_HUBOT" et "$CHATROOM_ROCKETCHAT_HUBOT"
       - USERNAME_UTILISATEUR_ADMIN_INITIAL="$USERNAME_UTILISATEUR_ADMIN_INITIAL" 
@@ -173,8 +172,7 @@ services:
       - UTILISATEUR_ROCKETCHAT_HUBOT_EMAIL="$UTILISATEUR_ROCKETCHAT_HUBOT_EMAIL"
       - CHATROOM_ROCKETCHAT_HUBOT="$CHATROOM_ROCKETCHAT_HUBOT"
       - NOM_DOMAINE_DOCKER_ROCKETCHAT="$NOM_CONTENEUR_ROCKETCHAT"
-      # - Comme toutes les applications développées avec le framwork Meteor, par défaut, le port d'écoute est le port 3000.
-      - NUMERO_PORT_ECOUTE_ROCKETCHAT=3000
+      - NUMERO_PORT_ECOUTE_ROCKETCHAT="$NUMERO_PORT_ECOUTE_ROCKETCHAT"
     networks:
       - devops
     depends_on:
