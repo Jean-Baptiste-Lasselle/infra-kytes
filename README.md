@@ -413,6 +413,7 @@ https://www.chatbots.org/chatbot/a.l.i.c.e/
 
 # Utilisation
 
+Pour exécuter cette recette une première fois : 
 
 ```bash
 export PROVISIONING_HOME=$(pwd)/coquelicot
@@ -422,16 +423,33 @@ git clone "https://github.com/Jean-Baptiste-Lasselle/coquelicot" .
 chmod +x ./operations.sh
 ./operations.sh
 ```
-Ou en une seule ligne : 
+Soit, en une seule ligne : 
 
 ```bash
 export PROVISIONING_HOME=$(pwd)/coquelicot && mkdir -p $PROVISIONING_HOME && cd $PROVISIONING_HOME && git clone "https://github.com/Jean-Baptiste-Lasselle/coquelicot" . && chmod +x ./operations.sh && ./operations.sh
 ```
-Ou, en mode verbeux : 
+
+Lorsque vous aurez exécuté une première fois l'instruction en une ligne ci-dessus, vous pourrez faire un cycle IAAC, sans re-télécharger d'image extérieures, en reconstruisant toutes les images qui ne sont pas téléchargées, avec : 
+
+```bash
+export PROVISIONING_HOME=$(pwd)/coquelicot && docker-compose down && cd .. && sudo rm -rf $PROVISIONING_HOME && mkdir -p $PROVISIONING_HOME && cd $PROVISIONING_HOME && git clone "https://github.com/Jean-Baptiste-Lasselle/coquelicot" . && chmod +x ./operations.sh && ./operations.sh
+``` 
+La commande ci-dessus, modulo une première exécution de commande, est idempotente
+
+
+Pour exécuter cette recette une première fois, en mode verbeux : 
 
 ```bash
 export PROVISIONING_HOME=$(pwd)/coquelicot && mkdir -p $PROVISIONING_HOME && cd $PROVISIONING_HOME && git clone "https://github.com/Jean-Baptiste-Lasselle/coquelicot" . && chmod +x ./operations-verbose.sh && ./operations-verbose.sh
 ```
+
+
+
+
+
+
+
+
 ### Mode plus léger
 
 L'ensemble de l'infrastructure commence à peser, et notamment, pour optimiser le cycle de tests, il est bon de remarquer que cette recette implique : 
