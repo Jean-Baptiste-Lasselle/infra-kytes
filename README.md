@@ -15,7 +15,7 @@
 ```bash
 curl http://localhost:3000/api/v1/users.register -d "username=jibjib&email=superjib@kytes.io&pass=superjib&name=couillon"
 ```
-* Référecnes du fix RocketChat : [le fix sur git.agiri.ninja ](https://git.agiri.ninja/Agiri/Rocket.Chat/commit/b45bb41ea1282628e6b6c87e5971109a6ceb5ec3), la [doc offcielle indiquant d'utiliser la variable `ADMIN_USER` ](https://rocket.chat/docs/administrator-guides/create-the-first-admin/), la [doc officielle endpoint users.register indiquant une commande qui ne marche pas, avec payload JSON au lieu de form data](https://rocket.chat/docs/developer-guides/rest-api/users/register/), et le fix users.register fait par le CEO lui-même : 
+* Référecnes du fix RocketChat : [le fix sur git.agiri.ninja ](https://git.agiri.ninja/Agiri/Rocket.Chat/commit/b45bb41ea1282628e6b6c87e5971109a6ceb5ec3), la [doc offcielle indiquant d'utiliser la variable `ADMIN_USER` ](https://rocket.chat/docs/administrator-guides/create-the-first-admin/), la [doc officielle endpoint users.register indiquant une commande qui ne marche pas, avec payload JSON au lieu de form data](https://rocket.chat/docs/developer-guides/rest-api/users/register/), et [le fix users.register fait par le CEO lui-même (Gabriel Engel)](https://github.com/RocketChat/Rocket.Chat/issues/5467) : 
 
 ![fix users.register fait par le CEO](https://github.com/Jean-Baptiste-Lasselle/coquelicot/raw/master/documentation/images/rocketchat-fix-users-rgister-REST-API-CEO-himself.png)
 
