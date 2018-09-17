@@ -17,7 +17,7 @@ ENV UTILISATEUR_ROCKETCHAT_HUBOT_MDP=jbl
 ARG CHATROOM_ROCKETCHAT_HUBOT=receptionyooma
 ENV CHATROOM_ROCKETCHAT_HUBOT=receptionyooma
 
-RUN yum update -y && yum install -y vim
+RUN yum update -y && yum install -y vim curl iputils
 
 RUN mkdir -p /marguerite
 WORKDIR /marguerite
