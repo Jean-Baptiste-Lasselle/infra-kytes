@@ -37,7 +37,7 @@ echo "  MDP_UTILISATEUR_ADMIN_INITIAL=$MDP_UTILISATEUR_ADMIN_INITIAL "
 # echo " ------------------------------------------------------------------------------------------------------- "
 # echo "  USER_ID_UTILISATEUR_ADMIN_INITIAL=$USER_ID_UTILISATEUR_ADMIN_INITIAL "
 echo " ------------------------------------------------------------------------------------------------------- "
-echo "  NOM_CONTENEUR_ROCKETCHAT=$NOM_CONTENEUR_ROCKETCHAT "
+echo "  NOM_DOMAINE_DOCKER_ROCKETCHAT=$NOM_DOMAINE_DOCKER_ROCKETCHAT "
 echo " ------------------------------------------------------------------------------------------------------- "
 echo "  NUMERO_PORT_ECOUTE_ROCKETCHAT=$NUMERO_PORT_ECOUTE_ROCKETCHAT "
 echo " ------------------------------------------------------------------------------------------------------- "
@@ -69,7 +69,7 @@ echo "  "
 # - Ceci n'est pas un healthcheck : 
 #   Au contraire des healthcheck, je veux ici que mon curl soit verbeux, s'il échoue (pas d'option "--fail")
 # 
-export RESULTAT_JSON_AUTH_USER_ROCKET_INITIAL=$(curl http://$NOM_CONTENEUR_ROCKETCHAT:$NUMERO_PORT_ECOUTE_ROCKETCHAT/api/v1/login \
+export RESULTAT_JSON_AUTH_USER_ROCKET_INITIAL=$(curl http://$NOM_DOMAINE_DOCKER_ROCKETCHAT:$NUMERO_PORT_ECOUTE_ROCKETCHAT/api/v1/login \
      -d "username=$USERNAME_UTILISATEUR_ADMIN_INITIAL&password=$MDP_UTILISATEUR_ADMIN_INITIAL" || exit 1)
 
 # 
@@ -164,12 +164,12 @@ echo "  "
 # 
 # 
 
-curl -H "X-Auth-Token: $AUTH_TOKEN_UTILISATEUR_ADMIN_INITIAL" -H "X-User-Id: $USER_ID_UTILISATEUR_ADMIN_INITIAL" -H "Content-type:application/json" http://$NOM_CONTENEUR_ROCKETCHAT:$NUMERO_PORT_ECOUTE_ROCKETCHAT/api/v1/users.create -d '{"name": "name", "email": "$UTILISATEUR_ROCKETCHAT_HUBOT_EMAIL", "password": "$UTILISATEUR_ROCKETCHAT_HUBOT_MDP", "username": "$UTILISATEUR_ROCKETCHAT_HUBOT", "customFields": { "twitter": "@utilisateurHubotSurLeCompteYoomaTwitter" } }'
+curl -H "X-Auth-Token: $AUTH_TOKEN_UTILISATEUR_ADMIN_INITIAL" -H "X-User-Id: $USER_ID_UTILISATEUR_ADMIN_INITIAL" -H "Content-type:application/json" http://$NOM_DOMAINE_DOCKER_ROCKETCHAT:$NUMERO_PORT_ECOUTE_ROCKETCHAT/api/v1/users.create -d '{"name": "name", "email": "$UTILISATEUR_ROCKETCHAT_HUBOT_EMAIL", "password": "$UTILISATEUR_ROCKETCHAT_HUBOT_MDP", "username": "$UTILISATEUR_ROCKETCHAT_HUBOT", "customFields": { "twitter": "@utilisateurHubotSurLeCompteYoomaTwitter" } }'
 
 # curl -H "X-Auth-Token: $AUTH_TOKEN_UTILISATEUR_ADMIN_INITIAL" \
 #      -H "X-User-Id: $USER_ID_UTILISATEUR_ADMIN_INITIAL" \
 #      -H "Content-type:application/json" \
-#      http://$NOM_CONTENEUR_ROCKETCHAT:$NUMERO_PORT_ECOUTE_ROCKETCHAT/api/v1/users.create \
+#      http://$NOM_DOMAINE_DOCKER_ROCKETCHAT:$NUMERO_PORT_ECOUTE_ROCKETCHAT/api/v1/users.create \
 #      -d '{"name": "name", "email": "$UTILISATEUR_ROCKETCHAT_HUBOT_EMAIL", "password": "$UTILISATEUR_ROCKETCHAT_HUBOT_MDP", "username": "$UTILISATEUR_ROCKETCHAT_HUBOT", "customFields": { "twitter": "@utilisateurHubotSurLeCompteYoomaTwitter" } }'
 
 # 
@@ -225,12 +225,12 @@ curl -H "X-Auth-Token: $AUTH_TOKEN_UTILISATEUR_ADMIN_INITIAL" -H "X-User-Id: $US
 # 
 # 
 
-curl -H "X-Auth-Token: $AUTH_TOKEN_UTILISATEUR_ADMIN_INITIAL" -H "X-User-Id: $USER_ID_UTILISATEUR_ADMIN_INITIAL" -H "Content-type:application/json" http://$NOM_CONTENEUR_ROCKETCHAT:$NUMERO_PORT_ECOUTE_ROCKETCHAT/api/v1/users.create -d '{"name": "name", "email": "$UTILISATEUR_ROCKETCHAT_HUBOT_EMAIL", "password": "$UTILISATEUR_ROCKETCHAT_HUBOT_MDP", "username": "$UTILISATEUR_ROCKETCHAT_HUBOT", "customFields": { "twitter": "@utilisateurHubotSurLeCompteYoomaTwitter" } }'
+curl -H "X-Auth-Token: $AUTH_TOKEN_UTILISATEUR_ADMIN_INITIAL" -H "X-User-Id: $USER_ID_UTILISATEUR_ADMIN_INITIAL" -H "Content-type:application/json" http://$NOM_DOMAINE_DOCKER_ROCKETCHAT:$NUMERO_PORT_ECOUTE_ROCKETCHAT/api/v1/users.create -d '{"name": "name", "email": "$UTILISATEUR_ROCKETCHAT_HUBOT_EMAIL", "password": "$UTILISATEUR_ROCKETCHAT_HUBOT_MDP", "username": "$UTILISATEUR_ROCKETCHAT_HUBOT", "customFields": { "twitter": "@utilisateurHubotSurLeCompteYoomaTwitter" } }'
 
 # curl -H "X-Auth-Token: $AUTH_TOKEN_UTILISATEUR_ADMIN_INITIAL" \
 #      -H "X-User-Id: $USER_ID_UTILISATEUR_ADMIN_INITIAL" \
 #      -H "Content-type:application/json" \
-#      http://$NOM_CONTENEUR_ROCKETCHAT:$NUMERO_PORT_ECOUTE_ROCKETCHAT/api/v1/users.create \
+#      http://$NOM_DOMAINE_DOCKER_ROCKETCHAT:$NUMERO_PORT_ECOUTE_ROCKETCHAT/api/v1/users.create \
 #      -d '{"name": "name", "email": "$UTILISATEUR_ROCKETCHAT_HUBOT_EMAIL", "password": "$UTILISATEUR_ROCKETCHAT_HUBOT_MDP", "username": "$UTILISATEUR_ROCKETCHAT_HUBOT", "customFields": { "twitter": "@utilisateurHubotSurLeCompteYoomaTwitter" } }'
 
 
