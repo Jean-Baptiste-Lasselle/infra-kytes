@@ -255,6 +255,30 @@ services:
     image: "webapp:${TAG}"
 ```
 
+Attention,un piège existe quant à ces variables d'environnement, et leur interpolation : 
+
+Lorsque vous précisez une valeur de variable d'environnement dans le `./docker-compose.yml` (ou un `Dockerfile`), et que : 
+  * Dans votre `docker-compose.yml`, vous avez le contenu : 
+  ```yaml
+    rocketchat:
+      container_name: "$NOM_CONTENEUR_ROCKETCHAT"
+      image: coquelicot/rocket.chat:1.0.0
+      build: 
+        context: ./rocketchat/construction/
+        args:
+          - UNEVARIABLE_ENV_ROCKETCHAT_PAR_EXEMPLE="$VALEUR_UNEVARIABLE"
+  ```
+  * Dans votre `./.env`, vous avez le contenu : 
+  ```yaml
+  UNEVARIABLE=bernard
+  ```
+  Alors, la valeur envoyée sera `"bernard"`, et non la valeur `bernard` !!! (ce qui m'a causé quelques soucis pour passer
+  certaines valeurs, comme des mots de passes, et des logs RocketCHat dont la gestion semble largement améliorable !
+  (ne serait qu'en pensant aux pauvres architectes / devops, qui font un `docker logs rockerchat` .... :100:)
+
+
+
+
 ### La Rest API RocketChat, pour écire le healthcheck RocketChat / HUBOT : auth
 Petit extrait de la [doc officielle](https://rocket.chat/docs/developer-guides/rest-api/authentication/login/)
 Pour vérifer l'auth avec le user HUBOT
