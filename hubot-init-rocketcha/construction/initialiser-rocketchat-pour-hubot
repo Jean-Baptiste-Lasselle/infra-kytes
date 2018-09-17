@@ -48,6 +48,8 @@ echo " -------------------------------------------------------------------------
 echo "  UTILISATEUR_ROCKETCHAT_HUBOT_EMAIL=$UTILISATEUR_ROCKETCHAT_HUBOT_EMAIL "
 echo " ------------------------------------------------------------------------------------------------------- "
 echo "  CHATROOM_ROCKETCHAT_HUBOT=$CHATROOM_ROCKETCHAT_HUBOT "
+echo " ------------------------------------------------------------------------------------------------------- "
+echo "  NOM_DU_ROBOT_HUBOT_ROCKETCHAT=$NOM_DU_ROBOT_HUBOT_ROCKETCHAT "
 # echo " ------------------------------------------------------------------------------------------------------- "
 # echo "  CCC=$CCCC "
 echo " ------------------------------------------------------------------------------------------------------- "
@@ -65,8 +67,9 @@ echo "  "
 # 
 
 # - 1 - bis EH BEN NON, finalement, il va falloir que j'utilise un endpoiknt que j'ai débusqué, pour faire un "register", et de cette manière créer un utilisateur
-
-
+export RESULTAT_JSON_AUTH_USER_ROCKET_INITIAL=$(curl http://$NOM_DOMAINE_DOCKER_ROCKETCHAT:$NUMERO_PORT_ECOUTE_ROCKETCHAT/api/v1/users.register \
+     -d "username=$USERNAME_UTILISATEUR_ADMIN_INITIAL&email=topgunjib@kytes.io&pass=MDP_UTILISATEUR_ADMIN_INITIAL&name=$NOM_DU_ROBOT_HUBOT_ROCKETCHAT" || exit 1 )
+     
 
 
 # 
