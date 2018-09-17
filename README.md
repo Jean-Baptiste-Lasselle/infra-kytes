@@ -8,7 +8,10 @@
 ```
 
 # Reprise
-
+OUIIIIIIIIIIIII ça y est , j'arrvie à faire un user register  :   
+```bash
+curl http://localhost:3000/api/v1/users.register -d "username=jibjib&email=superjib@kytes.io&pass=superjib&name=couillon"
+```
 J4ai trouvé le endpoint users.register : la doc induit en erreur, il faut forcément l'appeler en mode FORM DATA, et non envoyer une requête REST : parce que le endpoint "users.rgister", ne doit pas être un endpoint, mais un controleur de formulaire.
 
 ```bash
