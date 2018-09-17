@@ -68,9 +68,8 @@ echo "  "
 
 # - 1 - bis EH BEN NON, finalement, il va falloir que j'utilise un endpoiknt que j'ai débusqué, pour faire un "register", et de cette manière créer un utilisateur
 export RESULTAT_JSON_AUTH_USER_ROCKET_INITIAL=$(curl http://$NOM_DOMAINE_DOCKER_ROCKETCHAT:$NUMERO_PORT_ECOUTE_ROCKETCHAT/api/v1/users.register \
-     -d "username=$USERNAME_UTILISATEUR_ADMIN_INITIAL&email=topgunjib@kytes.io&pass=MDP_UTILISATEUR_ADMIN_INITIAL&name=$NOM_DU_ROBOT_HUBOT_ROCKETCHAT" || exit 1 )
+     -d "username=$USERNAME_UTILISATEUR_ADMIN_INITIAL&email=topgunjib@kytes.io&pass=MDP_UTILISATEUR_ADMIN_INITIAL&name=say-my-name-$USERNAME_UTILISATEUR_ADMIN_INITIAL" || exit 1 )
      
-
 
 # 
 # - 
@@ -233,7 +232,7 @@ curl -H "X-Auth-Token: $AUTH_TOKEN_UTILISATEUR_ADMIN_INITIAL" -H "X-User-Id: $US
 # 
 # 
 
-curl -H "X-Auth-Token: $AUTH_TOKEN_UTILISATEUR_ADMIN_INITIAL" -H "X-User-Id: $USER_ID_UTILISATEUR_ADMIN_INITIAL" -H "Content-type:application/json" http://$NOM_DOMAINE_DOCKER_ROCKETCHAT:$NUMERO_PORT_ECOUTE_ROCKETCHAT/api/v1/users.create -d '{"name": "name", "email": "$UTILISATEUR_ROCKETCHAT_HUBOT_EMAIL", "password": "$UTILISATEUR_ROCKETCHAT_HUBOT_MDP", "username": "$UTILISATEUR_ROCKETCHAT_HUBOT", "customFields": { "twitter": "@utilisateurHubotSurLeCompteYoomaTwitter" } }'
+curl -H "X-Auth-Token: $AUTH_TOKEN_UTILISATEUR_ADMIN_INITIAL" -H "X-User-Id: $USER_ID_UTILISATEUR_ADMIN_INITIAL" -H "Content-type:application/json" http://$NOM_DOMAINE_DOCKER_ROCKETCHAT:$NUMERO_PORT_ECOUTE_ROCKETCHAT/api/v1/users.create -d '{"name": "$NOM_DU_ROBOT_HUBOT_ROCKETCHAT", "email": "$UTILISATEUR_ROCKETCHAT_HUBOT_EMAIL", "password": "$UTILISATEUR_ROCKETCHAT_HUBOT_MDP", "username": "$UTILISATEUR_ROCKETCHAT_HUBOT", "customFields": { "twitter": "@utilisateurHubotSurLeCompteYoomaTwitter" } }'
 
 # curl -H "X-Auth-Token: $AUTH_TOKEN_UTILISATEUR_ADMIN_INITIAL" \
 #      -H "X-User-Id: $USER_ID_UTILISATEUR_ADMIN_INITIAL" \
