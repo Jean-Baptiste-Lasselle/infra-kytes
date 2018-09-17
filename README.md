@@ -8,6 +8,18 @@
 ```
 
 # Reprise
+
+çaaaaa y est ! enfin j'ai cramé l'erreur sur l'utilisateur initial : 
+```bash
+#  
+#  docker logs hubot-rocketchat-initializer -f| grep success
+#  
+100   103    0    66  100    37    104     58 --:--:-- --:--:-- --:--:--   104
+{"success":false,"error":"&quot;jibjib&quot; is not a valid username, use only letters, numbers, dots, hyphens and underscores [username-invalid]","errorType":"username-invalid"}
+{"success":false,"error":"Email already exists. [403]","errorType":403}
+{"success":false,"error":"Email already exists. [403]","errorType":403}
+
+```
 Oh oui! :::: !!!!  Quand je mets la valeur en dur ...: 
 
 ```bash
