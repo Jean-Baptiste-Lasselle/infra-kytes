@@ -9,6 +9,38 @@
 
 # Reprise
 
+Ok, j'avais donc un problème certain: l'injoignabilité de l'hôte réseau rocketchat, depuis le conteneur soudeur. Et j'ai fait toute une batterie de tests, pour vérifier, que certes, à son démarrge, le soudeur ne trouve pas l'hôte réseau docker du plongeur, mais quand le plongeur (rocketchat), sera up n running (tout en étant unhealthy, parce qu'il ne sera healthy que lorsque le soudeur aura terminé sont travail avec succès), alors le soudeur pourra joindre l'hôte réseau plongeur : 
+
+```bash
+[jibl@pc-100 ~]$ docker exec -it sondereseau bash -c "hostname -i "
+172.18.0.2
+[jibl@pc-100 ~]$ docker exec -it hubot-rocketchat-initializer bash -c "hostname -i "
+172.18.0.7
+[jibl@pc-100 ~]$ docker exec -it hubot-rocketchat-initializer bash -c "ping rocketchat "
+PING rocketchat (172.18.0.6) 56(84) bytes of data.
+64 bytes from rocketchat.coquelicot_devops (172.18.0.6): icmp_seq=1 ttl=64 time=0.131 ms
+64 bytes from rocketchat.coquelicot_devops (172.18.0.6): icmp_seq=2 ttl=64 time=0.095 ms
+64 bytes from rocketchat.coquelicot_devops (172.18.0.6): icmp_seq=3 ttl=64 time=0.078 ms
+64 bytes from rocketchat.coquelicot_devops (172.18.0.6): icmp_seq=4 ttl=64 time=0.130 ms
+64 bytes from rocketchat.coquelicot_devops (172.18.0.6): icmp_seq=5 ttl=64 time=0.116 ms
+^C
+--- rocketchat ping statistics ---
+5 packets transmitted, 5 received, 0% packet loss, time 4010ms
+rtt min/avg/max/mdev = 0.078/0.110/0.131/0.020 ms
+[jibl@pc-100 ~]$ docker exec -it sondereseau bash -c "ping -c 4 rocketchat"
+PING rocketchat (172.18.0.6) 56(84) bytes of data.
+64 bytes from rocketchat.coquelicot_devops (172.18.0.6): icmp_seq=1 ttl=64 time=0.093 ms
+64 bytes from rocketchat.coquelicot_devops (172.18.0.6): icmp_seq=2 ttl=64 time=0.100 ms
+64 bytes from rocketchat.coquelicot_devops (172.18.0.6): icmp_seq=3 ttl=64 time=0.111 ms
+64 bytes from rocketchat.coquelicot_devops (172.18.0.6): icmp_seq=4 ttl=64 time=0.095 ms
+
+--- rocketchat ping statistics ---
+4 packets transmitted, 4 received, 0% packet loss, time 3061ms
+rtt min/avg/max/mdev = 0.093/0.099/0.111/0.014 ms
+[jibl@pc-100 ~]$ docker logs hubot-rocketchat-initializer -f
+
+```
+
 * tester mes changements dans [hubot-init-rocketcha/construction/initialiser-rocketchat-pour-hubot]
 
 * OUIIIIIIIIIIIII ça y est , j'arrvie à faire un user register  :   
