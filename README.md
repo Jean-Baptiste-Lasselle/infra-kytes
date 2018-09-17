@@ -8,6 +8,10 @@
 ```
 
 # Reprise
+Pour tester l'existence d'un utilisateur avec les logs du healthcheck rocketchat : 
+```bash
+docker exec -it sondereseau bash -c "curl http://rocketchat:3000/api/v1/login -d 'username=jibjib&password=superjib'"
+``` 
 
 Le healthcheck Rocketchat, ainsi que son soudeur, ne sont pas encore opérationnels.
 L'erreur obtenue sur le HEALTHCHECK : 
