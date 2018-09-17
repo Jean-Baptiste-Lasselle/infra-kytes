@@ -8,6 +8,14 @@
 ```
 
 # Reprise
+
+J4ai trouvé le endpoint users.register : la doc induit en erreur, il faut forcément l'appeler en mode FORM DATA, et non envoyer une requête REST : parce que le endpoint "users.rgister", ne doit pas être un endpoint, mais un controleur de formulaire.
+
+```bash
+rocketchat@69c762fb5897:/app/bundle$ curl http://localhost:3000/api/v1/users.register -d '{ "username": "jibjib" }' -d '{ "email": "superjib@kytes.io" }' -d '{ "pass": "superjib" }' -d '{ "name": "Utilisateur cr par Jbl" }'
+{"success":false,"error":"Match error: Missing key 'username'"}
+``` 
+
 Pour tester l'existence d'un utilisateur avec les logs du healthcheck rocketchat : 
 ```bash
 docker exec -it sondereseau bash -c "curl http://rocketchat:3000/api/v1/login -d 'username=jibjib&password=superjib'"
