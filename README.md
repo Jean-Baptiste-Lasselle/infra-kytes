@@ -9,6 +9,14 @@
 
 # Reprise
 
+Donc l'utlisateur initial est bien créé par les var. d'environnement de `ROCKETCHAT`, mais alors l'utilisateur initial est "inactif".... : 
+
+```bash
+Ceci est la 1-ère exécution du soudeur de rocketchat 
+alors l'utilisateur initial  ROCKETCHAT est inactif { "active" : false, } , il ne m'est pas possible de créer l'utilisateur dont HUBOT fera usage pour s'exprimer sur RocketChat 
+
+```
+
 çaaaaa y est ! enfin j'ai cramé l'erreur sur l'utilisateur initial : 
 ```bash
 #  
