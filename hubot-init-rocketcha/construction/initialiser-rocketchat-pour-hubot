@@ -60,11 +60,11 @@ echo "  "
 echo "  " 
 echo " + TESTS AVANT TOUT CURL "
 echo "   + test ping $NOM_DOMAINE_DOCKER_ROCKETCHAT "
-ping $NOM_DOMAINE_DOCKER_ROCKETCHAT
+ping -c 4 $NOM_DOMAINE_DOCKER_ROCKETCHAT
 echo "   + test ping mongo "
-ping mongo
+ping -c 4 mongo
 echo " "
-echo "   + test affichage adresse ip dans le résazeu docker "
+echo "   + test affichage adresse ip dans le résaeu docker "
 hostname --ip-address
 echo "  "
 
