@@ -77,10 +77,14 @@ echo "  "
 echo " Ceci est la $NOMBRE_LIGNES-$BEAU_SUFFIXE_FRANCAIS exécution du soudeur de rocketchat "
 echo "  " 
 echo " + TESTS AVANT TOUT CURL "
-echo "   + test ping $NOM_DOMAINE_DOCKER_ROCKETCHAT "
+echo "   + test ping \$NOM_DOMAINE_DOCKER_ROCKETCHAT = $NOM_DOMAINE_DOCKER_ROCKETCHAT  "
 ping -c 4 $NOM_DOMAINE_DOCKER_ROCKETCHAT
 echo "   + (encore, mais avec nom réseau rocketchat en dur) test ping $NOM_DOMAINE_DOCKER_ROCKETCHAT "
 ping -c 4 rocketchat
+echo "   + test ping \$NOM_DOMAINE_DOCKER_ROCKETCHAT.coquelicot_devops = $NOM_DOMAINE_DOCKER_ROCKETCHAT.coquelicot_devops  "
+ping -c 4 "$NOM_DOMAINE_DOCKER_ROCKETCHAT".coquelicot_devops
+echo "   + (et en mettant la varible entre guillements) test ping \"\$NOM_DOMAINE_DOCKER_ROCKETCHAT\" = \"$NOM_DOMAINE_DOCKER_ROCKETCHAT\"  "
+ping -c 4 "$NOM_DOMAINE_DOCKER_ROCKETCHAT"
 echo "   + test ping mongo "
 ping -c 4 mongo
 echo " "
@@ -102,7 +106,7 @@ sleep 5
 # 
 
 # - 1 - bis EH BEN NON, finalement, il va falloir que j'utilise un endpoiknt que j'ai débusqué, pour faire un "register", et de cette manière créer un utilisateur
-export RESULTAT_JSON_AUTH_USER_ROCKET_INITIAL=$(curl http://$NOM_DOMAINE_DOCKER_ROCKETCHAT:$NUMERO_PORT_ECOUTE_ROCKETCHAT/api/v1/users.register \
+export RESULTAT_JSON_AUTH_USER_ROCKET_INITIAL=$(curl "http://$NOM_DOMAINE_DOCKER_ROCKETCHAT:$NUMERO_PORT_ECOUTE_ROCKETCHAT/api/v1/users.register" \
      -d "username=$USERNAME_UTILISATEUR_ADMIN_INITIAL&email=topgunjib@kytes.io&pass=MDP_UTILISATEUR_ADMIN_INITIAL&name=say-my-name-$USERNAME_UTILISATEUR_ADMIN_INITIAL" || exit 1 )
 echo " ------------------------------------------------------------------------------------ "
 echo " ----------   APRES PREMIER APPEL CURL ----------------- "
