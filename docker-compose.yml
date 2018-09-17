@@ -205,7 +205,7 @@ services:
       # + La "apiKey" Gitlab, qui doit être utilisée parle hubot, pour accéder à un compte Gitlab (et remonter des évènements tels que les pull request, comment on commit, etc...) 
       - GITLAB_API_KEY=$HUBOT_GITLAB_API_KEY
       # + Le "Token" Gitlab, qui doit être utilisée parle hubot, pour accéder à un compte Gitlab (et remonter des évènements tels que les pull request, comment on commit, etc...) 
-      - GITLAB_TOKEN=$GITLAB_TOKEN
+      - GITLAB_TOKEN=$HUBOT_GITLAB_TOKEN
       # + Je pense qu'il s'agit du nombre maximal de messages consécutifs que le HUBOT pourra poster dans la chatroom (ANTI FLOOD)
       - GITLAB_RECORD_LIMIT=100
       #
