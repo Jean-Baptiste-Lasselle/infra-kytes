@@ -1,6 +1,6 @@
 # A ranger
 
-### Comment récupérer l'adresse IP interne d'un conteneur
+### Comment récupérer l'adresse IP interne d'un conteneur
 
 ```bash
 [jibl@pc-100 coquelicot]$ docker exec -it mongo bash -c "hostname --ip-address"
