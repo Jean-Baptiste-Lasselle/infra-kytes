@@ -8,6 +8,38 @@
 ```
 
 # Reprise
+Oh oui! :::: !!!!  Quand je mets la valeur en dur ...: 
+
+```bash
+ Ceci est la 12-ième exécution du soudeur de rocketchat 
+  
+ + TESTS AVANT TOUT CURL 
+   + test ping "rocketchat" 
+ping: "rocketchat": Name or service not known
+   + (encore, mais avec nom réseau rocketchat en dur) test ping "rocketchat" 
+PING rocketchat (172.18.0.6) 56(84) bytes of data.
+64 bytes from rocketchat.coquelicot_devops (172.18.0.6): icmp_seq=1 ttl=64 time=0.097 ms
+64 bytes from rocketchat.coquelicot_devops (172.18.0.6): icmp_seq=2 ttl=64 time=0.090 ms
+64 bytes from rocketchat.coquelicot_devops (172.18.0.6): icmp_seq=3 ttl=64 time=0.105 ms
+64 bytes from rocketchat.coquelicot_devops (172.18.0.6): icmp_seq=4 ttl=64 time=0.101 ms
+
+--- rocketchat ping statistics ---
+4 packets transmitted, 4 received, 0% packet loss, time 3001ms
+rtt min/avg/max/mdev = 0.090/0.098/0.105/0.008 ms
+   + test ping mongo 
+PING mongo (172.18.0.3) 56(84) bytes of data.
+64 bytes from mongo.coquelicot_devops (172.18.0.3): icmp_seq=1 ttl=64 time=0.102 ms
+64 bytes from mongo.coquelicot_devops (172.18.0.3): icmp_seq=2 ttl=64 time=0.086 ms
+64 bytes from mongo.coquelicot_devops (172.18.0.3): icmp_seq=3 ttl=64 time=0.078 ms
+64 bytes from mongo.coquelicot_devops (172.18.0.3): icmp_seq=4 ttl=64 time=0.086 ms
+
+--- mongo ping statistics ---
+4 packets transmitted, 4 received, 0% packet loss, time 3006ms
+rtt min/avg/max/mdev = 0.078/0.088/0.102/0.008 ms
+ 
+   + test affichage adresse ip dans le résaeu docker 
+172.18.0.7
+```
 
 Ok, j'avais donc un problème certain: l'injoignabilité de l'hôte réseau rocketchat, depuis le conteneur soudeur. Et j'ai fait toute une batterie de tests, pour vérifier, que certes, à son démarrge, le soudeur ne trouve pas l'hôte réseau docker du plongeur, mais quand le plongeur (rocketchat), sera up n running (tout en étant unhealthy, parce qu'il ne sera healthy que lorsque le soudeur aura terminé sont travail avec succès), alors le soudeur pourra joindre l'hôte réseau plongeur : 
 
