@@ -68,9 +68,13 @@ export USER_ID_RECUPERE=9HqLlyZOugoStsXCUfD_0YdwnNnunAJF8V47U3QHXSq
 
 curl --fail http://localhost:3000/api/v1/login -d "username=$UTILISATEUR_ROCKETCHAT_HUBOT&password=$UTILISATEUR_ROCKETCHAT_HUBOT_MDP" || exit 1
 
-JSON_RECUPERE=$(curl --fail http://localhost:3000/api/v1/login -d "username=$UTILISATEUR_ROCKETCHAT_HUBOT&password=$UTILISATEUR_ROCKETCHAT_HUBOT_MDP")
+export JSON_RECUPERE=$(curl --fail http://localhost:3000/api/v1/login -d "username=$UTILISATEUR_ROCKETCHAT_HUBOT&password=$UTILISATEUR_ROCKETCHAT_HUBOT_MDP")
+echo "   "
+echo " JIBL POUR DEBUG HEALTHCHECK_ROCKETCHAT / JSON_RECUPERE : "
+echo "   "
+echo "$JSON_RECUPERE"
+echo "   "
 
-export JSON_RECUPERE
 # ------------------ anti-slash point, pour "sourcer" les deux sous process $(...)
 AUTH_TOKEN_RECUPERE=$(echo "$JSON_RECUPERE"|grep authToken| awk -F '{print $2}')
 USER_ID_RECUPERE=$(echo "$JSON_RECUPERE"|grep userId| awk -F '{print $2}')
@@ -86,6 +90,12 @@ USER_ID_RECUPERE=$(echo "$JSON_RECUPERE"|grep userId| awk -F '{print $2}')
 # echo "  "
 # echo "  VERIF [USER_ID_RECUPERE=$USER_ID_RECUPERE]"
 # echo "  "
+# echo "  VERIF [UTILISATEUR_ROCKETCHAT_HUBOT=$UTILISATEUR_ROCKETCHAT_HUBOT]"
+# echo "  "
+# echo "  VERIF [UTILISATEUR_ROCKETCHAT_HUBOT_MDP=$UTILISATEUR_ROCKETCHAT_HUBOT_MDP]"
+# echo "  "
+# echo "  VERIF [CHATROOM_ROCKETCHAT_HUBOT=$CHATROOM_ROCKETCHAT_HUBOT]"
+# echo "  "
 # echo " ------------------------------------------------------------ "
 # echo "  "
 # echo "  "
@@ -96,10 +106,7 @@ USER_ID_RECUPERE=$(echo "$JSON_RECUPERE"|grep userId| awk -F '{print $2}')
 
 
 # ===>>>>> Test CURL pour vérifier l'existence de la CHATROOM $CHATROOM_ROCKETCHAT_HUBOT
-curl --fail -H "X-Auth-Token: $AUTH_TOKEN_RECUPERE" \
-     -H "X-User-Id: $USER_ID_RECUPERE" \
-     http://localhost:3000/api/v1/channels.info?roomName=$CHATROOM_ROCKETCHAT_HUBOT \
-     || exit 1
+curl --fail -H "X-Auth-Token: $AUTH_TOKEN_RECUPERE" -H "X-User-Id: $USER_ID_RECUPERE" http://localhost:3000/api/v1/channels.info?roomName=$CHATROOM_ROCKETCHAT_HUBOT || exit 1
      # http://localhost:3000/api/v1/channels.info?roomId=$CHATROOM_HUBOT_ROOM_ID \ # Si le romoName est fourni, le roomId est Optionnel 
      
      
