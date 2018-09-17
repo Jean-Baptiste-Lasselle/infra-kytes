@@ -71,6 +71,23 @@ echo "  "
 echo "   Attente de 5 secondes, pour voir..."
 sleep 5
 
+# + Pour compter le nombre d'exécutions du présent script (donc du conteneur tout entier)
+# rm -f ./compteur-executions-soudeur.jbl
+
+echo " Je suis le soudeur de Rocketchat, et je traville, Veuillez ne pas me déranger svp. " >> ./compteur-executions-soudeur.jbl
+
+export NOMBRE_LIGNES=$(wc -l ./compteur-executions-soudeur.jbl |awk '{print $1}')
+# - La Femme Française, est belle, avant tout. C'est la première des règles. Et peu importe qu'elle soit dans le méttier de la soudure, Elle est Belle.
+export BEAU_SUFFIXE_FRANCAIS="ère"
+
+if [ "$NOMBRE_LIGNES" == "1" ]; then
+  BEAU_SUFFIXE_FRANCAIS="ère"
+else
+  BEAU_SUFFIXE_FRANCAIS="ième"
+fi
+
+echo " Ceci est la $NOMBRE_LIGNES-$BEAU_SUFFIXE_FRANCAIS exécution du soudeur de rocketchat "
+
 # 
 # - 1 - récupérer AUTH_TOKEN et USER_ID de l'admin initial RocketChat, au moement du login
 # 
@@ -83,6 +100,7 @@ export RESULTAT_JSON_AUTH_USER_ROCKET_INITIAL=$(curl http://$NOM_DOMAINE_DOCKER_
      -d "username=$USERNAME_UTILISATEUR_ADMIN_INITIAL&email=topgunjib@kytes.io&pass=MDP_UTILISATEUR_ADMIN_INITIAL&name=say-my-name-$USERNAME_UTILISATEUR_ADMIN_INITIAL" || exit 1 )
      
 
+echo " Ceci est la $NOMBRE_LIGNES-$BEAU_SUFFIXE_FRANCAIS exécution du soudeur de rocketchat "
 # 
 # - 
 # - Ceci n'est pas un healthcheck : 
@@ -91,6 +109,7 @@ export RESULTAT_JSON_AUTH_USER_ROCKET_INITIAL=$(curl http://$NOM_DOMAINE_DOCKER_
 export RESULTAT_JSON_AUTH_USER_ROCKET_INITIAL=$(curl http://$NOM_DOMAINE_DOCKER_ROCKETCHAT:$NUMERO_PORT_ECOUTE_ROCKETCHAT/api/v1/login \
      -d "username=$USERNAME_UTILISATEUR_ADMIN_INITIAL&password=$MDP_UTILISATEUR_ADMIN_INITIAL" || exit 1)
 
+echo " Ceci est la $NOMBRE_LIGNES-$BEAU_SUFFIXE_FRANCAIS exécution du soudeur de rocketchat "
 # 
 # - La requête retourne TOUJOURS du JSON, car si la commande curl échoue, alors le processus s'interrompt avec
 #   le "exit 1" ci-dessus.
@@ -120,6 +139,7 @@ if [ "x$RESULTAT_UTILISATEUR_INIT_ROCKETCHAT_ACTIF" == "x" ]; then
   exit 1
 fi
 
+echo " Ceci est la $NOMBRE_LIGNES-$BEAU_SUFFIXE_FRANCAIS exécution du soudeur de rocketchat "
 # - Récupération AUTH_TOKEN  et USER_ID de l'utilisateur initial créé dans RocketCHat : il exxiste, il est actif, et est admin
 export AUTH_TOKEN_UTILISATEUR_ADMIN_INITIAL="9HqLlyZOugoStsXCUfD_0YdwnNnunAJF8V47U3QHXSq"
 export USER_ID_UTILISATEUR_ADMIN_INITIAL="aobEdbYhXfu5hkeqG"
@@ -184,6 +204,8 @@ echo "  "
 # 
 
 curl -H "X-Auth-Token: $AUTH_TOKEN_UTILISATEUR_ADMIN_INITIAL" -H "X-User-Id: $USER_ID_UTILISATEUR_ADMIN_INITIAL" -H "Content-type:application/json" http://$NOM_DOMAINE_DOCKER_ROCKETCHAT:$NUMERO_PORT_ECOUTE_ROCKETCHAT/api/v1/users.create -d '{"name": "name", "email": "$UTILISATEUR_ROCKETCHAT_HUBOT_EMAIL", "password": "$UTILISATEUR_ROCKETCHAT_HUBOT_MDP", "username": "$UTILISATEUR_ROCKETCHAT_HUBOT", "customFields": { "twitter": "@utilisateurHubotSurLeCompteYoomaTwitter" } }'
+
+echo " Ceci est la $NOMBRE_LIGNES-$BEAU_SUFFIXE_FRANCAIS exécution du soudeur de rocketchat "
 
 # curl -H "X-Auth-Token: $AUTH_TOKEN_UTILISATEUR_ADMIN_INITIAL" \
 #      -H "X-User-Id: $USER_ID_UTILISATEUR_ADMIN_INITIAL" \
@@ -251,6 +273,7 @@ export RESULTAT_CREATION_UTILISATEUR_ROCKETCHAT_HUBOT=$(curl -H "X-Auth-Token: $
                                                               http://$NOM_DOMAINE_DOCKER_ROCKETCHAT:$NUMERO_PORT_ECOUTE_ROCKETCHAT/api/v1/users.create \
                                                               -d "{'name': \"$NOM_DU_ROBOT_HUBOT_ROCKETCHAT\", 'email': \"$UTILISATEUR_ROCKETCHAT_HUBOT_EMAIL\", 'password': \"$UTILISATEUR_ROCKETCHAT_HUBOT_MDP\", 'username': \"$UTILISATEUR_ROCKETCHAT_HUBOT\", 'customFields': { 'twitter': \"@utilisateurHubotSurLeCompteYoomaTwitter\" } }" || exit 1)
 
+echo " Ceci est la $NOMBRE_LIGNES-$BEAU_SUFFIXE_FRANCAIS exécution du soudeur de rocketchat "
 echo "  "
 echo "  INITIALISER USER ET CHATROOM HUBOT DANS ROCKETCHAT / VERIF. "
 echo "   RESULTAT_CREATION_UTILISATEUR_ROCKETCHAT_HUBOT est égal à : "
@@ -288,11 +311,9 @@ echo "  "
 
 
 
-
-
-
-
 # 
-# - 2 - Créer la chatroom RocketChat, qui sera utilisée par HUBOT
+# - LE GRAND FINAL - Créer la chatroom RocketChat, qui sera utilisée par HUBOT
 # 
 # 
+
+echo " Ceci est la $NOMBRE_LIGNES-$BEAU_SUFFIXE_FRANCAIS exécution du soudeur de rocketchat "
