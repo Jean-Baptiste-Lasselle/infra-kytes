@@ -64,6 +64,11 @@ echo "  "
 # ->   chaque nom de contneur se resoud en l'adresse IP du contneur, dans un réseau Docker usant du pilote "Bridge"
 # 
 
+# - 1 - bis EH BEN NON, finalement, il va falloir que j'utilise un endpoiknt que j'ai débusqué, pour faire un "register", et de cette manière créer un utilisateur
+
+
+
+
 # 
 # - 
 # - Ceci n'est pas un healthcheck : 
