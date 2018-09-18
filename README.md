@@ -7,7 +7,24 @@
 172.24.0.5
 ```
 
+
 # Reprise
+
+## Le reste des paramètes de configuration qu'il faut inclure dans la procision silencieuse
+
+### etape 1
+![fix users.register fait par le CEO](https://github.com/Jean-Baptiste-Lasselle/coquelicot/raw/master/documentation/images/rocket-provision-ce-quil-reste-a-automatiser-1.png)
+
+### etape 2
+![fix users.register fait par le CEO](https://github.com/Jean-Baptiste-Lasselle/coquelicot/raw/master/documentation/images/rocket-provision-ce-quil-reste-a-automatiser-2.png)
+
+### etape 3
+![fix users.register fait par le CEO](https://github.com/Jean-Baptiste-Lasselle/coquelicot/raw/master/documentation/images/rocket-provision-ce-quil-reste-a-automatiser-3.png)
+
+
+https://github.com/Jean-Baptiste-Lasselle/coquelicot/blob/master/documentation/images/
+
+## Pile LIFO
 
 Donc l'utlisateur initial est bien créé par les var. d'environnement de `ROCKETCHAT`, mais alors l'utilisateur initial est "inactif".... : 
 
