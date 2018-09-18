@@ -9,6 +9,8 @@
 
 
 # Reprise
+Ok, donc je n'ai plus besoion de générer le user administrateur initial, il faut donc quej apse à la création du l'utilisateur ROcketChat dont le soudeur fera usage.
+
 
 ## Le reste des paramètes de configuration qu'il faut inclure dans la procision silencieuse
 
