@@ -159,6 +159,7 @@ if [ "$RESULTAT_EXISTENCE_CHATROOM" == "true" ]; then
   echo " C'est bon la CHATROOM [CHATROOM_ROCKETCHAT_HUBOT=$CHATROOM_ROCKETCHAT_HUBOT]  existe bel et bien "
 else
   echo " La CHATROOM [CHATROOM_ROCKETCHAT_HUBOT=$CHATROOM_ROCKETCHAT_HUBOT]  n'existe pas encore, il faut la créer avec le soudeur?.... "
+fi
 # - REPONSE JSON ATTENDUE : 
 # 
 # {
