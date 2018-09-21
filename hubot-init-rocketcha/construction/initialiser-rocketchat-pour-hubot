@@ -241,8 +241,8 @@ sleep 5
 # 
 # 
 
-curl -H "X-Auth-Token: $AUTH_TOKEN_UTILISATEUR_ADMIN_INITIAL" -H "X-User-Id: $USER_ID_UTILISATEUR_ADMIN_INITIAL" -H "Content-type:application/json" http://$NOM_DOMAINE_DOCKER_ROCKETCHAT:$NUMERO_PORT_ECOUTE_ROCKETCHAT/api/v1/users.create -d '{"name": "name", "email": "$UTILISATEUR_ROCKETCHAT_HUBOT_EMAIL", "password": "$UTILISATEUR_ROCKETCHAT_HUBOT_MDP", "username": "$UTILISATEUR_ROCKETCHAT_HUBOT", "customFields": { "twitter": "@utilisateurHubotSurLeCompteYoomaTwitter" } }'
-
+# curl -H "X-Auth-Token: $AUTH_TOKEN_UTILISATEUR_ADMIN_INITIAL" -H "X-User-Id: $USER_ID_UTILISATEUR_ADMIN_INITIAL" -H "Content-type:application/json" http://$NOM_DOMAINE_DOCKER_ROCKETCHAT:$NUMERO_PORT_ECOUTE_ROCKETCHAT/api/v1/users.create -d '{"name": "name", "email": "$UTILISATEUR_ROCKETCHAT_HUBOT_EMAIL", "password": "$UTILISATEUR_ROCKETCHAT_HUBOT_MDP", "username": "$UTILISATEUR_ROCKETCHAT_HUBOT", "customFields": { "twitter": "@utilisateurHubotSurLeCompteYoomaTwitter" } }'
+curl -H "X-Auth-Token: $AUTH_TOKEN_UTILISATEUR_ADMIN_INITIAL" -H "X-User-Id: $USER_ID_UTILISATEUR_ADMIN_INITIAL" -H "Content-type:application/json" http://$NOM_DOMAINE_DOCKER_ROCKETCHAT:$NUMERO_PORT_ECOUTE_ROCKETCHAT/api/v1/users.create -d "{\"name\": \"name\", \"email\": \"$UTILISATEUR_ROCKETCHAT_HUBOT_EMAIL\", \"password\": \"$UTILISATEUR_ROCKETCHAT_HUBOT_MDP\", \"username\": \"$UTILISATEUR_ROCKETCHAT_HUBOT\", \"customFields\": { \"twitter\": \"@utilisateurHubotSurLeCompteYoomaTwitter\" } }"
 echo " Ceci est la $NOMBRE_LIGNES-$BEAU_SUFFIXE_FRANCAIS exécution du soudeur de rocketchat "
 
 # curl -H "X-Auth-Token: $AUTH_TOKEN_UTILISATEUR_ADMIN_INITIAL" \
