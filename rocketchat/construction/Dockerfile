@@ -26,6 +26,9 @@ ENV CHATROOM_ROCKETCHAT_HUBOT=$CHATROOM_ROCKETCHAT_HUBOT
 ADD ./avail-to-hubot-healthcheck .
 ADD ./healthcheck .
 
+# curl pour envoyer les requêtes avec le healthcheck, et jq pour parser les réponses JSON de la REST API RocketChat
+RUN yum update -y && yum install epel-release -y && yum install -y curl jq 
+RUN jq --version
 # USER root
 
 # RUN chmod +x ./avail-to-hubot-healthcheck .
