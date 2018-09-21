@@ -34,37 +34,8 @@ ARG NUMERO_PORT_ECOUTE_ROCKETCHAT=3000
 ENV NUMERO_PORT_ECOUTE_ROCKETCHAT=$NUMERO_PORT_ECOUTE_ROCKETCHAT
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-RUN yum update -y && yum install -y vim curl iputils
+RUN yum update -y && yum install epel-release -y && yum install -y vim curl iputils jq 
+RUN jq --version
 
 RUN mkdir -p /marguerite
 WORKDIR /marguerite
