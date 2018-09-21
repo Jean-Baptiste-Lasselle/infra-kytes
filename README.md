@@ -9,7 +9,10 @@
 
 
 # Reprise
-Ok, donc je n'ai plus besoion de générer le user administrateur initial, il faut donc quej apse à la création du l'utilisateur ROcketChat dont le soudeur fera usage.
+Ok, donc je n'ai plus besoion de générer le user administrateur initial, il faut donc quej apse à la création du l'utilisateur RocketChat dont le soudeur fera usage.
+Donc, comment activer l'utilisateur hubot, sans passer par la web ui ? je v devoir implémenter un jnouvel endpoint, qui ne peut être utilisé qu'une seule et unique fois....à ou que sur un seul et unique utilisateur, celuid ésigné par les varibles d'environment dédiées..
+
+
 
 
 ## Le reste des paramètes de configuration qu'il faut inclure dans la procision silencieuse
