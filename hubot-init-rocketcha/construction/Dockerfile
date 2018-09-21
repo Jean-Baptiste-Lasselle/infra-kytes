@@ -33,7 +33,7 @@ ENV NOM_DOMAINE_DOCKER_ROCKETCHAT=$NOM_DOMAINE_DOCKER_ROCKETCHAT
 ARG NUMERO_PORT_ECOUTE_ROCKETCHAT=3000
 ENV NUMERO_PORT_ECOUTE_ROCKETCHAT=$NUMERO_PORT_ECOUTE_ROCKETCHAT
 
-
+# curl, pour faire des appels REST API, 'jq', pour parser le JSON retour par les requêtes curl
 RUN yum update -y && yum install epel-release -y && yum install -y vim curl iputils jq 
 RUN jq --version
 
