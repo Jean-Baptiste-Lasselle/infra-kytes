@@ -155,7 +155,10 @@ echo "  "
 
 
 # ===>>>>> Test CURL pour vérifier l'existence de la CHATROOM $CHATROOM_ROCKETCHAT_HUBOT
-export RESULTAT_EXISTENCE_CHATROOM=$(curl --fail -H "X-Auth-Token: $AUTH_TOKEN_UTILISATEUR_ADMIN_INITIAL" -H "X-User-Id: $USER_ID_UTILISATEUR_ADMIN_INITIAL" http://localhost:3000/api/v1/channels.info?roomName=$CHATROOM_ROCKETCHAT_HUBOT || exit 1)
+# export RESULTAT_EXISTENCE_CHATROOM=$(curl --fail -H "X-Auth-Token: $AUTH_TOKEN_UTILISATEUR_ADMIN_INITIAL" -H "X-User-Id: $USER_ID_UTILISATEUR_ADMIN_INITIAL" http://localhost:3000/api/v1/channels.info?roomName=$CHATROOM_ROCKETCHAT_HUBOT || exit 1)
+# - pr debug
+export RESULTAT_EXISTENCE_CHATROOM=$(curl -H "X-Auth-Token: $AUTH_TOKEN_UTILISATEUR_ADMIN_INITIAL" -H "X-User-Id: $USER_ID_UTILISATEUR_ADMIN_INITIAL" http://localhost:3000/api/v1/channels.info?roomName=$CHATROOM_ROCKETCHAT_HUBOT || exit 1)
+
 echo " ------------------------------------------------------------ "
 echo "  "
 echo " Réponse JSON à  RESULTAT_EXISTENCE_CHATROOM :  "
