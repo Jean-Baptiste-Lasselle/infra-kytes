@@ -72,7 +72,8 @@ if [ "$NOMBRE_LIGNES" == "1" ]; then
 else
   BEAU_SUFFIXE_FRANCAIS="ième"
 fi
-
+echo " ------------------------------------------------------------------------------------ "
+echo "  "
 echo "  " 
 echo " Ceci est la $NOMBRE_LIGNES-$BEAU_SUFFIXE_FRANCAIS exécution du soudeur de rocketchat "
 echo "  " 
@@ -91,12 +92,8 @@ echo " "
 echo "   + test affichage adresse ip dans le résaeu docker "
 hostname --ip-address
 echo "  "
-echo "  " 
-echo " Ceci est la $NOMBRE_LIGNES-$BEAU_SUFFIXE_FRANCAIS exécution du soudeur de rocketchat "
-echo "  " 
-echo "   Attente de 5 secondes, pour voir..."
-sleep 5
-
+echo " ------------------------------------------------------------------------------------ "
+echo "  "
 
 # 
 # - 1 - récupérer AUTH_TOKEN et USER_ID de l'admin initial RocketChat, au moement du login
@@ -105,9 +102,24 @@ sleep 5
 # ->   chaque nom de contneur se resoud en l'adresse IP du contneur, dans un réseau Docker usant du pilote "Bridge"
 # 
 
+
+# 
+# - 
+# - Ceci n'est pas un healthcheck : 
+#   Au contraire des healthcheck, je veux ici que mon curl soit verbeux, s'il échoue (pas d'option "--fail")
+# 
+
 # - 1 - bis EH BEN NON, finalement, il va falloir que j'utilise un endpoiknt que j'ai débusqué, pour faire un "register", et de cette manière créer un utilisateur
-export RESULTAT_JSON_AUTH_USER_ROCKET_INITIAL=$(curl "http://$NOM_DOMAINE_DOCKER_ROCKETCHAT:$NUMERO_PORT_ECOUTE_ROCKETCHAT/api/v1/users.register" \
-     -d "username=$USERNAME_UTILISATEUR_ADMIN_INITIAL&email=topgunjib@kytes.io&pass=MDP_UTILISATEUR_ADMIN_INITIAL&name=say-my-name-$USERNAME_UTILISATEUR_ADMIN_INITIAL" || exit 1 )
+
+# L'utilisateur Admin initial est créé par les variables d'environnement "built-in" dans l'image du conteneur distribué par  RocketChat 
+# export RESULTAT_JSON_AUTH_USER_ROCKET_INITIAL=$(curl "http://$NOM_DOMAINE_DOCKER_ROCKETCHAT:$NUMERO_PORT_ECOUTE_ROCKETCHAT/api/v1/users.register" \
+#      -d "username=$USERNAME_UTILISATEUR_ADMIN_INITIAL&email=topgunjib@kytes.io&pass=MDP_UTILISATEUR_ADMIN_INITIAL&name=say-my-name-$USERNAME_UTILISATEUR_ADMIN_INITIAL" || exit 1 )
+
+export RESULTAT_JSON_AUTH_USER_ROCKET_INITIAL=$(curl http://$NOM_DOMAINE_DOCKER_ROCKETCHAT:$NUMERO_PORT_ECOUTE_ROCKETCHAT/api/v1/login \
+     -d "username=$USERNAME_UTILISATEUR_ADMIN_INITIAL&password=$MDP_UTILISATEUR_ADMIN_INITIAL" || exit 1)
+
+echo " ------------------------------------------------------------------------------------ "
+echo " Ceci est la $NOMBRE_LIGNES-$BEAU_SUFFIXE_FRANCAIS exécution du soudeur de rocketchat "
 echo " ------------------------------------------------------------------------------------ "
 echo " ----------   APRES PREMIER APPEL CURL ----------------- "
 echo " ------------------------------------------------------------------------------------ "
@@ -124,15 +136,13 @@ echo "  "
 echo " Ceci est la $NOMBRE_LIGNES-$BEAU_SUFFIXE_FRANCAIS exécution du soudeur de rocketchat "
 echo " ------------------------------------------------------------------------------------ "
 echo "  "
-# 
-# - 
-# - Ceci n'est pas un healthcheck : 
-#   Au contraire des healthcheck, je veux ici que mon curl soit verbeux, s'il échoue (pas d'option "--fail")
-# 
-export RESULTAT_JSON_AUTH_USER_ROCKET_INITIAL=$(curl http://$NOM_DOMAINE_DOCKER_ROCKETCHAT:$NUMERO_PORT_ECOUTE_ROCKETCHAT/api/v1/login \
-     -d "username=$USERNAME_UTILISATEUR_ADMIN_INITIAL&password=$MDP_UTILISATEUR_ADMIN_INITIAL" || exit 1)
-
 echo " Ceci est la $NOMBRE_LIGNES-$BEAU_SUFFIXE_FRANCAIS exécution du soudeur de rocketchat "
+echo "  "
+echo "  " 
+echo " Ceci est la $NOMBRE_LIGNES-$BEAU_SUFFIXE_FRANCAIS exécution du soudeur de rocketchat "
+echo "  " 
+echo "   Attente de 5 secondes, pour voir..."
+sleep 5
 # 
 # - La requête retourne TOUJOURS du JSON, car si la commande curl échoue, alors le processus s'interrompt avec
 #   le "exit 1" ci-dessus.
@@ -171,6 +181,9 @@ export USER_ID_UTILISATEUR_ADMIN_INITIAL="aobEdbYhXfu5hkeqG"
 export AUTH_TOKEN_UTILISATEUR_ADMIN_INITIAL=$(echo "$RESULTAT_JSON_AUTH_USER_ROCKET_INITIAL" |grep authToken | awk -F ':' '{print $2}' | awk -F '"' '{print $2}')
 export USER_ID_UTILISATEUR_ADMIN_INITIAL=$(echo "$RESULTAT_JSON_AUTH_USER_ROCKET_INITIAL" |grep userId | awk -F ':' '{print $2}' | awk -F '"' '{print $2}')
 
+echo " ------------------------------------------------------------------------------------------------------- "
+echo " Ceci est la $NOMBRE_LIGNES-$BEAU_SUFFIXE_FRANCAIS exécution du soudeur de rocketchat "
+echo " ------------------------------------------------------------------------------------------------------- "
 echo "  "
 echo " ------------------------------------------------------------------------------------------------------- "
 echo " L'utilisateur Initialement créé au lancement de l'applciation RocketChat, [$USERNAME_UTILISATEUR_ADMIN_INITIAL], existe bel et bien."
@@ -185,7 +198,11 @@ echo "  AUTH_TOKEN_UTILISATEUR_ADMIN_INITIAL=$AUTH_TOKEN_UTILISATEUR_ADMIN_INITI
 echo "  USER_ID_UTILISATEUR_ADMIN_INITIAL=$USER_ID_UTILISATEUR_ADMIN_INITIAL "
 echo " ------------------------------------------------------------------------------------------------------- "
 echo "  "
-
+echo " Ceci est la $NOMBRE_LIGNES-$BEAU_SUFFIXE_FRANCAIS exécution du soudeur de rocketchat "
+echo "  "
+echo "  " 
+echo "   Attente de 5 secondes, pour voir..."
+sleep 5
 # 
 # Example Result
 # 
