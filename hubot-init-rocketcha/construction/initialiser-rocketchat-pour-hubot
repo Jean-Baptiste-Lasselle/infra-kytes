@@ -136,10 +136,6 @@ echo "  "
 echo " Ceci est la $NOMBRE_LIGNES-$BEAU_SUFFIXE_FRANCAIS exécution du soudeur de rocketchat "
 echo " ------------------------------------------------------------------------------------ "
 echo "  "
-echo " Ceci est la $NOMBRE_LIGNES-$BEAU_SUFFIXE_FRANCAIS exécution du soudeur de rocketchat "
-echo "  "
-echo "  " 
-echo " Ceci est la $NOMBRE_LIGNES-$BEAU_SUFFIXE_FRANCAIS exécution du soudeur de rocketchat "
 echo "  " 
 echo "   Attente de 5 secondes, pour voir..."
 sleep 5
@@ -165,10 +161,12 @@ sleep 5
 # fi
 # 
 
-export RESULTAT_UTILISATEUR_INIT_ROCKETCHAT_ACTIF=$(echo "$RESULTAT_JSON_AUTH_USER_ROCKET_INITIAL" |grep active | awk -F ':' '{print $2}' |grep true)
-if [ "x$RESULTAT_UTILISATEUR_INIT_ROCKETCHAT_ACTIF" == "x" ]; then
-  # alors l'utilisateur initial  ROCKETCHAT est inactif (` "active" : false, `), et HEALTHCHECK DOIT ECHOUER silencieusement
-  echo "alors l'utilisateur initial  ROCKETCHAT est inactif { \"active\" : false, } , il ne m'est pas possible de créer l'utilisateur dont HUBOT fera usage pour s'exprimer sur RocketChat "
+export RUSSITE_AUTH_UTILISATEUR_INIT_ROCKETCHAT=$(echo "$RESULTAT_JSON_AUTH_USER_ROCKET_INITIAL" | jq -r '.status')
+if [ "$RUSSITE_AUTH_UTILISATEUR_INIT_ROCKETCHAT" == "success" ]; then
+  # alors l'authentification avec l'utilisateur initial  ROCKETCHAT  s'est bien déroulée, et HEALTHCHECK DOIT REUSSIR silencieusement
+  echo "J'ai pu m'authentifier avec l'utilisateur admin initial  ROCKETCHAT, je vais donc pouvoir utilsier ses userId et AuthToken, créer l'utilisateur dont HUBOT fera usage pour s'exprimer sur RocketChat "
+else
+  echo "Je n'ai pas pu m'authentifier avec l'utilisateur admin initial ROCKETCHAT, il ne m'est donc pas possible de créer l'utilisateur dont HUBOT fera usage pour s'exprimer sur RocketChat "
   exit 1
 fi
 
@@ -178,8 +176,8 @@ export AUTH_TOKEN_UTILISATEUR_ADMIN_INITIAL="9HqLlyZOugoStsXCUfD_0YdwnNnunAJF8V4
 export USER_ID_UTILISATEUR_ADMIN_INITIAL="aobEdbYhXfu5hkeqG"
 
 
-export AUTH_TOKEN_UTILISATEUR_ADMIN_INITIAL=$(echo "$RESULTAT_JSON_AUTH_USER_ROCKET_INITIAL" |grep authToken | awk -F ':' '{print $2}' | awk -F '"' '{print $2}')
-export USER_ID_UTILISATEUR_ADMIN_INITIAL=$(echo "$RESULTAT_JSON_AUTH_USER_ROCKET_INITIAL" |grep userId | awk -F ':' '{print $2}' | awk -F '"' '{print $2}')
+export AUTH_TOKEN_UTILISATEUR_ADMIN_INITIAL=$(echo "$RESULTAT_JSON_AUTH_USER_ROCKET_INITIAL"  | jq -r '.data.authToken')
+export USER_ID_UTILISATEUR_ADMIN_INITIAL=$(echo "$RESULTAT_JSON_AUTH_USER_ROCKET_INITIAL"  | jq -r '.data.userId' )
 
 echo " ------------------------------------------------------------------------------------------------------- "
 echo " Ceci est la $NOMBRE_LIGNES-$BEAU_SUFFIXE_FRANCAIS exécution du soudeur de rocketchat "
