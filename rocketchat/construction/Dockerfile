@@ -27,7 +27,8 @@ ADD ./avail-to-hubot-healthcheck .
 ADD ./healthcheck .
 
 # curl pour envoyer les requêtes avec le healthcheck, et jq pour parser les réponses JSON de la REST API RocketChat
-RUN yum update -y && yum install epel-release -y && yum install -y curl jq 
+RUN apt-get update -y && apt-get install -y curl jq 
+RUN curl --version
 RUN jq --version
 # USER root
 
