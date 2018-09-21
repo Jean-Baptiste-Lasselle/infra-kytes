@@ -40,7 +40,7 @@ checkHealth () {
 	echo " provision-girofle-  ------------------------------------------------------------------------------ " 
 	echo " provision-girofle-  - Existence du fichier [/etc/gitlab/gitlab.rb] dans le conteneur  [$NOM_DU_CONTENEUR_INSPECTE]:" 
 	echo " provision-girofle-  - "
-	sudo docker exec -it $NOM_DU_CONTENEUR_INSPECTE /bin/bash -c "ls -all /etc/gitlab/gitlab.rb" >> $NOMFICHIERLOG
+	sudo docker exec -it $NOM_DU_CONTENEUR_INSPECTE /bin/bash -c "ls -all /etc/gitlab/gitlab.rb" 
 	echo " provision-girofle-  - " 
 	echo " provision-girofle-  ------------------------------------------------------------------------------ " 
 }
