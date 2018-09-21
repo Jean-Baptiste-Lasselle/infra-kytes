@@ -108,9 +108,12 @@ echo " Ceci est la $NOMBRE_LIGNES-$BEAU_SUFFIXE_FRANCAIS exécution du helthchec
 # - Récupération AUTH_TOKEN  et USER_ID de l'utilisateur initial créé dans RocketCHat : il exxiste, il est actif, et est admin
 export AUTH_TOKEN_UTILISATEUR_ADMIN_INITIAL="9HqLlyZOugoStsXCUfD_0YdwnNnunAJF8V47U3QHXSq"
 export USER_ID_UTILISATEUR_ADMIN_INITIAL="aobEdbYhXfu5hkeqG"
-
+# - dans dokcerfile : 
+#         - ADMIN_USERNAME=$USERNAME_UTILISATEUR_ADMIN_INITIAL 
+#         - ADMIN_PASS=$MDP_UTILISATEUR_ADMIN_INITIAL" 
+#         - ADMIN_EMAIL=$UTILISATEUR_ROCKETCHAT_HUBOT_EMAIL
 export RESULTAT_JSON_AUTH_UTILISATEUR_ADMIN_INITIAL=$(curl --fail http://$NOM_DOMAINE_DOCKER_ROCKETCHAT:$NUMERO_PORT_ECOUTE_ROCKETCHAT/api/v1/login \
-     -d "username=$USERNAME_UTILISATEUR_ADMIN_INITIAL&password=$MDP_UTILISATEUR_ADMIN_INITIAL" || exit 1)
+     -d "username=$ADMIN_USERNAME&password=$ADMIN_PASS" || exit 1)
 
 # et ça, c'est la manière dont le HUBOT récupèrera les userId et authToken qui lui sont destinés.
 export AUTH_TOKEN_UTILISATEUR_ADMIN_INITIAL=$(echo "$RESULTAT_JSON_AUTH_UTILISATEUR_ADMIN_INITIAL"  | jq -r '.data.authToken')
@@ -125,6 +128,10 @@ echo "  "
 echo "  VERIF [AUTH_HUBOT_JSON_RECUPERE="
 echo "$AUTH_HUBOT_JSON_RECUPERE"
 echo " ------------------------------------------------------------ "
+echo "  "
+echo "  VERIF [ADMIN_USERNAME=$ADMIN_USERNAME]"
+echo "  "
+echo "  VERIF [ADMIN_PASS=$ADMIN_PASS]"
 echo "  "
 echo "  VERIF [AUTH_TOKEN_UTILISATEUR_ADMIN_INITIAL=$AUTH_TOKEN_UTILISATEUR_ADMIN_INITIAL]"
 echo "  "
