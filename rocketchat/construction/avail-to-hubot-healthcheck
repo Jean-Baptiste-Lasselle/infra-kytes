@@ -75,55 +75,60 @@ fi
 # D'après cette doc, il faudrait que j'ajoute une option curl pour préciser un apiTken ou un truc comme ça, comme celui que
 # RocketChat Me Donne Quand je créée un incoming webhook
 # -> SI la requête curl échoue, alors "exit 1" sera évalué, et donc le processus d'exécution de script s'interrompt, et retourne le code d'erreur 1
-export JSON_RECUPERE=""
+export AUTH_HUBOT_JSON_RECUPERE=""
 #       "authToken": "9HqLlyZOugoStsXCUfD_0YdwnNnunAJF8V47U3QHXSq",
 #       "userId": "aobEdbYhXfu5hkeqG",    
 export AUTH_TOKEN_RECUPERE=9HqLlyZOugoStsXCUfD_0YdwnNnunAJF8V47U3QHXSq
 export USER_ID_RECUPERE=9HqLlyZOugoStsXCUfD_0YdwnNnunAJF8V47U3QHXSq
 # export CHATROOM_HUBOT_ROOM_ID=ByehQjC44FwMeiLbX
 
-export JSON_RECUPERE=$(curl --fail http://localhost:3000/api/v1/login -d "username=$UTILISATEUR_ROCKETCHAT_HUBOT&password=$UTILISATEUR_ROCKETCHAT_HUBOT_MDP" || exit 1)
+export AUTH_HUBOT_JSON_RECUPERE=$(curl --fail http://localhost:3000/api/v1/login -d "username=$UTILISATEUR_ROCKETCHAT_HUBOT&password=$UTILISATEUR_ROCKETCHAT_HUBOT_MDP" || exit 1)
 
-# export JSON_RECUPERE=$(curl --fail http://localhost:3000/api/v1/login -d "username=$UTILISATEUR_ROCKETCHAT_HUBOT&password=$UTILISATEUR_ROCKETCHAT_HUBOT_MDP")
+# export AUTH_HUBOT_JSON_RECUPERE=$(curl --fail http://localhost:3000/api/v1/login -d "username=$UTILISATEUR_ROCKETCHAT_HUBOT&password=$UTILISATEUR_ROCKETCHAT_HUBOT_MDP")
 echo "   "
-echo " JIBL POUR DEBUG HEALTHCHECK_ROCKETCHAT / JSON_RECUPERE : "
+echo " JIBL POUR DEBUG HEALTHCHECK_ROCKETCHAT / AUTH_HUBOT_JSON_RECUPERE : "
 echo "   "
-echo "$JSON_RECUPERE"
+echo "$AUTH_HUBOT_JSON_RECUPERE"
 echo "   "
 
-export REUSSITE_AUTH_UTILISATEUR_HUBOT_ROCKETCHAT=$(echo "$JSON_RECUPERE" | jq -r '.status')
+export REUSSITE_AUTH_UTILISATEUR_HUBOT_ROCKETCHAT=$(echo "$AUTH_HUBOT_JSON_RECUPERE" | jq -r '.status')
 if [ "$REUSSITE_AUTH_UTILISATEUR_HUBOT_ROCKETCHAT" == "success" ]; then
   # alors l'authentification avec l'utilisateur initial  ROCKETCHAT  s'est bien déroulée, et HEALTHCHECK DOIT REUSSIR silencieusement
   echo "J'ai pu m'authentifier avec l'utilisateur ROCKETCHAT dont le HUBOT fait usage, il existe donc bel et bien, et je peux vérifier ses roles et permissions.  "
 else
-  echo "Je n'ai pas pu m'authentifier avec l'utilisateur admin initial ROCKETCHAT, il ne m'est donc pas possible de créer l'utilisateur dont HUBOT fera usage pour s'exprimer sur RocketChat "
+  echo "Je n'ai pas pu m'authentifier avec l'utilisateur ROCKETCHAT dont lke hubot fait usage, Le HEalthcheck doit donc échouer, parceque RocketChat n'est pas prêt à l'emploi pour le HUBOT "
   exit 1
 fi
 
 echo " Ceci est la $NOMBRE_LIGNES-$BEAU_SUFFIXE_FRANCAIS exécution du helthcheck de rocketchat, consistant à vérifier l'existence et la disponibilité de l'utilisateur dont le HUBOT fera usage. "
+
+
+
+# ------------------ On doit utiliser le userId et authToken de l'utilisateur Admin initial, pour vérifier l'existence de la chatroom : parce que c'est un admin légitme, le robot HUBOT n'a pas vocation a avoir les droits d'un super-admin.
 # - Récupération AUTH_TOKEN  et USER_ID de l'utilisateur initial créé dans RocketCHat : il exxiste, il est actif, et est admin
 export AUTH_TOKEN_UTILISATEUR_ADMIN_INITIAL="9HqLlyZOugoStsXCUfD_0YdwnNnunAJF8V47U3QHXSq"
 export USER_ID_UTILISATEUR_ADMIN_INITIAL="aobEdbYhXfu5hkeqG"
 
+export RESULTAT_JSON_AUTH_UTILISATEUR_ADMIN_INITIAL=$(curl --fail http://$NOM_DOMAINE_DOCKER_ROCKETCHAT:$NUMERO_PORT_ECOUTE_ROCKETCHAT/api/v1/login \
+     -d "username=$USERNAME_UTILISATEUR_ADMIN_INITIAL&password=$MDP_UTILISATEUR_ADMIN_INITIAL" || exit 1)
+
 # et ça, c'est la manière dont le HUBOT récupèrera les userId et authToken qui lui sont destinés.
-export AUTH_TOKEN_UTILISATEUR_ADMIN_INITIAL=$(echo "$RESULTAT_JSON_AUTH_USER_ROCKET_INITIAL"  | jq -r '.data.authToken')
-export USER_ID_UTILISATEUR_ADMIN_INITIAL=$(echo "$RESULTAT_JSON_AUTH_USER_ROCKET_INITIAL"  | jq -r '.data.userId' )
+export AUTH_TOKEN_UTILISATEUR_ADMIN_INITIAL=$(echo "$RESULTAT_JSON_AUTH_UTILISATEUR_ADMIN_INITIAL"  | jq -r '.data.authToken')
+export USER_ID_UTILISATEUR_ADMIN_INITIAL=$(echo "$RESULTAT_JSON_AUTH_UTILISATEUR_ADMIN_INITIAL"  | jq -r '.data.userId' )
 
 
-# ------------------ anti-slash point, pour "sourcer" les deux sous process $(...)
-AUTH_TOKEN_RECUPERE=$(echo "$JSON_RECUPERE"|grep authToken| awk -F '{print $2}')
-USER_ID_RECUPERE=$(echo "$JSON_RECUPERE"|grep userId| awk -F '{print $2}')
-# - TODO:  récupérer la valeur de l'AuthToken retourné (de même on récupèrera l'ID de la CHATROOM créée pour le hubot avec le REST API 
 echo " ------------------------------------------------------------ "
 echo "  "
 echo "  DEBUG  :  dans le HEALTH CHECK DNS LE CONTENEUR ROCKETCHAT : pour  le HUBOT "
 echo " ------------------------------------------------------------ "
 echo "  "
-echo "  VERIF [JSON_RECUPERE=$JSON_RECUPERE]"
+echo "  VERIF [AUTH_HUBOT_JSON_RECUPERE="
+echo "$AUTH_HUBOT_JSON_RECUPERE"
+echo " ------------------------------------------------------------ "
 echo "  "
-echo "  VERIF [AUTH_TOKEN_RECUPERE=$AUTH_TOKEN_RECUPERE]"
+echo "  VERIF [AUTH_TOKEN_UTILISATEUR_ADMIN_INITIAL=$AUTH_TOKEN_UTILISATEUR_ADMIN_INITIAL]"
 echo "  "
-echo "  VERIF [USER_ID_RECUPERE=$USER_ID_RECUPERE]"
+echo "  VERIF [USER_ID_UTILISATEUR_ADMIN_INITIAL=$USER_ID_UTILISATEUR_ADMIN_INITIAL]"
 echo "  "
 echo "  VERIF [UTILISATEUR_ROCKETCHAT_HUBOT=$UTILISATEUR_ROCKETCHAT_HUBOT]"
 echo "  "
@@ -141,7 +146,7 @@ echo "  "
 
 
 # ===>>>>> Test CURL pour vérifier l'existence de la CHATROOM $CHATROOM_ROCKETCHAT_HUBOT
-export RESULTAT_EXISTENCE_CHATROOM=$(curl --fail -H "X-Auth-Token: $AUTH_TOKEN_RECUPERE" -H "X-User-Id: $USER_ID_RECUPERE" http://localhost:3000/api/v1/channels.info?roomName=$CHATROOM_ROCKETCHAT_HUBOT || exit 1)
+export RESULTAT_EXISTENCE_CHATROOM=$(curl --fail -H "X-Auth-Token: $AUTH_TOKEN_UTILISATEUR_ADMIN_INITIAL" -H "X-User-Id: $USER_ID_UTILISATEUR_ADMIN_INITIAL" http://localhost:3000/api/v1/channels.info?roomName=$CHATROOM_ROCKETCHAT_HUBOT || exit 1)
 echo " ------------------------------------------------------------ "
 echo "  "
 echo " Réponse JSON à  RESULTAT_EXISTENCE_CHATROOM :  "
