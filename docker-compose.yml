@@ -44,7 +44,9 @@ services:
 #     links:
 #       - marguerite_gitlab
     environment:
-      - GITLAB_HOST=marguerite_gitlab:8081
+      # - GITLAB_HOST=marguerite_gitlab:8081
+      - GITLAB_HOST=gitlab.marguerite.io
+      - GITLAB_PORT=8081
     ports:
       - "8000:8000"
 #     expose:
