@@ -7,13 +7,19 @@ services:
     image: gitlab/gitlab-ce:${GITLAB_CE_VERSION}
     restart: always
     container_name: "$NOM_CONTENEUR_GITLAB"
-    hostname: "${GITLAB_HOST}"
+#     hostname: "${GITLAB_HOST}"
     environment:
-      - TZ=${TZ}
-      # - VIRTUAL_HOST=${GITLAB_HOST},${REGISTRY_HOST}
-      # - VIRTUAL_PORT=80
-      # - LETSENCRYPT_HOST=${GITLAB_HOST},${REGISTRY_HOST}
-      # - LETSENCRYPT_EMAIL=${LETSENCRYPT_EMAIL}
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'http://gitlab.marguerite.io:8083/'
+#         gitlab_rails['gitlab_shell_ssh_port'] = 222
+#         gitlab_rails['lfs_enabled'] = true
+        nginx['listen_port'] = 80
+#     environment:
+#       - TZ=${TZ}
+#       # - VIRTUAL_HOST=${GITLAB_HOST},${REGISTRY_HOST}
+#       # - VIRTUAL_PORT=80
+#       # - LETSENCRYPT_HOST=${GITLAB_HOST},${REGISTRY_HOST}
+#       # - LETSENCRYPT_EMAIL=${LETSENCRYPT_EMAIL}
     ports:
       # 0.0.0.0 : 8081 : 80 
       - ${GITLAB_HTTP_IP}:${GITLAB_HTTP_PORT}:80
