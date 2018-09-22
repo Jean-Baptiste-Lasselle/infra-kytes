@@ -8,12 +8,12 @@ services:
 #     hostname: "gitlab"
     environment:
       GITLAB_OMNIBUS_CONFIG: |
-        external_url 'http://gitlab.marguerite.io:8090/'
+        external_url 'http://gitlab.marguerite.io:8099/'
         gitlab_rails['gitlab_shell_ssh_port'] = 222
         gitlab_rails['lfs_enabled'] = true
-        nginx['listen_port'] = 8081
+        nginx['listen_port'] = 8099
     ports:
-      - "8081:8081"
+      - "8081:8099"
       - "4443:443"
       - "2222:222"
 #     expose:
