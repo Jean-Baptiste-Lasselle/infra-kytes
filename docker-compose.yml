@@ -356,7 +356,7 @@ services:
 
 
 networks:
-  $NOM_DU_RESEAU_INFRA_DOCKER:
+  devops:
     # name: 'reseau-devops'
     driver: bridge
 #     external: true 
