@@ -27,7 +27,7 @@ services:
       - redis
       - postgres
     networks:
-      - $NOM_DU_RESEAU_INFRA_DOCKER
+      - "$NOM_DU_RESEAU_INFRA_DOCKER"
       
   runner:
     image: gitlab/gitlab-runner:${GITLAB_RUNNER_VERSION}
@@ -39,7 +39,7 @@ services:
       - ./gitlab/runner:/etc/gitlab-runner
       - /var/run/docker.sock:/var/run/docker.sock:rw
     networks:
-      - $NOM_DU_RESEAU_INFRA_DOCKER
+      - "$NOM_DU_RESEAU_INFRA_DOCKER"
  
   postgres:
     image: postgres:${POSTGRES_VERSION}
@@ -53,7 +53,7 @@ services:
       - ./volumes/postgres:/var/lib/postgresql/data
     restart: always
     networks:
-      - $NOM_DU_RESEAU_INFRA_DOCKER
+      - "$NOM_DU_RESEAU_INFRA_DOCKER"
       
   redis:
     image: redis:${REDIS_VERSION}
@@ -64,6 +64,8 @@ services:
     volumes:
       - ./volumes/redis:/var/lib/redis
     restart: always
+    networks:
+      - "$NOM_DU_RESEAU_INFRA_DOCKER"
 # --------------------------------------------------------------------------
 # ------------------------ ANCIEN GITLAB -----------------------------------
 # --------------------------------------------------------------------------
@@ -141,7 +143,7 @@ services:
     ports:
       - 27017:27017
     networks:
-      - devops
+      - "$NOM_DU_RESEAU_INFRA_DOCKER"
 #       devops:
 #         ipv4_address: 192.168.160.6
     
@@ -168,7 +170,7 @@ services:
 #       - REPLICASET_CONF_PARAM_1: ""
 #       - REPLICASET_CONF_PARAM_2: ""
     networks:
-      - $NOM_DU_RESEAU_INFRA_DOCKER
+      - "$NOM_DU_RESEAU_INFRA_DOCKER"
 #     expose:
 #       - 27017
     depends_on:
@@ -214,7 +216,7 @@ services:
       # + mais plus depusi l'avènement du soudeur
       # - mongo-init-replica
     networks:
-      - $NOM_DU_RESEAU_INFRA_DOCKER
+      - "$NOM_DU_RESEAU_INFRA_DOCKER"
 #       devops:
 #         ipv4_address: 192.168.160.8
     restart: always
@@ -251,7 +253,7 @@ services:
       - NUMERO_PORT_ECOUTE_ROCKETCHAT=$NUMERO_PORT_ECOUTE_ROCKETCHAT
       - NOM_DU_ROBOT_HUBOT_ROCKETCHAT=$NOM_DU_ROBOT_HUBOT_ROCKETCHAT
     networks:
-      - $NOM_DU_RESEAU_INFRA_DOCKER
+      - "$NOM_DU_RESEAU_INFRA_DOCKER"
     depends_on:
     # + Pour qu'il ne démarre, que lorsque le soudeur précédent a terminé son trvail
       - mongo
@@ -303,7 +305,7 @@ services:
       - 3001:3001
     # this is used to expose the hubot port for notifications on the host on port 3001, e.g. for hubot-jenkins-notifier
     networks:
-      - $NOM_DU_RESEAU_INFRA_DOCKER
+      - "$NOM_DU_RESEAU_INFRA_DOCKER"
 #       devops:
 #         ipv4_address: 192.168.160.9
     depends_on:
@@ -338,7 +340,7 @@ services:
 #       - rocketchat:rocketchat
 #       - marguerite_gitlab:marguerite_gitlab
     networks:
-      - $NOM_DU_RESEAU_INFRA_DOCKER
+      - "$NOM_DU_RESEAU_INFRA_DOCKER"
 #       devops:
 #         ipv4_address: 192.168.160.10
     depends_on:
@@ -354,7 +356,7 @@ services:
     tty: true
 #     command: yum update -y && yum install -y iputils && ping -c 4 localhost
     networks:
-      - $NOM_DU_RESEAU_INFRA_DOCKER
+      - "$NOM_DU_RESEAU_INFRA_DOCKER"
     # restart: 'always'
 
 
