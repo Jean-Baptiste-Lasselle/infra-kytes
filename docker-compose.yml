@@ -9,9 +9,10 @@ services:
     container_name: "$NOM_CONTENEUR_GITLAB"
 #     hostname: "${GITLAB_HOST}"
     environment:
-      GITLAB_OMNIBUS_CONFIG: |
-        external_url 'http://gitlab.marguerite.io:8083/'
-        nginx['listen_port'] = 80
+    - GITLAB_OMNIBUS_CONFIG="external_url 'http://gitlab.marguerite.io:8083/';"
+#       GITLAB_OMNIBUS_CONFIG: |
+#         external_url 'http://gitlab.marguerite.io:8083/'
+#         nginx['listen_port'] = 80
 #     environment:
 #       - TZ=${TZ}
 #       # - VIRTUAL_HOST=${GITLAB_HOST},${REGISTRY_HOST}
@@ -40,7 +41,7 @@ services:
     environment:
       - CI_SERVER_URL=https://${GITLAB_HOST}/
     volumes:
-      - ./gitlab/runner:/etc/gitlab-runner
+      - ./gitlab/runner:/etc/gitlab-runner:rw
       - /var/run/docker.sock:/var/run/docker.sock:rw
     networks:
       - "$NOM_DU_RESEAU_INFRA_DOCKER"
@@ -54,7 +55,7 @@ services:
       - POSTGRES_USER=gitlab
       - POSTGRES_DB=gitlabhq_production
     volumes:
-      - ./volumes/postgres:/var/lib/postgresql/data
+      - ./volumes/postgres:/var/lib/postgresql/data:rw
     restart: always
     networks:
       - "$NOM_DU_RESEAU_INFRA_DOCKER"
@@ -66,7 +67,7 @@ services:
     command:
       - --loglevel warning
     volumes:
-      - ./volumes/redis:/var/lib/redis
+      - ./volumes/redis:/var/lib/redis:rw
     restart: always
     networks:
       - "$NOM_DU_RESEAU_INFRA_DOCKER"
@@ -199,7 +200,7 @@ services:
 #     hostname: 'rocketchat'
 
     volumes:
-      - ./rocketchat/uploads:/app/uploads
+      - ./rocketchat/uploads:/app/uploads:rw
     environment:
       - PORT=3000
       - ROOT_URL=http://rocketchat.marguerite.io:3000
@@ -302,7 +303,7 @@ services:
 #       - rocketchat:rocketchat
 #       - marguerite_gitlab:marguerite_gitlab
     volumes:
-      - ./hubot/scripts:/home/hubot/scripts
+      - ./hubot/scripts:/home/hubot/scripts:rw
     expose:
       - 3001
     ports:
@@ -320,10 +321,10 @@ services:
 #     hostname: "proxy"
     container_name: "proxy"
     volumes:
-      - ./nginx/chatops.conf:/etc/nginx/conf.d/chatops.conf
+      - ./nginx/chatops.conf:/etc/nginx/conf.d/chatops.conf:rw
 #       - ./nginx/hosts:/etc/hosts
-      - ./nginx/logs:/var/log/nginx
-      - ./nginx/certificates:/etc/nginx/certificates/
+      - ./nginx/logs:/var/log/nginx:rw
+#      - ./nginx/certificates:/etc/nginx/certificates/:rw
     ports:
       - "8090:80"
       - "443:443"
