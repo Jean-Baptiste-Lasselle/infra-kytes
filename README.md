@@ -611,11 +611,23 @@ export PROVISIONING_HOME=$(pwd)/coquelicot && mkdir -p $PROVISIONING_HOME && cd 
 
 L'ensemble de l'infrastructure commence à peser, et notamment, pour optimiser le cycle de tests, il est bon de remarquer que cette recette implique : 
 
+
+Les variables d'environnement ci-dessous doivent corrrespondre aux valeurs indiquées dans le `./.env`
+
 ```
+# - Ces variables d'environnement ont des valeurs qui doivent corrrespondre aux 
+#   valeurs indiquées dans le `./.env`
+export VERSION_IMAGE_GITLAB_CE=11.2.1-ce.0
+export VERSION_IMAGE_GITLAB_CE_RUNNER=alpine-v11.2.0
+export VERSION_IMAGE_REDIS_DB=3-alpine
+export VERSION_IMAGE_POSTGRESSQL=9.6.8-alpine
+
 docker pull centos:7
 docker pull mongo:latest
-docker pull gitlab/gitlab-ce:latest
-docker pull gitlab/gitlab-runner:latest
+docker pull "gitlab/gitlab-ce:$VERSION_IMAGE_GITLAB_CE"
+docker pull "postgres:$VERSION_IMAGE_POSTGRESSQL"
+docker pull "redis:$VERSION_IMAGE_REDIS_DB"
+docker pull gitlab/gitlab-runner:$VERSION_IMAGE_GITLAB_CE_RUNNER
 docker pull rocketchat/rocket.chat:latest
 docker pull rocketchat/hubot-rocketchat:latest
 docker pull nginx:latest
