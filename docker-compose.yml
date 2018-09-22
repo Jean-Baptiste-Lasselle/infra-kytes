@@ -2,7 +2,7 @@ version: '3'
 
 services:
   gitlab:
-    image: 'gitlab/gitlab-ce:latest'
+    image: "gitlab/gitlab-ce:$GITLAB_CE_VERSION"
     container_name: "$NOM_CONTENEUR_GITLAB"
     restart: always
 #     hostname: "gitlab"
@@ -35,7 +35,7 @@ services:
 
   runner:
     build: ./gitlab/runner/
-    image: jbl/gitlab-runner:latest
+    image: jbl/gitlab-runner:$GITLAB_RUNNER_VERSION
     container_name: 'runner'
 #     hostname: "runner"
     restart: "always"
