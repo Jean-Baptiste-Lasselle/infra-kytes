@@ -10,23 +10,22 @@ services:
     hostname: "${GITLAB_HOST}"
     environment:
       - TZ=${TZ}
-      - VIRTUAL_HOST=${GITLAB_HOST},${REGISTRY_HOST}
-      - VIRTUAL_PORT=80
-      - LETSENCRYPT_HOST=${GITLAB_HOST},${REGISTRY_HOST}
-      - LETSENCRYPT_EMAIL=${LETSENCRYPT_EMAIL}
+      # - VIRTUAL_HOST=${GITLAB_HOST},${REGISTRY_HOST}
+      # - VIRTUAL_PORT=80
+      # - LETSENCRYPT_HOST=${GITLAB_HOST},${REGISTRY_HOST}
+      # - LETSENCRYPT_EMAIL=${LETSENCRYPT_EMAIL}
     ports:
       - ${GITLAB_SSH_IP}:${GITLAB_SSH_PORT}:22
     volumes:
-      - './volumes/config:/etc/gitlab'
-      - './volumes/logs:/var/log/gitlab'
-      - './volumes/data:/var/opt/gitlab'
+      - './gitlab/config:/etc/gitlab'
+      - './gitlab/logs:/var/log/gitlab'
+      - './gitlab/data:/var/opt/gitlab'
     depends_on:
       - redis
       - postgres
     networks:
-      - default
-      - nginx_proxy
-
+      - $NOM_DU_RESEAU_INFRA_DOCKER
+      
   runner:
     image: gitlab/gitlab-runner:${GITLAB_RUNNER_VERSION}
     restart: always
@@ -36,7 +35,9 @@ services:
     volumes:
       - ./volumes/runner:/etc/gitlab-runner
       - /var/run/docker.sock:/var/run/docker.sock:rw
-
+    networks:
+      - $NOM_DU_RESEAU_INFRA_DOCKER
+ 
   postgres:
     image: postgres:${POSTGRES_VERSION}
     restart: always
@@ -48,7 +49,8 @@ services:
     volumes:
       - ./volumes/postgres:/var/lib/postgresql/data
     restart: always
-    
+    networks:
+      - $NOM_DU_RESEAU_INFRA_DOCKER
 # --------------------------------------------------------------------------
 # ------------------------ ANCIEN GITLAB -----------------------------------
 # --------------------------------------------------------------------------
@@ -153,7 +155,7 @@ services:
 #       - REPLICASET_CONF_PARAM_1: ""
 #       - REPLICASET_CONF_PARAM_2: ""
     networks:
-      - devops
+      - $NOM_DU_RESEAU_INFRA_DOCKER
 #     expose:
 #       - 27017
     depends_on:
@@ -199,7 +201,7 @@ services:
       # + mais plus depusi l'avènement du soudeur
       # - mongo-init-replica
     networks:
-      - devops
+      - $NOM_DU_RESEAU_INFRA_DOCKER
 #       devops:
 #         ipv4_address: 192.168.160.8
     restart: always
@@ -236,7 +238,7 @@ services:
       - NUMERO_PORT_ECOUTE_ROCKETCHAT=$NUMERO_PORT_ECOUTE_ROCKETCHAT
       - NOM_DU_ROBOT_HUBOT_ROCKETCHAT=$NOM_DU_ROBOT_HUBOT_ROCKETCHAT
     networks:
-      - devops
+      - $NOM_DU_RESEAU_INFRA_DOCKER
     depends_on:
     # + Pour qu'il ne démarre, que lorsque le soudeur précédent a terminé son trvail
       - mongo
@@ -288,7 +290,7 @@ services:
       - 3001:3001
     # this is used to expose the hubot port for notifications on the host on port 3001, e.g. for hubot-jenkins-notifier
     networks:
-      - devops
+      - $NOM_DU_RESEAU_INFRA_DOCKER
 #       devops:
 #         ipv4_address: 192.168.160.9
     depends_on:
@@ -323,7 +325,7 @@ services:
 #       - rocketchat:rocketchat
 #       - marguerite_gitlab:marguerite_gitlab
     networks:
-      - devops
+      - $NOM_DU_RESEAU_INFRA_DOCKER
 #       devops:
 #         ipv4_address: 192.168.160.10
     depends_on:
@@ -339,12 +341,12 @@ services:
     tty: true
 #     command: yum update -y && yum install -y iputils && ping -c 4 localhost
     networks:
-      - devops
+      - $NOM_DU_RESEAU_INFRA_DOCKER
     # restart: 'always'
 
 
 networks:
-  devops:
+  $NOM_DU_RESEAU_INFRA_DOCKER:
     # name: 'reseau-devops'
     driver: bridge
 #     external: true 
