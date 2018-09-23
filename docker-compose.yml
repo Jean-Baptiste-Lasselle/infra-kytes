@@ -7,16 +7,11 @@ services:
     image: gitlab/gitlab-ce:${GITLAB_CE_VERSION}
     restart: always
     container_name: "$NOM_CONTENEUR_GITLAB"
-    hostname: "${GITLAB_HOST}"
+#     hostname: "${GITLAB_HOST}"
 #     environment:
-#       - GITLAB_OMNIBUS_CONFIG="external_url 'http://gitlab.marguerite.io:8083/';"
-# #       GITLAB_OMNIBUS_CONFIG: |
-# #         external_url 'http://gitlab.example.com:9090'
-# #         nginx['listen_port'] = 80
-    environment:
-      GITLAB_OMNIBUS_CONFIG: |
-        external_url 'http://gitlab.marguerite.io:8083'
-        gitlab_rails['gitlab_shell_ssh_port'] = 2222
+#       GITLAB_OMNIBUS_CONFIG: |
+#         external_url 'http://gitlab.marguerite.io:8083'
+#         gitlab_rails['gitlab_shell_ssh_port'] = 2222
 #     environment:
 #       - TZ=${TZ}
 #       # - VIRTUAL_HOST=${GITLAB_HOST},${REGISTRY_HOST}
