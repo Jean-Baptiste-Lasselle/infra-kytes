@@ -39,8 +39,9 @@ ENV JENKINS_OPTS="--handlerCountStartup=100 --handlerCountMax=300"
 
 RUN /usr/local/bin/install-plugins.sh git:2.6.0
 ```
+Référentiel de plugins Jenkins.io : 
 
-
+https://plugins.jenkins.io/
 
 ### Gitlab et reverse proxy 
 
