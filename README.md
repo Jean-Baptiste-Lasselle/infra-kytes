@@ -10,8 +10,39 @@
 
 # Reprise
 
+Pour régler mes pb d'installations de plugins jenkins : 
+* https://github.com/jenkinsci/docker/blob/master/README.md
+* https://stackoverflow.com/questions/39782949/when-building-jenkins-in-docker-plugins-fail-to-install : et là, il y a une propositon de Dockerfile Jenkins, semblant indiquer qu'il est classique, de recourir à un dockerfile pour définir la provision des plugins, à partir du Jenkins de base, LTS.
 
-### Haut de pile 
+Le Dockerfile Jenkins à essayer mentionne le nom des plugins à installer, il faudra donc consolider la liste des plugins que je souhaite instller : 
+```Dockerfile
+FROM jenkins
+MAINTAINER me
+
+USER root
+
+RUN echo 2.0 > /usr/share/jenkins/ref/jenkins.install.UpgradeWizard.state
+
+RUN apt-get update \
+      && apt-get install -y sudo \
+      && apt-get install -y vim \
+      && rm -rf /var/lib/apt/lists/*
+RUN echo "jenkins ALL=NOPASSWD: ALL" >> /etc/sudoers
+
+USER jenkins
+
+# COPY plugins.txt /usr/share/jenkins/plugins.txt
+# RUN /usr/local/bin/plugins.sh /usr/share/jenkins/plugins.txt
+ENV JAVA_OPTS="-Xmx8192m"
+ENV JENKINS_OPTS="--handlerCountStartup=100 --handlerCountMax=300"
+
+
+RUN /usr/local/bin/install-plugins.sh git:2.6.0
+```
+
+
+
+### Gitlab et reverse proxy 
 
 Ok, Gitlab et Rocketchat fonctionenent tout deux, derrière un reverse proxy nginx, et voici un résumé , dans la configuration courante, des différents tests d'accès par client Http :
 
