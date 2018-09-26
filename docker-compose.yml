@@ -312,7 +312,8 @@ services:
   nginx:
     image: nginx
 #     hostname: "proxy"
-    container_name: "proxy"
+    container_name: "reverseproxy"
+    restart: always
     volumes:
       - ./nginx/chatops.conf:/etc/nginx/conf.d/chatops.conf:rw
 #       - ./nginx/hosts:/etc/hosts
