@@ -18,8 +18,8 @@ services:
     ports:
       - 8080:8080
       - 50000:50000
-    volumes:
-     - ./jenkins:/var/jenkins_home:rw
+#     volumes:
+#      - ./jenkins:/var/jenkins_home:rw
       # - /usr/src/api/instance-strapi/node_modules
 #     depends_on:
 #       - strapibdd
