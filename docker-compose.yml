@@ -7,7 +7,7 @@ services:
     image: gitlab/gitlab-ce:${GITLAB_CE_VERSION}
     restart: always
     container_name: "$NOM_CONTENEUR_GITLAB"
-    hostname: "gitlab"
+    hostname: "gitlab.marguerite.io"
     environment:
       GITLAB_OMNIBUS_CONFIG: |
         external_url 'http://gitlab.marguerite.io:8083/'
