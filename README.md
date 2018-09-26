@@ -43,6 +43,35 @@ Référentiel de plugins Jenkins.io :
 
 https://plugins.jenkins.io/
 
+exemple d'installation d'un plugin, qui peut servir pour utiliser les conteneurs docker dans les pipelines Jenkins : https://plugins.jenkins.io/docker-workflow 
+
+```Dockerfile
+FROM jenkins
+MAINTAINER me
+
+USER root
+
+RUN echo 2.0 > /usr/share/jenkins/ref/jenkins.install.UpgradeWizard.state
+
+RUN apt-get update \
+      && apt-get install -y sudo \
+      && apt-get install -y vim \
+      && rm -rf /var/lib/apt/lists/*
+RUN echo "jenkins ALL=NOPASSWD: ALL" >> /etc/sudoers
+
+USER jenkins
+
+# COPY plugins.txt /usr/share/jenkins/plugins.txt
+# RUN /usr/local/bin/plugins.sh /usr/share/jenkins/plugins.txt
+ENV JAVA_OPTS="-Xmx8192m"
+ENV JENKINS_OPTS="--handlerCountStartup=100 --handlerCountMax=300"
+
+
+RUN /usr/local/bin/install-plugins.sh git:2.6.0
+RUN /usr/local/bin/install-plugins.sh  docker-workflow:1.17
+```
+
+
 ### Gitlab et reverse proxy 
 
 Ok, Gitlab et Rocketchat fonctionenent tout deux, derrière un reverse proxy nginx, et voici un résumé , dans la configuration courante, des différents tests d'accès par client Http :
