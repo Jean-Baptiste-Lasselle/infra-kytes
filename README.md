@@ -595,6 +595,11 @@ Soit, en une seule ligne :
 ```bash
 export PROVISIONING_HOME=$(pwd)/coquelicot && mkdir -p $PROVISIONING_HOME && cd $PROVISIONING_HOME && git clone "https://github.com/Jean-Baptiste-Lasselle/coquelicot" . && chmod +x ./operations.sh && ./operations.sh
 ```
+Toujours en une seule ligne, mais en mode verbeux : 
+
+```bash
+export PROVISIONING_HOME=$(pwd)/coquelicot && mkdir -p $PROVISIONING_HOME && cd $PROVISIONING_HOME && git clone "https://github.com/Jean-Baptiste-Lasselle/coquelicot" . && chmod +x ./operations-verbose.sh && ./operations-verbose.sh
+```
 
 À la fin de l'exécution de cette recette, il faut encore : 
 * Aller, avec l'interface graphique web RocketChat, connecté avec un user RocketChat admin, ajouter, dans l'administration, un "Incoming Webhook", via le menu "Administration > Integrations"
@@ -834,16 +839,12 @@ See: ${data.object_attributes.url}`
 Lorsque vous aurez exécuté une première fois l'instruction en une ligne ci-dessus, vous pourrez faire un cycle IAAC, sans re-télécharger d'image extérieures, en reconstruisant toutes les images qui ne sont pas téléchargées, avec : 
 
 ```bash
-export PROVISIONING_HOME=$(pwd)/coquelicot && docker-compose down && cd .. && sudo rm -rf $PROVISIONING_HOME && mkdir -p $PROVISIONING_HOME && cd $PROVISIONING_HOME && git clone "https://github.com/Jean-Baptiste-Lasselle/coquelicot" . && chmod +x ./operations.sh && ./operations.sh
+export PROVISIONING_HOME=$(pwd) && docker-compose down && cd .. && sudo rm -rf $PROVISIONING_HOME && mkdir -p $PROVISIONING_HOME && cd $PROVISIONING_HOME && git clone "https://github.com/Jean-Baptiste-Lasselle/coquelicot" . && chmod +x ./operations.sh && ./operations.sh
 ``` 
-La commande ci-dessus, modulo une première exécution de commande, est idempotente
+La commande ci-dessus, modulo la première exécution de cette recette exécutée, est idempotente
 
 
-Pour exécuter cette recette une première fois, en mode verbeux : 
 
-```bash
-export PROVISIONING_HOME=$(pwd)/coquelicot && mkdir -p $PROVISIONING_HOME && cd $PROVISIONING_HOME && git clone "https://github.com/Jean-Baptiste-Lasselle/coquelicot" . && chmod +x ./operations-verbose.sh && ./operations-verbose.sh
-```
 
 
 
