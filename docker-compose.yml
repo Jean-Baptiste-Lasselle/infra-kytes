@@ -1,6 +1,32 @@
 version: '3'
 
 services:
+
+  jenkins:
+    container_name: jenkins-marguerite
+    image: jenkins:2.60.3
+#    build:
+#      context: ./construction/marguerite/jenkins
+#       args:
+#         - MARGUERITE_HOST=jenkins.marguerite.io
+#  docker run --name myjenkins -p 8080:8080 -p 50000:50000 --env JAVA_OPTS=-Dhudson.footerURL=http://mycompany.com jenkins
+#    environment:
+      # - JAVA_OPTS=-Dhudson.footerURL=http://mycompany.com jenkins
+      # à tester passer plusieurs JAVA_OPTS au démarrage de Jenkins, en mettant la valeur de JAVA_OPTS entre guillemets
+      # - JAVA_OPTS="-Dhudson.footerURL=http://mycompany.com jenkins  -Dune.autre.option.jenkins=savaleur    "
+      # - MARGUERITE_HOST=jenkins.marguerite.io
+    ports:
+      - 8080:8080
+      - 50000:50000
+#     volumes:
+#      - ./marguerite:/var/jenkins_home:rw
+      # - /usr/src/api/instance-strapi/node_modules
+#     depends_on:
+#       - strapibdd
+#    restart: always
+    networks:
+      - "$NOM_DU_RESEAU_INFRA_DOCKER"
+
   # Pour la conf gitlab + runner + postgres + rredis => cf [https://github.com/mgcrea/docker-compose-gitlab-ce], many
   # thanks to Olivier ;) https://github.com/mgcrea
   gitlab:
@@ -64,66 +90,6 @@ services:
     restart: always
     networks:
       - "$NOM_DU_RESEAU_INFRA_DOCKER"
-# --------------------------------------------------------------------------
-# ------------------------ ANCIEN GITLAB -----------------------------------
-# --------------------------------------------------------------------------
-#   gitlab:
-#     image: "gitlab/gitlab-ce:$GITLAB_CE_VERSION"
-#     container_name: "$NOM_CONTENEUR_GITLAB"
-#     restart: always
-#     hostname: "gitlab"
-#     environment:
-#       GITLAB_OMNIBUS_CONFIG: |
-#         external_url 'http://gitlab.marguerite.io:8081/'
-#         gitlab_rails['gitlab_shell_ssh_port'] = 222
-#         gitlab_rails['lfs_enabled'] = true
-#         nginx['listen_port'] = 8099
-#     ports:
-#       - "8081:8099"
-#       - "4443:443"
-#       - "2222:222"
-# #     expose:
-# #       - "3000"
-# #       - "8081"
-# #       - "4443"
-# #       - "2222"
-# #       - "80"
-# #       - "222"
-# #       - "443"
-#     volumes:
-#       - ./gitlab/config:/etc/gitlab
-#       - ./gitlab/logs:/var/log/gitlab
-#       - ./gitlab/data:/var/opt/gitlab
-#     networks:
-#       - devops
-# #       devops:
-# #         ipv4_address: 192.168.160.4
-# 
-#   runner:
-#     build: ./gitlab/runner/
-#     image: jbl/gitlab-runner:$GITLAB_RUNNER_VERSION
-#     container_name: 'runner'
-# #     hostname: "runner"
-#     restart: "always"
-#     volumes:
-#       - /var/run/docker.sock:/var/run/docker.sock
-# #     links:
-# #       - marguerite_gitlab
-#     environment:
-#       # - GITLAB_HOST=marguerite_gitlab:8081
-#       - GITLAB_HOST=gitlab.marguerite.io
-#       - GITLAB_PORT=8081
-#     ports:
-#       - "8000:8000"
-# #     expose:
-# #       - "8000"
-#     networks:
-#       - devops
-# #       devops:
-# #         ipv4_address: 192.168.160.5
-# --------------------------------------------------------------------------
-# ------------------------ ANCIEN GITLAB -----------------------------------
-# --------------------------------------------------------------------------
 
 
   mongo:
@@ -319,6 +285,7 @@ services:
 #       - ./nginx/hosts:/etc/hosts
       - ./nginx/logs:/var/log/nginx:rw
 #      - ./nginx/certificates:/etc/nginx/certificates/:rw
+      - ./nginx/jenkins.conf:/etc/nginx/conf.d/
     ports:
       - "8090:80"
       - "443:443"
@@ -344,6 +311,8 @@ services:
 #         ipv4_address: 192.168.160.10
     depends_on:
       - rocketchat
+      - jenkins
+      - gitlab
 
 # --- Tests : Réseau
   sondereseau:
