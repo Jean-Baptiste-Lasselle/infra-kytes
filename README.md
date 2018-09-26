@@ -11,6 +11,67 @@
 # Reprise
 
 
+### Haut de pile 
+
+Ok, Gitlab et Rocketchat fonctionenent tout deux, derrière un reverse proxy nginx, et voici un résumé , dans la configuration courante, des différents tests d'accès par client Http :
+
+
+Pour résumer, je constate que Rocketchat est "classiquement" aztteignable : 
+* Soit directement via le port exposé à l'exteréieur par le conteneur docker
+* Soit via le reverse proxy
+* Et dans les deux cas précédents, l'adresse IP ou le nom de domaine peuvent être utiolisés pour désigner l'hôte réseau: la VM surlaquelle est installé Docker.
+
+Et Gitlab est atteignable :
+* Soit directement via le port exposé à l'exteréieur par le conteneur docker
+* Soit via le reverse proxy
+* Et dans les deux cas précédents, l'adresse IP NE PEUT ETREE UTILISEE, seul le nom de domaine peut être utilisés pour désigner l'hôte réseau, la VM surlaquelle est installé Docker.
+
+Le test curl /ping ci-dessous montre clairement que c'est Gitlab qui refuse les connexions (ou le nginx embarqué dans le conteneur gitlab). La raison en est sans aucun doute, que j'ai configuré une "EXTERNAL_URL", et que celle-ci fait usage du nom de domaine, et non de l'adresse IP.
+
+
+```bash
+jibl@pc-alienware-jib:~$ curl http://gitlab.marguerite.io:8083/
+curl: (7) Failed to connect to gitlab.marguerite.io port 8083: Connection refused
+jibl@pc-alienware-jib:~$ curl http://gitlab.marguerite.io:8082/
+curl: (7) Failed to connect to gitlab.marguerite.io port 8082: No route to host
+jibl@pc-alienware-jib:~$ curl http://192.168.1.29:8083/
+curl: (7) Failed to connect to 192.168.1.29 port 8083: Connection refused
+jibl@pc-alienware-jib:~$ curl http://192.168.1.29:8082/
+curl: (7) Failed to connect to 192.168.1.29 port 8082: No route to host
+jibl@pc-alienware-jib:~$ ping 192.168.1.29
+PING 192.168.1.29 (192.168.1.29) 56(84) bytes of data.
+64 bytes from 192.168.1.29: icmp_seq=1 ttl=64 time=0.336 ms
+64 bytes from 192.168.1.29: icmp_seq=2 ttl=64 time=0.351 ms
+64 bytes from 192.168.1.29: icmp_seq=3 ttl=64 time=0.301 ms
+^C
+--- 192.168.1.29 ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 2038ms
+rtt min/avg/max/mdev = 0.301/0.329/0.351/0.025 ms
+jibl@pc-alienware-jib:~$ 
+
+```
+
+Liste des URLs utilisées pour les tests, et résultats des tests :
+
+URL								|	Résultat requête
+------------------------------------------------------------------------------------------
+http://192.168.1.29:8083/					|	KO
+------------------------------------------------------------------------------------------
+http://gitlab.marguerite.io:8083/				|	KO
+------------------------------------------------------------------------------------------
+http://gitlab.marguerite.io:8090/				|	OK
+------------------------------------------------------------------------------------------
+http://192.168.1.29:3000/					|	OK
+------------------------------------------------------------------------------------------
+http://192.168.1.29:8090/					|  Pourquoi RocketChat?...
+------------------------------------------------------------------------------------------
+http://rocketchat.marguerite.io:3000/				|	OK
+------------------------------------------------------------------------------------------
+http://rocketchat.marguerite.io:8090/				|	OK
+------------------------------------------------------------------------------------------
+
+
+
 Maintenant, j'ai exactement l'erreur Gitlab suivante : 
 
 https://gitlab.com/gitlab-org/gitlab-ce/issues/50184
