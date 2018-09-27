@@ -10,6 +10,11 @@
 
 # Reprise
 
+
+### Jenkins
+
+#### Provision initiale : pb installation plugins
+
 Pour régler mes pb d'installations de plugins jenkins : 
 * https://github.com/jenkinsci/docker/blob/master/README.md
 * https://stackoverflow.com/questions/39782949/when-building-jenkins-in-docker-plugins-fail-to-install : et là, il y a une propositon de Dockerfile Jenkins, semblant indiquer qu'il est classique, de recourir à un dockerfile pour définir la provision des plugins, à partir du Jenkins de base, LTS.
@@ -70,6 +75,56 @@ ENV JENKINS_OPTS="--handlerCountStartup=100 --handlerCountMax=300"
 RUN /usr/local/bin/install-plugins.sh git:2.6.0
 RUN /usr/local/bin/install-plugins.sh  docker-workflow:1.17
 ```
+De plus, Jenkins notifie un warning dans la Web GUI :  `Jenkins root path is not set`, et mes recherches indiquent que pour donner une valeur à la variable d'environneemnt configurant le `Jenkins root path is not set`, on doit faire usage de l'option `--prefix=/chemin/vers/mon/jenkins` de la manière suivante : 
+```Dockerfile
+FROM jenkins
+MAINTAINER me
+
+USER root
+
+RUN echo 2.0 > /usr/share/jenkins/ref/jenkins.install.UpgradeWizard.state
+
+RUN apt-get update \
+      && apt-get install -y sudo \
+      && apt-get install -y vim \
+      && rm -rf /var/lib/apt/lists/*
+RUN echo "jenkins ALL=NOPASSWD: ALL" >> /etc/sudoers
+
+USER jenkins
+
+# COPY plugins.txt /usr/share/jenkins/plugins.txt
+# RUN /usr/local/bin/plugins.sh /usr/share/jenkins/plugins.txt
+ENV JAVA_OPTS="-Xmx8192m"
+ENV JENKINS_OPTS="--handlerCountStartup=100 --handlerCountMax=300 --prefix=/var/jenkins_home"
+
+
+RUN /usr/local/bin/install-plugins.sh git:2.6.0
+RUN /usr/local/bin/install-plugins.sh  docker-workflow:1.17
+```
+
+
+#### Jenkins Headless
+
+Il sera intéressant de voir comment installer Jenkins en mode Headless, et le piloter en mode REST API
+
+La réf. https://stackoverflow.com/questions/8109607/headless-continuous-integration-with-jenkins semble indiquer qu'il faut faire usage d'un recette de la forme :
+
+* Installer une JRE headless open source : 
+```bash
+# exemple CentOS :
+yum install -y java-1.8.0-openjdk-headless
+```
+* Régler un [problème connu](https://wiki.jenkins.io/display/JENKINS/Jenkins+got+java.awt.headless+problem) de JEnkins Headless, en relation avec certains packages OS pour les polices de caractères.
+
+* Utiliser une options headless pour l'invocation : 
+
+```bash
+export CATALINA_OPTS="-DJENKINS_HOME=/opt/itmsetup/apache-tomcat-6.0.37/jenkins -Xmx750m -Djava.awt.headless=true"  
+```
+
+
+
+
 
 
 ### Gitlab et reverse proxy 
