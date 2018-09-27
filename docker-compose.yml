@@ -5,6 +5,7 @@ services:
   jenkins:
     container_name: jenkins-marguerite
     image: jenkins:2.60.3
+    image: jenkins/jenkins:lts
 #    build:
 #      context: ./construction/marguerite/jenkins
 #       args:
