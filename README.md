@@ -19,19 +19,19 @@ Pour exécuter cette recette une première fois :
 export PROVISIONING_HOME=$HOME/infra-kytes
 mkdir -p $PROVISIONING_HOME
 cd $PROVISIONING_HOME
-git clone "https://github.com/Jean-Baptiste-Lasselle/coquelicot" . 
+git clone "https://github.com/Jean-Baptiste-Lasselle/infra-kytes " . 
 chmod +x ./operations.sh
 ./operations.sh
 ```
 Soit, en une seule ligne : 
 
 ```bash
-export PROVISIONING_HOME=$(pwd)/coquelicot && mkdir -p $PROVISIONING_HOME && cd $PROVISIONING_HOME && git clone "https://github.com/Jean-Baptiste-Lasselle/coquelicot" . && chmod +x ./operations.sh && ./operations.sh
+export PROVISIONING_HOME=$HOME/infra-kytes && mkdir -p $PROVISIONING_HOME && cd $PROVISIONING_HOME && git clone "https://github.com/Jean-Baptiste-Lasselle/infra-kytes " . && chmod +x ./operations.sh && ./operations.sh
 ```
 Toujours en une seule ligne, mais en mode verbeux : 
 
 ```bash
-export PROVISIONING_HOME=$(pwd)/coquelicot && mkdir -p $PROVISIONING_HOME && cd $PROVISIONING_HOME && git clone "https://github.com/Jean-Baptiste-Lasselle/coquelicot" . && chmod +x ./operations-verbose.sh && ./operations-verbose.sh
+export PROVISIONING_HOME=$HOME/infra-kytes && mkdir -p $PROVISIONING_HOME && cd $PROVISIONING_HOME && git clone "https://github.com/Jean-Baptiste-Lasselle/infra-kytes " . && chmod +x ./operations-verbose.sh && ./operations-verbose.sh
 ```
 
 
