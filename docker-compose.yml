@@ -7,10 +7,10 @@ services:
     image: gitlab/gitlab-ce:${GITLAB_CE_VERSION}
     restart: always
     container_name: "$NOM_CONTENEUR_GITLAB"
-    hostname: "gitlab.marguerite.io"
+    hostname: "gitlab.kytes.io"
     environment:
       GITLAB_OMNIBUS_CONFIG: |
-        external_url 'http://gitlab.marguerite.io:8083/'
+        external_url 'http://gitlab.kytes.io:8083/'
         gitlab_rails['lfs_enabled'] = true
     ports:
       # 0.0.0.0 : 8081 : 80 
@@ -70,27 +70,29 @@ services:
     container_name: "reverseproxy"
     restart: always
     volumes:
-      - ./nginx/infra-kytes.conf:/etc/nginx/conf.d/infra-kytes.conf:rw
+      - ./nginx/:/etc/nginx/conf.d/:rw
+      # - ./nginx/chatops.conf:/etc/nginx/conf.d/:rw
+      # - ./nginx/jenkins.conf:/etc/nginx/conf.d/:rw
+      # - ./nginx/infra-kytes.conf:/etc/nginx/conf.d/infra-kytes.conf:rw
 #       - ./nginx/hosts:/etc/hosts
       - ./nginx/logs:/var/log/nginx:rw
-#      - ./nginx/certificates:/etc/nginx/certificates/:rw
-      - ./nginx/jenkins.conf:/etc/nginx/conf.d/
+#      - ./nginx/certificates:/etc/nginx/certificates/
+- ./nginx/jenkins.conf:/etc/nginx/conf.d/
     ports:
-      - "80:80"
-      - "443:443"
-#      - "22:22"
+      - "80:8030"
+      - "443:7443"
+      - "222:322"
     expose:
-      - "3000"
-      - "80"
-      - "443"
-#      - "22"
+      - "8030"
+      - "7443"
+#      - "322"
     environment:
-#       - NGINX_HOST=marguerite.io
-#       - GIT_HOST=gitlab.marguerite.io
-#       - CHAT_HOST=rocketchat.marguerite.io
-      - NGINX_PORT=80
-      - NGINX_SSL=443
-#       - NGINX_SSH=22
+#       - NGINX_HOST=kytes.io
+#       - GIT_HOST=gitlab.kytes.io
+#       - CHAT_HOST=rocketchat.kytes.io
+      - NGINX_PORT=8030
+      - NGINX_SSL=7443
+      - NGINX_SSH=322
     networks:
       - "$NOM_DU_RESEAU_INFRA_DOCKER"
     depends_on:
@@ -99,7 +101,7 @@ services:
 # --- Tests : Réseau
   sondereseau:
     # image: mongo:3.2
-    image: marguerite/sonde-reseau:0.0.1
+    image: kytes/sonde-reseau:0.0.1
     build: ./tests/sondereseau/
 #     hostname: "sondereseau"
     container_name: 'sondereseau'
