@@ -1,34 +1,7 @@
 version: '3'
 
 services:
-
-  jenkins:
-    container_name: jenkins-marguerite
-    # image: jenkins:2.60.3
-    image: jenkins/jenkins:lts
-#    build:
-#      context: ./construction/marguerite/jenkins
-#       args:
-#         - MARGUERITE_HOST=jenkins.marguerite.io
-#  docker run --name myjenkins -p 8080:8080 -p 50000:50000 --env JAVA_OPTS=-Dhudson.footerURL=http://mycompany.com jenkins
-#    environment:
-      # - JAVA_OPTS=-Dhudson.footerURL=http://mycompany.com jenkins
-      # à tester passer plusieurs JAVA_OPTS au démarrage de Jenkins, en mettant la valeur de JAVA_OPTS entre guillemets
-      # - JAVA_OPTS="-Dhudson.footerURL=http://mycompany.com jenkins  -Dune.autre.option.jenkins=savaleur    "
-      # - MARGUERITE_HOST=jenkins.marguerite.io
-    ports:
-      - 8080:8080
-      - 50000:50000
-#     volumes:
-#      - ./jenkins:/var/jenkins_home:rw
-      # - /usr/src/api/instance-strapi/node_modules
-#     depends_on:
-#       - strapibdd
-#    restart: always
-    networks:
-      - "$NOM_DU_RESEAU_INFRA_DOCKER"
-
-  # Pour la conf gitlab + runner + postgres + rredis => cf [https://github.com/mgcrea/docker-compose-gitlab-ce], many
+  # Pour la conf gitlab + runner + postgres + redis => cf [https://github.com/mgcrea/docker-compose-gitlab-ce], many
   # thanks to Olivier ;) https://github.com/mgcrea
   gitlab:
     image: gitlab/gitlab-ce:${GITLAB_CE_VERSION}
@@ -51,18 +24,6 @@ services:
     depends_on:
       - redis
       - postgres
-    networks:
-      - "$NOM_DU_RESEAU_INFRA_DOCKER"
-      
-  runner:
-    image: gitlab/gitlab-runner:${GITLAB_RUNNER_VERSION}
-    restart: always
-    container_name: gitlab_runner
-    environment:
-      - CI_SERVER_URL=https://${GITLAB_HOST}/
-    volumes:
-      - ./gitlab/runner:/etc/gitlab-runner:rw
-      - /var/run/docker.sock:/var/run/docker.sock:rw
     networks:
       - "$NOM_DU_RESEAU_INFRA_DOCKER"
  
@@ -91,177 +52,6 @@ services:
     restart: always
     networks:
       - "$NOM_DU_RESEAU_INFRA_DOCKER"
-
-
-  mongo:
-    # image: mongo:latest
-    image: marguerite/mongo:1.0.0    
-    build: ./mongodb/construction/
-    # hostname: "mongo"
-    container_name: 'mongo'
-    volumes:
-     - ./db/data:/data/db
-     - ./db/dump:/dump
-    command: mongod --smallfiles --oplogSize 128 --replSet rs0
-    expose:
-      - "27017"
-    ports:
-      - 27017:27017
-    networks:
-      - "$NOM_DU_RESEAU_INFRA_DOCKER"
-#       devops:
-#         ipv4_address: 192.168.160.6
-    
-  mongo-init-replica:
-    # image: mongo:3.2
-    image: marguerite/mongo-replica-initializer:1.0.0
-    build: ./mongo-init-replica/construction/
-    container_name: 'mongo-init-replica'
-    # + Pour que le conteneur reste UP ' N 'RUNNING, y compris lorsque le replicaSet a été créé avec succès, et
-    # + le HEALTHCHECK est joué après le succès pour exposer un statut "healthy", ce
-    # + qui déclenche le démarrage du conteneur RocketChat => plus nécessaire, depuis restart onfailure
-    # tty: true
-    # + il FAUDRA remplacer ce sleep par une meilleure solution
-    # command: 'mongo mongo/rocketchat --eval "rs.initiate({ _id: ''rs0'', members: [ { _id: 0, host: ''localhost:27017'' } ]})"'
-    # command: 'mongo mongo/rocketchat --eval "rs.initiate({ _id: ''rs0'', members: [ { _id: 0, host: ''mongo:27017'' } ]})"'
-    # 
-    # + Note : 
-    # + on pourra ajouter une varible d'environnement à cette image custom, qui permettra de préciser le nom du
-    # + replica Set à initialiser, et d'autres variables d'environnement, pour préciser une
-    # + éventuelle configuration du replicaSet
-    # 
-#     environment:
-#       - REPLICASET_NAME: ""
-#       - REPLICASET_CONF_PARAM_1: ""
-#       - REPLICASET_CONF_PARAM_2: ""
-    networks:
-      - "$NOM_DU_RESEAU_INFRA_DOCKER"
-#     expose:
-#       - 27017
-    depends_on:
-      - mongo
-    # + Pour qu'il re-démarre, tant qu'il n'a pas réussit à initialiser le replicaSet
-    restart: on-failure:40
-    # restart: always
-  rocketchat:
-    container_name: "$NOM_CONTENEUR_ROCKETCHAT"
-    image: coquelicot/rocket.chat:1.0.0
-    build: 
-      context: ./rocketchat/construction/
-      args:
-        # - HEALTHCHECK BUILD ENV. => devrait être dans un conteneur Père, dont celui ci hérite, avec les BUILD ARGS déjà fixés.
-        # Les variables globales de nom identique, sont définies dans le fichier ".env", propre à Docker Compose
-        - UTILISATEUR_ROCKETCHAT_HUBOT=$UTILISATEUR_ROCKETCHAT_HUBOT
-        - UTILISATEUR_ROCKETCHAT_HUBOT_MDP=$UTILISATEUR_ROCKETCHAT_HUBOT_MDP
-        - CHATROOM_ROCKETCHAT_HUBOT=$CHATROOM_ROCKETCHAT_HUBOT
-        - ADMIN_USERNAME=$USERNAME_UTILISATEUR_ADMIN_INITIAL 
-        - ADMIN_PASS=$MDP_UTILISATEUR_ADMIN_INITIAL" 
-        - ADMIN_EMAIL=$UTILISATEUR_ROCKETCHAT_HUBOT_EMAIL
-#     hostname: 'rocketchat'
-
-    volumes:
-      - ./rocketchat/uploads:/app/uploads:rw
-    environment:
-      - PORT=3000
-      - ROOT_URL=http://rocketchat.marguerite.io:3000
-      - MONGO_URL=mongodb://mongo:27017/rocketchat
-      - MONGO_OPLOG_URL=mongodb://mongo:27017/local?replicaSet=rs0
-      - MAIL_URL=smtp://smtp.google.com
-      - ADMIN_USERNAME=$USERNAME_UTILISATEUR_ADMIN_INITIAL
-      - ADMIN_PASS=$MDP_UTILISATEUR_ADMIN_INITIAL
-      - ADMIN_EMAIL=$EMAIL_UTILISATEUR_ADMIN_INITIAL
-    ports:
-      - 3000:3000
-    expose:
-      - "3000"
-    depends_on:
-      - mongo
-      # + Depuis utilisation d'un build image custom mongo avec HEALTHCHECK pour le
-      # + conteneur 'mongo-init-replica', cf. ./mongo-init-replica/construction/replicaset-health-check
-      # + mais plus depusi l'avènement du soudeur
-      # - mongo-init-replica
-    networks:
-      - "$NOM_DU_RESEAU_INFRA_DOCKER"
-#       devops:
-#         ipv4_address: 192.168.160.8
-    restart: always
-
-  # le soudeur qui créée user et chatroom rocketchat, pour le HUBOT
-  hubot-init-rocketchat:
-    container_name: 'hubot-rocketchat-initializer'
-    # image: mongo:3.2
-    image: marguerite/hubot-rocketchat-initializer:1.0.0
-    build: 
-      context: ./hubot-init-rocketcha/construction/
-      args:
-        # + le user RocketChat Admin, qui sera utilisé pour créer le user "$UTILISATEUR_ROCKETCHAT_HUBOT" et "$CHATROOM_ROCKETCHAT_HUBOT"
-        - USERNAME_UTILISATEUR_ADMIN_INITIAL=$USERNAME_UTILISATEUR_ADMIN_INITIAL 
-        - MDP_UTILISATEUR_ADMIN_INITIAL=$MDP_UTILISATEUR_ADMIN_INITIAL 
-        # - BUILD ENV. => devrait être dans un conteneur Père, dont celui ci hérite, avec les BUILD ARGS déjà fixés.
-        # Les variables globales de nom identique, sont définies dans le fichier ".env", propre à Docker Compose
-        - UTILISATEUR_ROCKETCHAT_HUBOT=$UTILISATEUR_ROCKETCHAT_HUBOT
-        - UTILISATEUR_ROCKETCHAT_HUBOT_MDP=$UTILISATEUR_ROCKETCHAT_HUBOT_MDP
-        - UTILISATEUR_ROCKETCHAT_HUBOT_EMAIL=$UTILISATEUR_ROCKETCHAT_HUBOT_EMAIL
-        - CHATROOM_ROCKETCHAT_HUBOT=$CHATROOM_ROCKETCHAT_HUBOT
-        - NUMERO_PORT_ECOUTE_ROCKETCHAT=$NUMERO_PORT_ECOUTE_ROCKETCHAT
-        - NOM_DU_ROBOT_HUBOT_ROCKETCHAT=$NOM_DU_ROBOT_HUBOT_ROCKETCHAT
-    environment:
-      # + le user RocketChat Admin, qui sera utilisé pour créer le user "$UTILISATEUR_ROCKETCHAT_HUBOT" et "$CHATROOM_ROCKETCHAT_HUBOT"
-      - USERNAME_UTILISATEUR_ADMIN_INITIAL=$USERNAME_UTILISATEUR_ADMIN_INITIAL 
-      - MDP_UTILISATEUR_ADMIN_INITIAL=$MDP_UTILISATEUR_ADMIN_INITIAL
-      # ++ Le soudeur créée l'utilisateur "$UTILISATEUR_ROCKETCHAT_HUBOT" , en utilisant l'utilisateur initial
-      - UTILISATEUR_ROCKETCHAT_HUBOT=$UTILISATEUR_ROCKETCHAT_HUBOT
-      - UTILISATEUR_ROCKETCHAT_HUBOT_MDP=$UTILISATEUR_ROCKETCHAT_HUBOT_MDP
-      - UTILISATEUR_ROCKETCHAT_HUBOT_EMAIL=$UTILISATEUR_ROCKETCHAT_HUBOT_EMAIL
-      - CHATROOM_ROCKETCHAT_HUBOT=$CHATROOM_ROCKETCHAT_HUBOT
-      - NOM_DOMAINE_DOCKER_ROCKETCHAT=$NOM_CONTENEUR_ROCKETCHAT
-      - NUMERO_PORT_ECOUTE_ROCKETCHAT=$NUMERO_PORT_ECOUTE_ROCKETCHAT
-      - NOM_DU_ROBOT_HUBOT_ROCKETCHAT=$NOM_DU_ROBOT_HUBOT_ROCKETCHAT
-    networks:
-      - "$NOM_DU_RESEAU_INFRA_DOCKER"
-    depends_on:
-    # + Pour qu'il ne démarre, que lorsque le soudeur précédent a terminé son trvail
-      - mongo
-    # + Pour qu'il re-démarre, tant qu'il n'a pas réussit à créé user et chatroom rocketchat
-    restart: on-failure:40
-
-  # hubot, the popular chatbot (add the bot user first and change the password before starting this image)
-  hubot:
-    image: rocketchat/hubot-rocketchat:latest
-#     hostname: "hubot"
-    container_name: 'hubot'
-    environment:
-      - ROCKETCHAT_URL=rocketchat:3000
-      # - ROCKETCHAT_ROOM=devops
-      # Ce channel RocketChat est à crééer avec le client Web RocketChat, comme l'utlisateur Rocketchat utilisé par ce hubot
-      - ROCKETCHAT_ROOM=$CHATROOM_ROCKETCHAT_HUBOT
-      - ROCKETCHAT_USER=$UTILISATEUR_ROCKETCHAT_HUBOT
-      - ROCKETCHAT_PASSWORD=$UTILISATEUR_ROCKETCHAT_HUBOT_MDP
-      - ROCKETCHAT_AUTH=password
-      - BOT_NAME=$NOM_DU_ROBOT_HUBOT_ROCKETCHAT
-      - LISTEN_ON_ALL_PUBLIC=true
-      - GITLAB_URL=http://$NOM_CONTENEUR_GITLAB:8081/api/v3/
-      # + La "apiKey" Gitlab, qui doit être utilisée parle hubot, pour accéder à un compte Gitlab (et remonter des évènements tels que les pull request, comment on commit, etc...) 
-      - GITLAB_API_KEY=$HUBOT_GITLAB_API_KEY
-      # + Le "Token" Gitlab, qui doit être utilisée parle hubot, pour accéder à un compte Gitlab (et remonter des évènements tels que les pull request, comment on commit, etc...) 
-      - GITLAB_TOKEN=$HUBOT_GITLAB_TOKEN
-      # + Je pense qu'il s'agit du nombre maximal de messages consécutifs que le HUBOT pourra poster dans la chatroom (ANTI FLOOD)
-      - GITLAB_RECORD_LIMIT=100
-      #
-      # + EXTERNAL_SCRIPTS=hubot-help,hubot-seen,hubot-links,hubot-diagnostics,hubot-rocketchat-gitlab
-      # + EXTERNAL_SCRIPTS=hubot-pugme,hubot-help,hubot-seen,hubot-links,hubot-diagnostics,hubot-rocketchat-gitlab
-      # + cf. https://github.com/RocketChat/hubot-rocketchat#docker
-      # + ------------------------------------------------------------------------------------------------------------
-      # + J'ai appris à cette page : [https://github.com/RocketChat/Rocket.Chat/blob/develop/docker-compose.yml]
-      # + que les "external scripts" sont des identifiants d'artefacts NODEJS / NPM : 
-      # + On eput donc ajouter n'importe quel nom, du moement qu'il s'agit d'une dépendance existante dans
-      # + le registry NPM du contexte de déploiement
-      - EXTERNAL_SCRIPTS=hubot-pugme,hubot-help
-
-
-#     links:
-#       - rocketchat:rocketchat
-#       - marguerite_gitlab:marguerite_gitlab
     volumes:
       - ./hubot/scripts:/home/hubot/scripts:rw
     expose:
@@ -271,24 +61,22 @@ services:
     # this is used to expose the hubot port for notifications on the host on port 3001, e.g. for hubot-jenkins-notifier
     networks:
       - "$NOM_DU_RESEAU_INFRA_DOCKER"
-#       devops:
-#         ipv4_address: 192.168.160.9
     depends_on:
       # + le prochain palier de remontée du plongueur, cf. HEALTHCHECK rocketchat
-      - rocketchat
+      - gitlab
   nginx:
     image: nginx
 #     hostname: "proxy"
     container_name: "reverseproxy"
     restart: always
     volumes:
-      - ./nginx/chatops.conf:/etc/nginx/conf.d/chatops.conf:rw
+      - ./nginx/infra-kytes.conf:/etc/nginx/conf.d/infra-kytes.conf:rw
 #       - ./nginx/hosts:/etc/hosts
       - ./nginx/logs:/var/log/nginx:rw
 #      - ./nginx/certificates:/etc/nginx/certificates/:rw
       - ./nginx/jenkins.conf:/etc/nginx/conf.d/
     ports:
-      - "8090:80"
+      - "80:80"
       - "443:443"
 #      - "22:22"
     expose:
@@ -303,16 +91,9 @@ services:
       - NGINX_PORT=80
       - NGINX_SSL=443
 #       - NGINX_SSH=22
-#     links:
-#       - rocketchat:rocketchat
-#       - marguerite_gitlab:marguerite_gitlab
     networks:
       - "$NOM_DU_RESEAU_INFRA_DOCKER"
-#       devops:
-#         ipv4_address: 192.168.160.10
     depends_on:
-      - rocketchat
-      - jenkins
       - gitlab
 
 # --- Tests : Réseau
