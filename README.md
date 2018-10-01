@@ -85,8 +85,8 @@ Lorsque vous précisez une valeur de variable d'environnement dans le `./docker-
   UNEVARIABLE=bernard
   ```
   Alors, la valeur envoyée sera `"bernard"`, et non la valeur `bernard` !!! (ce qui m'a causé quelques soucis pour passer
-  certaines valeurs, comme des mots de passes, et des logs RocketCHat dont la gestion semble largement améliorable !
-  (ne serait qu'en pensant aux pauvres architectes / devops, qui font un `docker logs rockerchat` .... :100:)
+  certaines valeurs, comme des mots de passes ....)
+  
 
 
 ## Cycle IAAC : Idempotence
