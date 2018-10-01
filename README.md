@@ -55,14 +55,17 @@ export PROVISIONING_HOME=$HOME/infra-kytes && mkdir -p $PROVISIONING_HOME && cd 
 ### Configuration de la recette de provision : le fichier “.env”
 
 La provision de cette infrastructure est configurable à l'aide du fichier ".env" présent à la racine de ce repo.
+Pour l'ensemble de ces variables, le tableau ci-dessous explicite le rôle de chacune, il est à noter que la notion d'utilisateur intiial Kytes, correspond à la notion d'administrateur de l'infrastructure Kytes.
+
 Les variables d'environnement utilisables sont :
 
 
 | Variable                              | Configure                                                                           |
 |---------------------------------------|-------------------------------------------------------------------------------------|
-| `USERNAME_UTILISATEUR_ADMIN_INITIAL`  | Le username du premier utilsiateur admin initial                                    |
-| `MDP_UTILISATEUR_ADMIN_INITIAL`       | Le secret du premier utilsiateur admin initial (un mot de passe, ou un "token"...)  |
-| `EMAIL_UTILISATEUR_ADMIN_INITIAL`     | L'adresse email du premier utilsiateur admin initial                                |
+| `KYTES_USERNAME_UTILISATEUR_ADMIN_INITIAL`  | Le username du premier utilsiateur admin initial                              |
+| `KYTES_MDP_UTILISATEUR_ADMIN_INITIAL`       | Le secret du premier utilisateur admin initial                                |
+|                                       | ( "secret" :un mot de passe, ou un "token"...)                                      |
+| `KYTES_EMAIL_UTILISATEUR_ADMIN_INITIAL`     | L'adresse email du premier utilsiateur admin initial                          |
 | `ADRESSE_IP_SERVEUR_DNS`              | L'adresse IP du servveur DNS de l'infrastructure Kytes                              |
 | `GITLAB_CE_VERSION`                   | La version de Gitlab CE utilisée                                                    |
 | `POSTGRES_VERSION`                    | La version de PostGReSQL utilisée pour la BDD de Gitlab                             |
