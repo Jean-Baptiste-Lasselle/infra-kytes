@@ -5,8 +5,25 @@ Ce repo versionne la recette de provision de l'infrastrcuture interne Kytes.
 Gitlab CE
 
 TODOs: 
-* ajouter la provision LetsEncrypt avec une intégration pour le HTTPS Gitlab, avc un conteneur Lets Encrypt seul (pas dans Free IPA Server). Ajouter dans la documentation le cycle de gestion de l'autorité de certification.
-* ajouter la provision serveur DNS, avec intégration 
+* Ajouter la provision LetsEncrypt avec une intégration pour le HTTPS Gitlab, avec un conteneur Lets Encrypt seul (Lets Encrypt hors Free IPA server). 
+* Ajouter dans cette documentation le cycle de gestion de l'autorité de certification (Lets Encrypt hors Free IPA server).
+
+* Ajouter la provision serveur DNS, avec intégration pour cohérence avec la configuration NGINX (serveur DNS hors Free IPA server)
+* Ajouter dans cette documentation le cycle de gestion du serveur DNS (serveur DNS hors Free IPA server).
+
+* Changer cette recette pour qu'elle utilise le serveur DNS et le Lets Encrypt compris dans Free IPA server, au lieu du letsencrypt et du serveur DNS standalone utilisés précédemment.
+
+* Ajouter dans cette documentation le cycle de gestion de l'autorité de certification Lets Encrypt incluse dans Free IPA server.
+* Ajouter dans cette documentation le cycle de gestion du serveur DNS inclut dans Free IPA server.
+
+* Ajouter une automatisation des opérations Backup / Restore :
+  * un script `./backup.sh` : il prendra en argument, un chemin, le chemin du répertoire dans lequel le zip des fichiers de backup est conservé. le zip contient:
+    - le fichier `.env`,
+    - un fichier ".history", qui contient:  au moment du backup, la date, l'heure à la seconde, et l'ID de la machine cible de déploiement (permettra de retrouver  une référence vers le repository Git histprique des oéprations de ladite machine, et le commit id du plus récent commit avant le backup).  
+  * un script `./restore.sh` :  celui-là est secret.
+  
+ 
+
 
 
 # Utilisation
