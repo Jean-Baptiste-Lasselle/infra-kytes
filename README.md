@@ -2,11 +2,16 @@
 
 Ce repo versionne la recette de provision de l'infrastrcuture interne Kytes.
 
+Gitlab CE
+
+TODOs: 
+* ajouter la provision LetsEncrypt avec une intégration pour le HTTPS Gitlab, avc un conteneur Lets Encrypt seul (pas dans Free IPA Server). Ajouter dans la documentation le cycle de gestion de l'autorité de certification.
+* ajouter la provision serveur DNS, avec intégration 
 
 
 # Utilisation
 
-## Première utilisation sur une machine : Initialisation du cycle IAAC
+## Provision et Initialisation du cycle IAAC
 
 Pour exécuter cette recette une première fois : 
 
@@ -30,11 +35,9 @@ export PROVISIONING_HOME=$(pwd)/coquelicot && mkdir -p $PROVISIONING_HOME && cd 
 ```
 
 
-## Configuration
+### Configuration de la recette de provision : le fichier “.env”
 
-### le fichier “.env” 
-
-Cette infrastructure est configurable à l'aide du ficheir ".env" présent à la racine de ce repo.
+La provision de cette infrastructure est configurable à l'aide du fichier ".env" présent à la racine de ce repo.
 Les variables d'environnement utilisables sont :
 
 
@@ -62,22 +65,7 @@ Les variables d'environnement utilisables sont :
 | `VERSION_IMAGE_NGINX`        | La version de l'image docker NGINX utilisée    |
 
 
-
-
-
-
-
-You can set default values for any environment variables referenced in the Compose file, or used to configure Compose, in an environment file named .env:
-```yaml
-$ cat .env
-USERNAME_UTILISATEUR_ADMIN_INITIAL=v1.5
-
-$ cat docker-compose.yml
-version: '3'
-services:
-  web:
-    image: "webapp:${TAG}"
-```
+*Rappel, à propos du fichier `.env` Docker*
 
 Attention,un piège existe quant à ces variables d'environnement, et leur interpolation : 
 
@@ -101,15 +89,12 @@ Lorsque vous précisez une valeur de variable d'environnement dans le `./docker-
   (ne serait qu'en pensant aux pauvres architectes / devops, qui font un `docker logs rockerchat` .... :100:)
 
 
-
-
-
 ## Cycle IAAC : Idempotence
 
 Lorsque vous aurez exécuté une première fois l'instruction en une ligne ci-dessus, vous pourrez faire un cycle IAAC, sans re-télécharger d'image extérieures, en reconstruisant toutes les images qui ne sont pas téléchargées, avec : 
 
 ```bash
-export PROVISIONING_HOME=$(pwd) && docker-compose down && cd .. && sudo rm -rf $PROVISIONING_HOME && mkdir -p $PROVISIONING_HOME && cd $PROVISIONING_HOME && git clone "https://github.com/Jean-Baptiste-Lasselle/coquelicot" . && chmod +x ./operations.sh && ./operations.sh
+export PROVISIONING_HOME=$HOME/infra-kytes && cd $PROVISIONING_HOME && docker-compose down && cd .. && sudo rm -rf $PROVISIONING_HOME && mkdir -p $PROVISIONING_HOME && cd $PROVISIONING_HOME && git clone "https://github.com/Jean-Baptiste-Lasselle/infra-kytes" . && chmod +x ./operations.sh && ./operations.sh
 ``` 
 La commande ci-dessus, modulo la première exécution de cette recette exécutée, est idempotente
 
