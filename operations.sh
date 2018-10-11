@@ -129,7 +129,7 @@ docker ps -a
 echo "  "
 docker images
 echo "  "
-echo "   Pressez la touche entrée pour terminer la provision, un checkhealth sera déclenché. "
+echo "   Pressez la touche entrée pour terminer la provision. "
 echo " ---------------------------------------------------------------------- "
 echo "  "
 read ATTENTE_CREATION_UTILISATEUR_ROCKETCHAT
