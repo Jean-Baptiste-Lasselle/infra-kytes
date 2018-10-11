@@ -7,7 +7,7 @@ export NOM_CONTENEUR_BDD_ROCKETCHAT=mongo
 export NOM_CONTENEUR_INIT_REPLICASET_BDD_ROCKETCHAT=mongo-init-replica
 export UTILISATEUR_HUBOT_ROCKETCHAT_USERNAME=jbl
 export UTILISATEUR_HUBOT_ROCKETCHAT_PWD=jbl
-
+export ALIAS_INFRA=kytes
 
 # - Fonctions
 # --------------------------------------------------------------------------------------------------------------------------------------------
@@ -19,30 +19,30 @@ checkHealth () {
 	export ETATCONTENEURPRET=healthy
 	export NOM_DU_CONTENEUR_INSPECTE=$1
 	
-	while  $(echo "+provision+girofle+ $NOM_DU_CONTENEUR_INSPECTE - HEALTHCHECK: [$ETATCOURANTCONTENEUR]" >> ./check-health.coquelicot); do
+	while  $(echo "+provision+$ALIAS_INFRA+ $NOM_DU_CONTENEUR_INSPECTE - HEALTHCHECK: [$ETATCOURANTCONTENEUR]" >> ./check-health.coquelicot); do
 	
 	ETATCOURANTCONTENEUR=$(sudo docker inspect -f '{{json .State.Health.Status}}' $NOM_DU_CONTENEUR_INSPECTE)
 	if [ $ETATCOURANTCONTENEUR == "\"healthy\"" ]
 	then
-		echo "+provision+girofle+ $NOM_DU_CONTENEUR_INSPECTE est prêt - HEALTHCHECK: [$ETATCOURANTCONTENEUR]"
+		echo "+provision+$ALIAS_INFRA+ $NOM_DU_CONTENEUR_INSPECTE est prêt - HEALTHCHECK: [$ETATCOURANTCONTENEUR]"
 		break;
 	else
-		echo "+provision+girofle+ $NOM_DU_CONTENEUR_INSPECTE n'est pas prêt - HEALTHCHECK: [$ETATCOURANTCONTENEUR] - attente d'une seconde avant prochain HealthCheck - "
+		echo "+provision+$ALIAS_INFRA+ $NOM_DU_CONTENEUR_INSPECTE n'est pas prêt - HEALTHCHECK: [$ETATCOURANTCONTENEUR] - attente d'une seconde avant prochain HealthCheck - "
 		sleep 1s
 	fi
 	done
 	rm -f ./check-health.coquelicot
 	# DEBUG LOGS
-	echo " provision-girofle-  ------------------------------------------------------------------------------ " 
-	echo " provision-girofle-  - Contenu du répertoire [/etc/gitlab] dans le conteneur [$NOM_DU_CONTENEUR_INSPECTE]:" 
-	echo " provision-girofle-  - " 
+	echo " provision-$ALIAS_INFRA-  ------------------------------------------------------------------------------ " 
+	echo " provision-$ALIAS_INFRA-  - Contenu du répertoire [/etc/gitlab] dans le conteneur [$NOM_DU_CONTENEUR_INSPECTE]:" 
+	echo " provision-$ALIAS_INFRA-  - " 
 	sudo docker exec -it $NOM_DU_CONTENEUR_INSPECTE /bin/bash -c "ls -all /etc/gitlab"
-	echo " provision-girofle-  ------------------------------------------------------------------------------ " 
-	echo " provision-girofle-  - Existence du fichier [/etc/gitlab/gitlab.rb] dans le conteneur  [$NOM_DU_CONTENEUR_INSPECTE]:" 
-	echo " provision-girofle-  - "
+	echo " provision-$ALIAS_INFRA-  ------------------------------------------------------------------------------ " 
+	echo " provision-$ALIAS_INFRA-  - Existence du fichier [/etc/gitlab/gitlab.rb] dans le conteneur  [$NOM_DU_CONTENEUR_INSPECTE]:" 
+	echo " provision-$ALIAS_INFRA-  - "
 	sudo docker exec -it $NOM_DU_CONTENEUR_INSPECTE /bin/bash -c "ls -all /etc/gitlab/gitlab.rb" 
-	echo " provision-girofle-  - " 
-	echo " provision-girofle-  ------------------------------------------------------------------------------ " 
+	echo " provision-$ALIAS_INFRA-  - " 
+	echo " provision-ALIAS_INFRA-  ------------------------------------------------------------------------------ " 
 }
 
 # - OPS 
