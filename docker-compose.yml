@@ -1,5 +1,4 @@
 version: '3'
-
 services:
   # Pour la conf gitlab + runner + postgres + rredis => cf [https://github.com/mgcrea/docker-compose-gitlab-ce], many
   # thanks to Olivier ;) https://github.com/mgcrea
