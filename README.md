@@ -23,6 +23,22 @@ TODOs:
   * un script `./restore.sh` :  celui-là est secret.
   
  
+# Dépendances des variables de configuration
+
+Quelquies dépendances, qui nécessitent une templatisation Jinja 2 / Ansible : 
+
+* Le numéro de port interne au conteneur docker nginx, déclaré dans le `./docker-compose.yml` : 
+  * pour le conteneur gitlab : doit être égal au numéro de port spécifié pour la directive `listen` dans le fichier `./infra-kytes/nginx/gitlab.conf`.
+  * pour le conteneur rocketchat : doit être égal au numéro de port spécifié pour la directive `listen` dans le fichier `./infra-kytes/nginx/rocketchat.conf`.
+* Le numéro de port interne au conteneur gitlab, déclaré dans le `./docker-compose.yml`, pour s'interfacer au nginx interne au conteneur gitlab : 
+  * est configuré dans le `./docker-compose.yml`, via le fichier `./.env`, et la varible d'environnement `GITLAB_HTTP_PORT_VIA_NGINX_INTERNE_GITLAB`.
+  * doit être égal au numéro de port spécifié dans le `./infra-kytes/nginx/gitlab.conf`, pour la directive `proxy_pass`
+
+* Le numéro de port interne au conteneur rocketchat, déclaré dans le `./docker-compose.yml`, pour s'interfacer au nginx interne au conteneur gitlab : 
+  * est configuré dans le `./docker-compose.yml`, via le fichier `./.env`, et la varible d'environnement `NUMERO_PORT_ECOUTE_ROCKETCHAT`.
+  * doit être égal au numéro de port spécifié dans le `./infra-kytes/nginx/rocketchat.conf`, pour la directive `proxy_pass`
+
+* les noms d'jôtes réseau docker utilisés dans les configurations reverse proxy, doivent correspondre aux décalrations `container_name`, dans le fichier `./docker-compose.yml`, pour les conteneurs respectifs.
 
 
 
