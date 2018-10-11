@@ -47,7 +47,7 @@ echo "   "
 echo "   "
 
 
-
+docker system prune -f
 # + Permet d'initialiser le contexte de déploimeent, la cible de déploiement, pour un cycle IAAC
 docker pull "$ID_IMAGE_CENTOS"
 docker pull "$ID_IMAGE_MONGO"
