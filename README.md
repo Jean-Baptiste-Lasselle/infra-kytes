@@ -119,6 +119,15 @@ export PROVISIONING_HOME=$HOME/infra-kytes && cd $PROVISIONING_HOME && docker-co
 La commande ci-dessus, modulo la première exécution de cette recette exécutée, est idempotente
 
 
+## Inventaire des noms de domaines
+
+```bash
+# Infra Kytes
+192.168.1.30    rocketchat.kytes.io
+192.168.1.30    gitlab.kytes.io
+# Hôte Docker, VM constituant l'infrastructure de déploiement.
+192.168.1.30    production-dcoker-host-1.kytes.io
+```
 
 
 
