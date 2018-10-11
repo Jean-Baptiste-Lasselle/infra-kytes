@@ -56,32 +56,36 @@ checkHealth () {
 export UTILISATEUR_HUBOT_ROCKETCHAT_USERNAME=$(cat ./.env|grep UTILISATEUR_ROCKETCHAT_HUBOT | grep -v MDP | awk -F = '{print $2}')
 export UTILISATEUR_HUBOT_ROCKETCHAT_PWD=$(cat ./.env|grep UTILISATEUR_ROCKETCHAT_HUBOT_MDP | awk -F = '{print $2}')
 
-clear
-echo "  "
-echo " ---------------------------------------------------------------------- "
-echo "  DEBUG : "
-echo " ---------------------------------------------------------------------- "
-echo "    - username : \"UTILISATEUR_HUBOT_ROCKETCHAT_USERNAME=$UTILISATEUR_HUBOT_ROCKETCHAT_USERNAME\" "
-echo "    - password : \"UTILISATEUR_HUBOT_ROCKETCHAT_PWD=$UTILISATEUR_HUBOT_ROCKETCHAT_PWD\" "
-echo "  "
-echo "   REMARQUE IMPORTANTE: la création de ce user pourra êtree automatisée avec la REST API RocketChat"
-echo "  "
-echo "  Pressez la touche entrée.  "
-echo " ---------------------------------------------------------------------- "
-echo "  "
-read DEBUGJBL
+
 
 # - Je rends exécutables les scripts invoqués dans la présente recette
 chmod +x ./initialisation-iaac-cible-deploiement.sh
 # J'initialise tout de suite la cible de déploiement
 ./initialisation-iaac-cible-deploiement.sh
 
+
+
+echo "  "
+echo " ---------------------------------------------------------------------- "
+echo "  INIITALISATION IAAC TERMINEE : "
+echo " ---------------------------------------------------------------------- "
+echo "  "
+docker images
+echo "  "
+echo " ---------------------------------------------------------------------- "
+echo "  "
+echo "  Pressez la touche entrée.  "
+echo " ---------------------------------------------------------------------- "
+echo "  "
+read DEBUGJBL
+clear
+
 # - Je rends exéutable les fichiers de script utilisés dans les builds d'images Docker qui doivent l'être : 
 chmod +x ./mongo-init-replica/construction/*
 # - cf. ./mongodb/construction/Dockerfile 
 chmod +x ./mongodb/construction/* 
 chmod +x ./rocketchat/construction/* 
-chmod +x ./hubot-init-rocketcha/construction/* 
+# chmod +x ./hubot-init-rocketcha/construction/* 
 # - Je créée "tout"
 # docker-compose down --rmi all && docker system prune -f && docker-compose build && docker-compose up -d 
 # - Non: il y a un volume trop grand d'image téléchargées
@@ -104,28 +108,36 @@ docker-compose down && docker system prune -f && sudo rm -rf ./db/ && docker-com
 # 
 # 
 # - 3 - Il faut manuellement créer l'utilisateur RocketChat mentionné dans la configuration du service 'hubot' dans le fichier docker-compose.yml : 
+
+
+# - 4 - Maintenant que l'utilisateur dont le hubot a besoin existe, on re-démarre le hubot :
+
 clear
 echo "  "
 echo " ---------------------------------------------------------------------- "
-echo "  Please Create a user in rocketchat, with the following  credentials : "
-echo " ---------------------------------------------------------------------- "
-echo "    - username : \"UTILISATEUR_HUBOT_ROCKETCHAT_USERNAME=$UTILISATEUR_HUBOT_ROCKETCHAT_USERNAME\" "
-echo "    - password : \"UTILISATEUR_HUBOT_ROCKETCHAT_PWD=$UTILISATEUR_HUBOT_ROCKETCHAT_PWD\" "
 echo "  "
-echo "  Pressez la touche entrée lorsque cela sera fait, le  "
-echo "  service HUBOT/ROCKETCHAT sera re-démarré "
+checkHealth $NOM_CONTENEUR_ROCKETCHAT
+echo "  "
+echo " ---------------------------------------------------------------------- "
+echo "  "
+echo " ---------------------------------------------------------------------- "
+echo "   FIN de la provision Kytes  : "
+echo " ---------------------------------------------------------------------- "
+# echo "    - \"UTILISATEUR_HUBOT_ROCKETCHAT_USERNAME=$UTILISATEUR_HUBOT_ROCKETCHAT_USERNAME\" "
+echo "  "
+docker ps -a
+echo "  "
+docker images
+echo "  "
+echo "   Pressez la touche entrée pour terminer la provision, un checkhealth sera déclenché. "
 echo " ---------------------------------------------------------------------- "
 echo "  "
 read ATTENTE_CREATION_UTILISATEUR_ROCKETCHAT
 
-# - 4 - Maintenant que l'utilisateur dont le hubot a besoin existe, on re-démarre le hubot : 
-checkHealth $NOM_CONTENEUR_ROCKETCHAT
-docker-compose up -d $NOM_CONTENEUR_HUBOT
-sleep 3 && docker ps -a
 # - Maintenant, examinons les logs du conteneur hubot :
 
-docker logs  $NOM_CONTENEUR_HUBOT -f 
+docker logs  kytes_gitlab_service -f 
 
-sleep 3 && docker ps -a
+
 
 
