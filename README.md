@@ -52,7 +52,7 @@ Pour exécuter cette recette une première fois :
 export PROVISIONING_HOME=$HOME/infra-kytes
 mkdir -p $PROVISIONING_HOME
 cd $PROVISIONING_HOME
-git clone "https://github.com/Jean-Baptiste-Lasselle/infra-kytes " . 
+git clone "https://github.com/Jean-Baptiste-Lasselle/infra-kytes" . 
 chmod +x ./operations.sh
 ./operations.sh
 ```
