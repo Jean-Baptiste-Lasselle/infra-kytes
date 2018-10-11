@@ -126,7 +126,7 @@ La commande ci-dessus, modulo la première exécution de cette recette exécuté
 192.168.1.30    rocketchat.kytes.io
 192.168.1.30    gitlab.kytes.io
 # Hôte Docker, VM constituant l'infrastructure de déploiement.
-192.168.1.30    production-dcoker-host-1.kytes.io
+192.168.1.30    production-docker-host-1.kytes.io
 ```
 
 
