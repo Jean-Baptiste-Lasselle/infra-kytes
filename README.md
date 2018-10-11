@@ -35,11 +35,9 @@ Quelquies dépendances, qui nécessitent une templatisation Jinja 2 / Ansible :
   * doit être égal au numéro de port spécifié dans le `./infra-kytes/nginx/gitlab.conf`, pour la directive `proxy_pass`
 
 * Le numéro de port interne au conteneur rocketchat, déclaré dans le `./docker-compose.yml`, pour s'interfacer au nginx interne au conteneur gitlab : 
-  * est configuré dans le `./docker-compose.yml`, via le fichier `./.env`, et la varible d'environnement `NUMERO_PORT_ECOUTE_ROCKETCHAT`.
+  * est configuré dans le `./docker-compose.yml`, via le fichier `./.env`, et la variable d'environnement `NUMERO_PORT_ECOUTE_ROCKETCHAT`. La variable d'environnement `PORT=$NUMERO_PORT_ECOUTE_ROCKETCHAT`, propre à la distribution de l'image docker rocketchat, est utilisée pour cette configuration, cf. la section `environment: ` de la configuration du service `rockerchat`, dans le `./docker-compose.yml`.
   * doit être égal au numéro de port spécifié dans le `./infra-kytes/nginx/rocketchat.conf`, pour la directive `proxy_pass`
-
-* les noms d'jôtes réseau docker utilisés dans les configurations reverse proxy, doivent correspondre aux décalrations `container_name`, dans le fichier `./docker-compose.yml`, pour les conteneurs respectifs.
-
+* Les noms d'hôtes réseau docker utilisés dans les configurations reverse proxy, doivent correspondre aux décalrations `container_name`, dans le fichier `./docker-compose.yml`, pour les conteneurs respectifs.
 
 
 # Utilisation
