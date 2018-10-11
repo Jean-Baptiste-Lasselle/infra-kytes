@@ -25,7 +25,7 @@ ENV CHATROOM_ROCKETCHAT_HUBOT=$CHATROOM_ROCKETCHAT_HUBOT
 
 # RUN apt-get update -y && apt-get install -y curl
 
-ADD ./avail-to-hubot-healthcheck .
+# ADD ./avail-to-hubot-healthcheck .
 ADD ./healthcheck .
 
 USER root
@@ -42,5 +42,7 @@ RUN jq --version
 # toutes les 5 minutes, le daemon DOcker invoquera le HEALTHCHECK, pour actualiser le statutu du conteneur
 # HEALTHCHECK --interval=5s --timeout=3s   CMD curl -f http://localhost:3000/ || exit 1
 # exactement les même paramètres de hEALTHCHECK, entre mongo et rocketchat
-HEALTHCHECK --interval=6s --timeout=5s --retries=150 CMD ./avail-to-hubot-healthcheck && ./healthcheck
+# HEALTHCHECK --interval=6s --timeout=5s --retries=150 CMD ./avail-to-hubot-healthcheck && ./healthcheck
+HEALTHCHECK --interval=6s --timeout=5s --retries=150 CMD ./healthcheck
+
 # pour tout le reste, on hérite et conserve tout de RocketChat
