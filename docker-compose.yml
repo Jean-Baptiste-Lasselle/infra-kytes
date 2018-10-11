@@ -149,7 +149,9 @@ services:
     # + Pour qu'il re-démarre, tant qu'il n'a pas réussit à initialiser le replicaSet
     restart: on-failure:40
     # restart: always
+    
   rocketchat:
+#     hostname: 'rocketchat'
     container_name: "$NOM_CONTENEUR_ROCKETCHAT"
     image: coquelicot/rocket.chat:1.0.0
     build: 
@@ -159,11 +161,12 @@ services:
         # Les variables globales de nom identique, sont définies dans le fichier ".env", propre à Docker Compose
         - UTILISATEUR_ROCKETCHAT_JOUEUR=$UTILISATEUR_ROCKETCHAT_JOUEUR
         - UTILISATEUR_ROCKETCHAT_JOUEUR_MDP=$UTILISATEUR_ROCKETCHAT_JOUEUR_MDP
-        - CHATROOM_ROCKETCHAT_HUBOT=$CHATROOM_ROCKETCHAT_HUBOT
-        - ADMIN_USERNAME=$USERNAME_UTILISATEUR_ADMIN_INITIAL 
-        - ADMIN_PASS=$MDP_UTILISATEUR_ADMIN_INITIAL" 
-        - ADMIN_EMAIL=$UTILISATEUR_ROCKETCHAT_HUBOT_EMAIL
-#     hostname: 'rocketchat'
+        # - CHATROOM_ROCKETCHAT_HUBOT=$CHATROOM_ROCKETCHAT_HUBOT
+        - ADMIN_USERNAME=$KYTES_USERNAME_UTILISATEUR_ADMIN_INITIAL 
+        - ADMIN_PASS=$KYTES_MDP_UTILISATEUR_ADMIN_INITIAL" 
+        # - ADMIN_EMAIL=$UTILISATEUR_ROCKETCHAT_HUBOT_EMAIL
+        - ADMIN_EMAIL=$KYTES_EMAIL_UTILISATEUR_ADMIN_INITIAL
+
 
     volumes:
       - ./rocketchat/uploads:/app/uploads:rw
