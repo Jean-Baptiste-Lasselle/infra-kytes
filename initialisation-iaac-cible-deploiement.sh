@@ -21,14 +21,10 @@ export ID_IMAGE_GITLAB_RUNNER="gitlab/gitlab-runner:$ID_IMAGE_GITLAB_RUNNER"
 # VERSION_IMAGE_ROCKETCHAT=rocketchat/rocket.chat:latest
 export ID_IMAGE_ROCKETCHAT=$(cat ./.env|grep VERSION_IMAGE_ROCKETCHAT | awk -F = '{print $2}')
 
-# VERSION_IMAGE_HUBOT_ROCKETCHAT=rocketchat/hubot-rocketchat:latest
-export ID_IMAG_HUBOT_ROCKETCHAT=$(cat ./.env|grep VERSION_IMAGE_HUBOT_ROCKETCHAT | awk -F = '{print $2}')
 
 # VERSION_IMAGE_NGINX=nginx:latest
-export ID_IMAG_HUBOT_NGINX=$(cat ./.env|grep VERSION_IMAGE_NGINX | awk -F = '{print $2}')
+export ID_IMAGE_NGINX=$(cat ./.env|grep VERSION_IMAGE_NGINX | awk -F = '{print $2}')
 
-
-export ID_IMAGE_JENKINS=$(cat ./.env|grep VERSION_IMAGE_JENKINS | awk -F = '{print $2}')
 
 echo "   "
 echo "   "
@@ -45,11 +41,7 @@ echo "    ID_IMAGE_GITLAB_RUNNER=$ID_IMAGE_GITLAB_RUNNER "
 echo "  -------------------------------------------  "
 echo "    ID_IMAGE_ROCKETCHAT=$ID_IMAGE_ROCKETCHAT "
 echo "  -------------------------------------------  "
-echo "    ID_IMAG_HUBOT_ROCKETCHAT=$ID_IMAG_HUBOT_ROCKETCHAT "
-echo "  -------------------------------------------  "
-echo "    ID_IMAG_HUBOT_NGINX=$ID_IMAG_HUBOT_NGINX "
-echo "  -------------------------------------------  "
-echo "    ID_IMAGE_JENKINS=$ID_IMAGE_JENKINS "
+echo "    ID_IMAGE_NGINX=$ID_IMAGE_NGINX "
 echo "  -------------------------------------------  "
 echo "   "
 echo "   "
@@ -62,6 +54,4 @@ docker pull "$ID_IMAGE_MONGO"
 docker pull "$ID_IMAGE_GITLAB_CE"
 docker pull "$ID_IMAGE_GITLAB_RUNNER"
 docker pull "$ID_IMAGE_ROCKETCHAT"
-docker pull "$ID_IMAGE_HUBOT_ROCKETCHAT"
 docker pull "$ID_IMAGE_NGINX"
-docker pull "$ID_IMAGE_JENKINS"
