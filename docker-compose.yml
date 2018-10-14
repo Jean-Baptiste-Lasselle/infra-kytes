@@ -117,6 +117,7 @@ services:
       - "$NOM_DU_RESEAU_INFRA_DOCKER"
 #       devops:
 #         ipv4_address: 192.168.160.6
+    restart: always
     
   mongo-init-replica:
     # image: mongo:3.2
@@ -230,7 +231,7 @@ services:
       - "$NOM_DU_RESEAU_INFRA_DOCKER"
     depends_on:
       - gitlab
-
+    restart: always
 # --- Tests : Réseau
   sondereseau:
     # image: mongo:3.2
