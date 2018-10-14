@@ -1,5 +1,7 @@
 # Principe
 
+https://slackmojis.com/
+
 Ce repo versionne la recette de provision de l'infrastrcuture interne Kytes.
 
 Gitlab CE
