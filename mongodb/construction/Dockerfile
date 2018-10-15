@@ -23,5 +23,6 @@ HEALTHCHECK --interval=6s --timeout=5s --retries=150  CMD /usr/local/bin/replica
 
 # ENTRYPOINT [ "/app-entrypoint.sh" ]
 # CMD [ "/run.sh" ]
-
+# see https://medium.freecodecamp.org/docker-entrypoint-cmd-dockerfile-best-practices-abc591c30e21 for improvements 
+CMD ["mongod", "--smallfiles", "--oplogSize", "128", "--replSet", "rs0"]
 
