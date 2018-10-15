@@ -77,8 +77,9 @@ total 170872
 drwxrwxrwx 1 jibl jibl       176 Oct 15 22:31 .
 drwxrwxrwx 1 jibl jibl     12288 Oct 15 21:59 ..
 -rwxrwxrwx 1 jibl jibl 174957914 Oct 15 22:31 kytes-bckup-zero.zip
-jibl@pc-alienware-jib:/media/jibl/Seagate Slim Drive/kytes-production-drp$ # zip -T ./kytes-bckup-zero.zip
-
+jibl@pc-alienware-jib:/media/jibl/Seagate Slim Drive/kytes-production-drp$ zip -T ./kytes-bckup-zero.zip
+test of ./kytes-bckup-zero.zip OK
+jibl@pc-alienware-jib:/media/jibl/Seagate Slim Drive/kytes-production-drp$ 
 ```
 
 
