@@ -98,7 +98,7 @@ jibl@pc-alienware-jib:/media/jibl/Seagate Slim Drive/kytes-production-drp$ zip -
 test of ./kytes-bckup-zero.zip OK
 jibl@pc-alienware-jib:/media/jibl/Seagate Slim Drive/kytes-production-drp$ 
 ```
-Le principe : 
+Le test du résultat de la décompression : 
 
 ```bash
 [jibl@pc-100 TESTunzip]$ pwd
@@ -115,8 +115,18 @@ drwxrwxr-x. 6 jibl jibl        76 Oct 15 21:30 gitlab
 drwxr-xr-x. 4 jibl jibl        35 Oct 13 12:48 volumes
 [jibl@pc-100 TESTunzip]$ 
 ```
-
+bckup côté poste de travail : 
 ```bash
+jibl@pc-alienware-jib:/media/jibl/Seagate Slim Drive/kytes-production-drp$ pwd
+/media/jibl/Seagate Slim Drive/kytes-production-drp
+jibl@pc-alienware-jib:/media/jibl/Seagate Slim Drive/kytes-production-drp$ ls -all /media/jibl/Seagate\ Slim\ Drive/kytes-production-drp
+total 352760
+drwxrwxrwx 1 jibl jibl       344 Oct 15 23:54 .
+drwxrwxrwx 1 jibl jibl     12288 Oct 15 21:59 ..
+-rwxrwxrwx 1 jibl jibl 186249884 Oct 15 23:54 kytes-bckup-2018-10-15T23:49:19+0200.zip
+-rwxrwxrwx 1 jibl jibl 174957914 Oct 15 22:31 kytes-bckup-zero.zip
+jibl@pc-alienware-jib:/media/jibl/Seagate Slim Drive/kytes-production-drp$ 
+
 jibl@pc-alienware-jib:/media/jibl/Seagate Slim Drive/kytes-production-drp$ scp jibl@production-docker-host-1.kytes.io:/home/jibl/maison-temp-kytes-bckup/*.zip ./
 jibl@production-docker-host-1.kytes.io's password: 
 kytes-bckup-2018-10-15T23:49:19+0200.zip                                                                                                                                         100%  178MB  46.4MB/s   00:03    
