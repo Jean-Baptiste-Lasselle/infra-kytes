@@ -98,7 +98,6 @@ services:
     networks:
       - "$NOM_DU_RESEAU_INFRA_DOCKER"
 
-
   mongo:
     # image: mongo:latest
     image: marguerite/mongo:1.0.0    
@@ -109,10 +108,10 @@ services:
      - ./db/data:/data/db
      - ./db/dump:/dump
     # command: mongod --smallfiles --oplogSize 128 --replSet rs0
-    expose:
-      - "27017"
     ports:
       - 27017:27017
+    expose:
+      - 27017
     networks:
       - "$NOM_DU_RESEAU_INFRA_DOCKER"
 #       devops:
