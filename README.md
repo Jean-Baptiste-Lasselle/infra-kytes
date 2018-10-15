@@ -1,3 +1,14 @@
+# RUN: journal de bord
+
+* à noter : 
+
+Dans le run, j'ai constaté que la seule manière de tout relancer correctement étaient de tout détruire et re-construire, jusqu'au build des images, et ce avec sudo, pour pouvoir reprendre en main les répertoires mappés en tant que docker volumes : 
+```bash
+sudo docker-compose down --rmi all && docker-compose up -d --force-recreate
+```
+
+ceci n'est pas satisfaisant. Ceci st du au plongeur soudeur,  et il y a quelque chose de très intéressant à faire en terme de disnction entre la recette de provision, et les opérations standards de déploiemùent, ainsi que leur tests. C'est RocketChat et le healthcheck de mongoDB qui ont posé problème.
+
 # Garde manger pour backup restore
 
 
