@@ -37,7 +37,8 @@ Fabrication du zip, dans l'hôte Docker (`./backup.sh`) :
 (ce script retourne le nom du fichier zip généré)
 
 ```bash
-export NOM_FICHIER_ZIP_PRODUIT=kytes-bckup-$(date --iso-8601=seconds).zip
+# export NOM_FICHIER_ZIP_PRODUIT=kytes-bckup-$(date --iso-8601=seconds).zip
+export NOM_FICHIER_ZIP_PRODUIT=kytes-bckup-$(date '+%Y-%m-%dday_%Hh-%Mmin-%Ssec').zip
 sudo yum install -y zip unzip
 sudo zip -r $NOM_FICHIER_ZIP_PRODUIT ./gitlab ./db ./volumes && echo "$NOM_FICHIER_ZIP_PRODUIT" 
 ```
