@@ -1,3 +1,40 @@
+# Garde manger pour backup restore
+
+Fabrication du zip, dans l'hôte Docker (`./backup.sh`) : 
+(ce script retourne le nom du fichier zip généré)
+
+```bash
+export NOM_FICHIER_ZIP_PRODUIT=kytes-bckup-$(date --iso-8601=seconds).zip
+sudo yum install -y zip unzip
+sudo zip -r $NOM_FICHIER_ZIP_PRODUIT ./gitlab ./db ./volumes && echo "$NOM_FICHIER_ZIP_PRODUIT" 
+```
+
+Pour exécuter depuis pmon poste de travail, le script distant : 
+```bash
+export MAISON_OPS=$HOME/running-kytes-backup-restore-ops
+export URI_DE_CETTE_RECETTE=https://github.com/Jean-Baptiste-Lasselle/infra-kytes
+export USER_LX_OPERATEUR_SERVEUR_DISTANT=jibl
+export NOM_HOTE_RESEAU_SERVEUR_DISTANT=production-docker-host-1.kytes.io
+export CHEMIN_MAISON_KYTES_DRP='/media/jibl/Seagate\ Slim\ Drive'
+export CHEMIN_MAISON_KYTES_DRP="$CHEMIN_MAISON_KYTES_DRP/kytes-production-drp"
+
+cd MAISON_OPS
+
+git clone "$URI_DE_CETTE_RECETTE" . 
+# attention, pour exécuter silencieusement la recette, il sera encore mieux de 
+# coller, surle serveur distant, ma clé publique RSA dans les $HOME/jibl/.ssh/authorized_keys
+# ssh $USER_LX_OPERATEUR_SERVEUR_DISTANT@$NOM_HOTE_RESEAU_SERVEUR_DISTANT "bash -s" -- < ./ex.bash "--time" "bye"
+export NOM_FICHIER_ZIP_PRODUIT=$(ssh $USER_LX_OPERATEUR_SERVEUR_DISTANT@$NOM_HOTE_RESEAU_SERVEUR_DISTANT "bash -s" -- < ./backup.sh)
+
+scp $USER_LX_OPERATEUR_SERVEUR_DISTANT@$NOM_HOTE_RESEAU_SERVEUR_DISTANT:/home/jibl/infra-kytes/$NOM_FICHIER_ZIP_PRODUIT ./$NOM_FICHIER_ZIP_PRODUIT
+
+# Et il ne reste plus qu'à copier le zip obtenu dans le stockage physiquement distinct: backup restore de type (1,2)
+echo "Je suis $(whoami), et je backup l'infra kytes vers "
+cp -rf  /media/jibl/Seagate\ Slim\ Drive/kytes-production-drp
+
+```
+
+
 # Principe
 
 https://slackmojis.com/
