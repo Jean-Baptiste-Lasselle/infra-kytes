@@ -35,6 +35,53 @@ cp -rf  /media/jibl/Seagate\ Slim\ Drive/kytes-production-drp
 ```
 
 
+```bash
+[jibl@pc-100 infra-kytes]$ pwd
+/home/jibl/infra-kytes
+[jibl@pc-100 infra-kytes]$ ls -all
+total 170960
+drwxrwxr-x. 12 jibl jibl      4096 Oct 15 21:37 .
+drwx------.  7 jibl jibl      4096 Oct 15 21:54 ..
+-rw-rw-r--.  1 jibl jibl       369 Oct  8 00:30 boot-repo.sh
+drwxr-xr-x.  4 root root        30 Oct 13 12:48 db
+-rw-rw-r--.  1 jibl jibl     10237 Oct 15 21:21 docker-compose.yml
+drwxrwxr-x.  3 jibl jibl        20 Oct  8 00:30 documentation
+-rw-rw-r--.  1 jibl jibl      3855 Oct  8 00:30 .env
+drwxr-xr-x.  8 jibl jibl       220 Oct 15 21:25 .git
+-rw-rw-r--.  1 jibl jibl       145 Oct  8 00:30 .gitignore
+drwxrwxr-x.  6 jibl jibl        76 Oct 15 21:30 gitlab
+-rwxrwxr-x.  1 jibl jibl      2328 Oct  8 00:30 initialisation-iaac-cible-deploiement.sh
+-rw-r--r--.  1 root root 174957914 Oct 15 21:37 kytes-bckup-zero.zip
+-rw-rw-r--.  1 jibl jibl     35141 Oct  8 00:30 LICENSE
+drwxrwxr-x.  3 jibl jibl        26 Oct  8 00:30 mongodb
+drwxrwxr-x.  3 jibl jibl        26 Oct  8 00:30 mongo-init-replica
+drwxrwxr-x.  3 jibl jibl        60 Oct 14 20:00 nginx
+-rwxrwxr-x.  1 jibl jibl      6511 Oct  8 00:30 operations.sh
+-rwxrwxr-x.  1 jibl jibl      6534 Oct  8 00:30 operations-verbose.sh
+-rw-rw-r--.  1 jibl jibl      9550 Oct 14 21:50 README.md
+drwxrwxr-x.  4 jibl jibl        70 Oct 13 12:48 rocketchat
+drwxrwxr-x.  3 jibl jibl        25 Oct  8 00:30 tests
+drwxr-xr-x.  4 root root        35 Oct 13 12:48 volumes
+[jibl@pc-100 infra-kytes]$ zip -T ./kytes-bckup-zero.zip 
+test of ./kytes-bckup-zero.zip OK
+[jibl@pc-100 infra-kytes]$ exit
+logout
+Connection to production-docker-host-1.kytes.io closed.
+jibl@pc-alienware-jib:/media/jibl$ cd Seagate\ Slim\ Drive/
+jibl@pc-alienware-jib:/media/jibl/Seagate Slim Drive$ cd kytes-production-drp/
+jibl@pc-alienware-jib:/media/jibl/Seagate Slim Drive/kytes-production-drp$ scp jibl@production-docker-host-1.kytes.io:/home/jibl/infra-kytes/kytes-bckup-zero.zip ./kytes-bckup-zero.zip
+jibl@production-docker-host-1.kytes.io's password: 
+kytes-bckup-zero.zip                                                                                                                                                             100%  167MB  64.1MB/s   00:02    
+jibl@pc-alienware-jib:/media/jibl/Seagate Slim Drive/kytes-production-drp$ ls -all
+total 170872
+drwxrwxrwx 1 jibl jibl       176 Oct 15 22:31 .
+drwxrwxrwx 1 jibl jibl     12288 Oct 15 21:59 ..
+-rwxrwxrwx 1 jibl jibl 174957914 Oct 15 22:31 kytes-bckup-zero.zip
+jibl@pc-alienware-jib:/media/jibl/Seagate Slim Drive/kytes-production-drp$ # zip -T ./kytes-bckup-zero.zip
+
+```
+
+
 # Principe
 
 https://slackmojis.com/
