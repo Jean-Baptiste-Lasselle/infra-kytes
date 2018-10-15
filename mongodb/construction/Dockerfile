@@ -12,6 +12,9 @@ EXPOSE 27017
 RUN mkdir -p /testlive/
 COPY replicaset-health-check /testlive/
 COPY replicaset-health-check.silencieux /usr/local/bin/
+RUN chmod a+x /testlive/replicaset-health-check
+RUN chmod a+x /usr/local/bin/replicaset-health-check.silencieux
+
 
 # - -------------------------------------------------------------
 # - Rendu exécutable par operations.sh à la place, ou devrait 
