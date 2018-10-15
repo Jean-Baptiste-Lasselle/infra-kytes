@@ -108,7 +108,7 @@ services:
     volumes:
      - ./db/data:/data/db
      - ./db/dump:/dump
-    command: mongod --smallfiles --oplogSize 128 --replSet rs0
+    # command: mongod --smallfiles --oplogSize 128 --replSet rs0
     expose:
       - "27017"
     ports:
