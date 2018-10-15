@@ -12,7 +12,8 @@ Dans le run, j'ai constaté que la seule manière de tout relancer correctement 
 sudo docker-compose down --rmi all && docker-compose up -d --force-recreate
 ```
 
-ceci n'est pas satisfaisant. Ceci st du au plongeur soudeur,  et il y a quelque chose de très intéressant à faire en terme de disnction entre la recette de provision, et les opérations standards de déploiemùent, ainsi que leur tests. C'est RocketChat et le healthcheck de mongoDB qui ont posé problème.
+ceci n'est pas satisfaisant. Ceci st du au plongeur soudeur,  et il y a quelque chose de très intéressant à faire en terme de disnction entre la recette de provision, et les opérations standards de déploiemùent, ainsi que leur tests. C'est RocketChat et le healthcheck de mongoDB qui ont posé problème. repo historique des ops. repos des operatiosn standars. toutes les références des opérations standards .... chaque recette doit avoir une automatisation du logging des valeurs des arguments à l'invocation, de l'env, le whoami, les réréfrences vers n commit, sur N repos git, correspondant à N répertoires versionnés dans l'env d'exécution du soft (un conteneur).
+
 
 # Garde manger pour backup restore
 
