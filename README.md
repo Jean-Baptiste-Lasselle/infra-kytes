@@ -18,6 +18,21 @@ ceci n'est pas satisfaisant. Ceci st du au plongeur soudeur,  et il y a quelque 
 # Garde manger pour backup restore
 
 
+### Petit principe
+
+Pour chaque nouvelle version `N+1` de logiciel, on doit faire : 
+* une nouvelle version de la recette de backup
+* une nouvelle version de la recette de restauration
+* une recette de transformation des données, d'un backup valide version `N`, vers un backup valide version `N+1`. Un backup est valide pour une version  `K`, ssi la procédure de restauration de la version  `K` du logiciel, se déroule sans erreur, et sans perte de données ou de leur intégrité, sur la base de ce backup.
+* une recette de transformation des données, d'un backup valide version `N+1`, vers un backup valide version `N`.
+* toutes les recettes précédentes doivent êtrer idemtpotentes, et backup restore doivent être réciproques: exécutées successivement dasn n'importe quel ordre, elles constituent une opération idemtpotente.
+
+
+Le fait d'écrire les recettes de transformation, à double sens, permet de versionner absoluement tout l'historique des opératiosn d'exploitation d'un `RUN`, et peremt de rendre possible le passage d'un état d'exploitation à un autre, quels qu'ils soient.
+
+
+
+
 Fabrication du zip, dans l'hôte Docker (`./backup.sh`) : 
 (ce script retourne le nom du fichier zip généré)
 
