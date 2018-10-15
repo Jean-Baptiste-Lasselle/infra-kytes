@@ -81,7 +81,23 @@ jibl@pc-alienware-jib:/media/jibl/Seagate Slim Drive/kytes-production-drp$ zip -
 test of ./kytes-bckup-zero.zip OK
 jibl@pc-alienware-jib:/media/jibl/Seagate Slim Drive/kytes-production-drp$ 
 ```
+Le principe : 
 
+```bash
+[jibl@pc-100 TESTunzip]$ pwd
+/home/jibl/TESTunzip
+[jibl@pc-100 TESTunzip]$ unzip ./kytes-bckup-zero.zip 
+# [...]: J'ai retiré la sortie console du processus d'exécution de l'exécutable unzip
+jibl@pc-100 TESTunzip]$ ls -all
+total 170864
+drwxrwxr-x. 5 jibl jibl        73 Oct 15 22:46 .
+drwx------. 8 jibl jibl      4096 Oct 15 22:45 ..
+drwxr-xr-x. 4 jibl jibl        30 Oct 13 12:48 db
+drwxrwxr-x. 6 jibl jibl        76 Oct 15 21:30 gitlab
+-rw-r--r--. 1 jibl jibl 174957914 Oct 15 22:45 kytes-bckup-zero.zip
+drwxr-xr-x. 4 jibl jibl        35 Oct 13 12:48 volumes
+[jibl@pc-100 TESTunzip]$ 
+```
 
 # Principe
 
