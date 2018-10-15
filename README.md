@@ -1,3 +1,8 @@
+# TODO du mataîng
+
+https://github.com/Jean-Baptiste-Lasselle/infra-kytes/issues/4
+
+
 # RUN: journal de bord
 
 * à noter : 
