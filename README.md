@@ -2,6 +2,33 @@
 
 https://github.com/Jean-Baptiste-Lasselle/infra-kytes/issues/4
 
+ET  https://github.com/Jean-Baptiste-Lasselle/infra-kytes/issues/5 : 
+
+En faisant un reboot serveur, j'ai encore constaté unproblème avec le service gitlab.
+
+J'ai exécuté ceci dans le run, ce qui a appaorté une solution : 
+
+```bash
+[jibl@pc-100 infra-kytes]$ git status
+# On branch master
+nothing to commit, working directory clean
+[jibl@pc-100 infra-kytes]$ # sudo docker-compose up -d --build --force-recreate  gitlab
+[jibl@pc-100 infra-kytes]$ 
+```
+
+Remarque : on voit ci dessus, qu'au moment où j'ai exécuté l'opération `sudo docker-compose up -d --build --force-recreate  gitlab`, le repo git en lien, est bien synchronisé, cf. le `git status`.
+
+Au moment des opérations, le plus récent commit id de la branche master est   : 
+
+```bash
+[jibl@pc-100 infra-kytes]$ export RESULTAT=$(git ls-remote|tail -n 3 |head -n 1| awk '{print $1}')
+From https://github.com/Jean-Baptiste-Lasselle/infra-kytes
+[jibl@pc-100 infra-kytes]$ echo " dernier commit : [$RESULTAT]"
+ dernier commit : [adc9e88566752e18679f3a8fe5ac4143ac77704c]
+[jibl@pc-100 infra-kytes]$ date
+mer. oct. 17 20:58:58 CEST 2018
+[jibl@pc-100 infra-kytes]$ 
+```
 
 # RUN: journal de bord
 
