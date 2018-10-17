@@ -21,13 +21,15 @@ Remarque : on voit ci dessus, qu'au moment où j'ai exécuté l'opération `sudo
 Au moment des opérations, le plus récent commit id de la branche master est   : 
 
 ```bash
-[jibl@pc-100 infra-kytes]$ export RESULTAT=$(git ls-remote|tail -n 3 |head -n 1| awk '{print $1}')
+# export RESULTAT=$(git ls-remote|tail -n 3 |head -n 1| awk '{print $1}')
+[jibl@pc-100 infra-kytes]$ export RESULTAT=$(git rev-parse --verify HEAD)
 From https://github.com/Jean-Baptiste-Lasselle/infra-kytes
 [jibl@pc-100 infra-kytes]$ echo " dernier commit : [$RESULTAT]"
- dernier commit : [adc9e88566752e18679f3a8fe5ac4143ac77704c]
+ dernier commit : [e93abf425b5274589632913828c474a543acf88a]
+[jibl@pc-100 infra-kytes]$ git rev-parse --verify HEAD
+e93abf425b5274589632913828c474a543acf88a
 [jibl@pc-100 infra-kytes]$ date
 mer. oct. 17 20:58:58 CEST 2018
-[jibl@pc-100 infra-kytes]$ 
 ```
 
 # RUN: journal de bord
