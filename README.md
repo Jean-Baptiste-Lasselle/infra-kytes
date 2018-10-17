@@ -283,7 +283,7 @@ Les variables d'environnement utilisables sont :
 | `GITLAB_HTTP_PORT`           | Le numéro de port par lequel le serveur Gitlab sera accessible par HTTP, depuis l'extérieur |
 | `GITLAB_HTTPS_IP`            | L'adresse IP par laquelle le serveur Gitlab sera accessible par HTTPS, depuis l'extérieur   |
 | `GITLAB_HTTPS_PORT`          | Le numéro de port par lequel le serveur Gitlab sera accessible par HTTPS, depuis l'extérieur |
-| `TZ`                         | La "Time Zone" qui sera utilisée par l'instance Gitlab, exemple `TZ=Europe/Paris`           |
+| `TZ`                         | La "Time Zone" qui sera utilisée par l'instance Gitlab, exemple `TZ=Europe/Paris` . Des tests pour l'intégration à la configuration NTP dans l'OS de l'hôte Docker sous jacent, sont à faire.         |
 | `LETSENCRYPT_EMAIL`          | L'adresse email qui sera utilisée pour l'intégration LetsEncrypt    |
 | `VERSION_IMAGE_FREE_IPA_SERVER`        | La version de l'image docker FREE IPA SERVER utilisée    |
 | `VERSION_IMAGE_LETSENCRYPT`        | La version de l'image docker LETSENCRYPT utilisée    |
