@@ -4,7 +4,8 @@ Since I tagged this repo, users may expect communication from me.
 
 My work here (writing this on October, the 30th of October, 2018) is notfinished, and I will bring a neat boilerplate by Xmas Eve. 
 
-That  first usable version will be released as [3.0.0-xmas]
+That  first usable version will be released as [3.0.0-xmas]. I will consider authorizing branchning this repo by other architects/devops/developers, only after that 3.0.0-xmas release.
+
 
 Any preceding release is just for my pernal project management automation. 
 
@@ -31,9 +32,7 @@ Jean-Bapiste Lasselle
 
 
 
-# TODO du mataîng
-
-Lancer l'évolution FRee IPA server pour  :
+# TODO du mataîngLancer l'évolution FRee IPA sver pour  :
 * gestion serveurs Autroités de Certification, et gestion des certificat SSL
 * gestion des serveurs de nom de domaine
 * gestion du bootstrap de la gestion d'identité des humains
