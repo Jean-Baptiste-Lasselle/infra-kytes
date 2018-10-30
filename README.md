@@ -17,7 +17,7 @@ All in all, 3.0.0-xmas release will provide you a way to say f*** u to microsoft
 
 * This repo is a boilerplate I use to manufacture consistent business processes for production management of an infrastrutucture.
 * This boilerplate infrastructure includes Gitlab Rocketchat, for the time being
-* This boiler plate 1/2/3 backup capabilites : as long as you have got enough money to buy 2 external hard drive, then you 'll have a proper 1/2/3
+* This boiler plate has 1/2/3 backup capabilites : as long as you have got enough money to buy 2 external hard drive, then you 'll have a proper 1/2/3
 
 
 
