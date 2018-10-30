@@ -10,11 +10,11 @@ Any preceding release is just for my pernal project management automation.
 
 If you see anything written in French, just don't pay atention. You may, but be infrmed that I use french to mislead my business conccurent, and what you see in mess here, is in mess on purpose. Indeed, as any social network, Github is massively used to gather intel about IT professionals.
 
-For instance, I wil  never provide ansible / terrafoirm recipe for that repo : theose are things company will have to pay, to get.
+For instance, I wil  never provide ansible / terrafoirm recipe for that repo : those are things company will have to pay, to get.
 
-You may request my services, by submitting an issue with a github account, I will then find you, you don't need to write any email contact or phone number. Don't be shy about askig me if I would fly 11 000 miles to work op a project: I will.
+You may request my services, by submitting an issue with a github account, I will then find you, you don't need to write any email contact or phone number. Don't be shy about asking me if I would fly 11 000 miles to work op a project: I will, especially I f don' understand a word of your native language.
 
-All in all, 3.0.0-xmas release will provide you a way to say f... u to microsoft buying github.com, and you will find out how then, but for now:
+All in all, 3.0.0-xmas release will provide you a way to say f*** u to microsoft buying github.com, and you will find out how then, but for now, consider :
 
 * This repo is a boilerplate I use to manufacture consistent business processes for production management of an infrastrutucture.
 * This boilerplate infrastructure includes Gitlab Rocketchat, for the time being
