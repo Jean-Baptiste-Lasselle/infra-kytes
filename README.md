@@ -2,7 +2,7 @@
 
 Since I tagged this repo, users may expect communication from me.
 
-My work here (writing this on October, the 30th of October, 2018) is notfinished, and I will bring a neat boilerplate by Xmas Eve. 
+My work here (writing this on Tuesday, the 30th of October, 2018) is notfinished, and I will bring a neat boilerplate by Xmas Eve. 
 
 That  first usable version will be released as [3.0.0-xmas]. I will consider authorizing branchning this repo by other architects/devops/developers, only after that 3.0.0-xmas release.
 
