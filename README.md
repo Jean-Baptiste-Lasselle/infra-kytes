@@ -1,9 +1,11 @@
 # TODO du mataîng
 
 Lancer l'évolution FRee IPA server pour  :
-* gestion serveurs Autroités de CErtification, et gestion des certificat SSL
+* gestion serveurs Autroités de Certification, et gestion des certificat SSL
 * gestion des serveurs de nom de domaine
 * gestion du bootstrap de la gestion d'identité des humains
+
+Eténdre Free IPA pour la gestion de l'inventaire matériel, sans automatisation de la gestion du réseau d'alimentation électrique, kje m'arrête au niveau Wake ON LAN.
 
 
 # Principe
