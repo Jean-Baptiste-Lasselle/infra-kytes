@@ -21,7 +21,7 @@ All in all, 3.0.0-xmas release will provide you a way to say f*** u to microsoft
 
 
 
-If you see anything written in French, just don't pay atention. You may, but be informed that I use french to mislead my business conccurent, and what you see in mess here, is in mess on purpose. Indeed, as any social network, Github is massively used to gather intel about IT professionals. Massive doesn't mean bad. Massive means there has to be mean stuff around, it's  a statistical fact. Just as if you would pick a random person in the street. Just some words some Executive Directors hear from me, and ask me further explanantions, studies, IT stategy consultancy, zlong with the usual source code/build artefacts/apps.
+If you see anything written in French, just don't pay atention. You may, but be informed that I use french to mislead my business conccurent, and what you see in mess here, is in mess on purpose. Indeed, as any social network, Github is massively used to gather intel about IT professionals. Massive doesn't mean bad. Massive means there has to be mean stuff around, it's  a statistical fact. Just as if you would pick a random person in the street. Just some words some Executive Directors hear from me, and ask me further explanantions, studies, IT stategy consultancy, along with the usual source code/build artefacts/apps.
 
 
 Sit back, have some fine French Cheese, and see you on christmas :)
