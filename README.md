@@ -1,3 +1,36 @@
+# Warning to the reader
+
+Since I tagged this repo, users may expect communication from me.
+
+My work here (writing this on October, the 30th of October, 2018) is notfinished, and I will bring a neat boilerplate by Xmas Eve. 
+
+That  first usable version will be released as [3.0.0-xmas]
+
+Any preceding release is just for my pernal project management automation. 
+
+If you see anything written in French, just don't pay atention. You may, but be infrmed that I use french to mislead my business conccurent, and what you see in mess here, is in mess on purpose. Indeed, as any social network, Github is massively used to gather intel about IT professionals.
+
+For instance, I wil  never provide ansible / terrafoirm recipe for that repo : theose are things company will have to pay, to get.
+
+You may request my services, by submitting an issue with a github account, I will then find you, you don't need to write any email contact or phone number. Don't be shy about askig me if I would fly 11 000 miles to work op a project: I will.
+
+All in all, 3.0.0-xmas release will provide you a way to say f... u to microsoft buying github.com, and you will find out how then, but for now:
+
+* This repo is a boilerplate I use to manufacture consistent business processes for production management of an infrastrutucture.
+* This boilerplate infrastructure includes Gitlab Rocketchat, for the time being
+* This boiler plate 1/2/3 backup capabilites : as long as you have got enough money to buy 2 external hard drive, then you 'll have a proper 1/2/3
+
+Have some fine French Cheese,
+
+Thank you for reading me,
+
+Jean-Bapiste Lasselle
+
+
+
+
+
+
 # TODO du mataîng
 
 Lancer l'évolution FRee IPA server pour  :
