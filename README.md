@@ -2,10 +2,11 @@
 
 Since I tagged this repo, users may expect communication from me.
 
-My work here (writing this on Tuesday, the 30th of October, 2018) is notfinished, and I will bring a neat boilerplate by Xmas Eve. 
+My work here (writing this on Tuesday, the 30th of October, 2018) is not fready for re-use, and will be by Xmas Eve, as my Merry Christmas to Microsoft Inc. 
 
-That  first usable version will be released as [3.0.0-xmas]. I will consider authorizing branchning this repo by other architects/devops/developers, only after that 3.0.0-xmas release.
+That  first usable version will be released as [3.0.0-xmas]. I will consider authorizing branchning/collaboration on this repo, only after that 3.0.0-xmas release.
 
+In the meantime don't be shy about asking anything, especially if you think it's out of your reach: I love showing people they are much more thant they think. I will very happily answer you, just try and make your question as clear and short as possible. The clearer and the shorter you quesstion will be, the faster you'll get an answer.
 
 Any previous release is just for my personal project management automation. (I have in house 24 U stack + 2 zero-U PDUs )
 
