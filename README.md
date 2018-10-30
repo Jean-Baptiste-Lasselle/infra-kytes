@@ -7,11 +7,9 @@ My work here (writing this on October, the 30th of October, 2018) is notfinished
 That  first usable version will be released as [3.0.0-xmas]. I will consider authorizing branchning this repo by other architects/devops/developers, only after that 3.0.0-xmas release.
 
 
-Any preceding release is just for my pernal project management automation. 
+Any previous release is just for my personal project management automation. (I have in house 24 U stack + 2 zero-U PDUs )
 
-If you see anything written in French, just don't pay atention. You may, but be infrmed that I use french to mislead my business conccurent, and what you see in mess here, is in mess on purpose. Indeed, as any social network, Github is massively used to gather intel about IT professionals.
-
-For instance, I wil  never provide ansible / terrafoirm recipe for that repo : those are things company will have to pay, to get.
+I wil  never provide ansible / terraform recipe for that repo : those are things company will have to pay, to get.
 
 You may request my services, by submitting an issue with a github account, I will then find you, you don't need to write any email contact or phone number. Don't be shy about asking me if I would fly 11 000 miles to work op a project: I will, especially I f don' understand a word of your native language.
 
@@ -21,7 +19,12 @@ All in all, 3.0.0-xmas release will provide you a way to say f*** u to microsoft
 * This boilerplate infrastructure includes Gitlab Rocketchat, for the time being
 * This boiler plate 1/2/3 backup capabilites : as long as you have got enough money to buy 2 external hard drive, then you 'll have a proper 1/2/3
 
-Have some fine French Cheese,
+
+
+If you see anything written in French, just don't pay atention. You may, but be informed that I use french to mislead my business conccurent, and what you see in mess here, is in mess on purpose. Indeed, as any social network, Github is massively used to gather intel about IT professionals. Massive doesn't mean bad. Massive means there has to be mean stuff around, it's  a statistical fact. Just as if you would pick a random person in the street. Just some words some Executive Directors hear from me, and ask me further explanantions, studies, IT stategy consultancy, zlong with the usual source code/build artefacts/apps.
+
+
+Sit back, have some fine French Cheese, and see you on christmas :)
 
 Thank you for reading me,
 
