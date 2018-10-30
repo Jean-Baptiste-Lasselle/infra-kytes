@@ -28,9 +28,10 @@ Sit back, have some fine French Cheese, and see you on christmas :)
 
 Thank you for reading me,
 
-Jean-Bapiste Lasselle
 
-
+> I heard Linus Torvalds say Linux is nothing, compared to Git.
+> And I agree with him. (
+> _J.B. Lasselle_
 
 
 
