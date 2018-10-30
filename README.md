@@ -30,7 +30,9 @@ Thank you for reading me,
 
 
 > I heard Linus Torvalds say Linux is nothing, compared to Git.
-> And I agree with him. (
+> 
+> And I agree with him. 
+> 
 > _J.B. Lasselle_
 
 
