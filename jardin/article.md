@@ -52,3 +52,11 @@ Quand il y a uen forte cahrge, çça soulage énormément la bande passante du r
 évidemment , il y ades paramètres de configuration qui permette d'adopter le comportement optimal du coupe-circuit : 
 * la durée pendant laquelle le laod balancer renvoie directement l'erreur sans essayer de contacter le ocnteneur derrière
 * les pages d'erreurs renoyées (html/css/js/imgs)
+
+### infra
+ajouter integration free ipa server / keycloak / api gateway, ça donne deux stacks :
+
+* un :
+  * free ipa server / <=usePAM=> / keycloak / <=SAML=> / Tyk
+  * free ipa server / <=usePAM=> / keycloak / <=SAML=> / Gravitee.io => tester les 17 000 par secondes, setup terraform de l'infra de tests avec symian army.
+  
