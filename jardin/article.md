@@ -93,9 +93,14 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock # So that Traefik can listen to the Docker events
     networks:
       - reseau_dans_lequel_le_contneur_docker_traefik_est_aussi
+      - reseau_bridge_utilisant_une_enp0s4_hote_docker_pour_exterieur
 ```
 
-
+Ci-dessus :
+      - reseau_dans_lequel_le_contneur_docker_traefik_est_aussi : ce réseau est de type 'internal', il permet suelement la communication entre traefik et les autres conteneurs.
+      - reseau_bridge_utilisant_une_enp0s4_hote_docker_pour_exterieur : ce résau est un réseau de type bridge et il utilise un des interfaces réseau del'hôte de onteneurisation, de cluster node, pour le cas d'un cluster k8S. Il permet la commmunciation entre le conteneur/service k8S traefik et le reste du monde
+      - on obtient ainsi une isolation et un ocntrôle, quii peut se fâcher avec un firewall
+      
 
 
   
