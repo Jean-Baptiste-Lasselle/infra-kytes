@@ -13,7 +13,7 @@ exemple : si dans ton appli, il y a des workflows, et qu dans différents workfl
 - l'autre microserice lui renvoie l'adresse email,
 - et il envoie enfin l'email avec comme expéditeur l'adresse e-mail du responsalble de la campagne
 
-bingop l'exemple de fous
+
 
 Donc l'idée des API gateway est :
 mais purée, tu fais une solution que tu as éclatée en micro-services, alors nom de dieu, tu vas pas faire écrire du code qui implémente authorization / permissions, dans chaque micro-service, oui oui, imagines:
