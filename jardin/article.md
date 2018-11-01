@@ -40,3 +40,15 @@ ok portail des paysans, il y a une nouvelle API, elle a pour nom de domaine "aut
 - une communication réseau sortante est autorisée si et suelement si elle est  à destination de l'hôte réseu "portail-paysans.mon-entreprise.io" , et en provenance de l'un des hôtes réseau répertoirés dasn le portail des paysans.
 - une communicaation réseau entrante n'est aceptée que si elle est en provenance de l'hôte réseau "portail-paysans.mon-entreprise.io" , et si elle est à destination d'un des hôtes réseau référencés dans el portail des paysans
 
+### dernière partie article=> ARchitecture micro-services, le coupe circuit
+
+L'idée est la suivante : 
+
+le load balancer se rend compte qu'il y a a 1 conteneur , ben ça fait  10 fosi qu'il envoie des requête et que ça réponds un code http genre unavailable ou internal server error , bref c'est down. 
+
+Bon ben au lieu de continuer, à chaque fois qu'il reçoit une requête, d'envoyer une requête vers le conteneur, puis recevoir une erreur, et rransmettrela réponse avec l'erreur, il décide à la place, pendant les 30 prochaines secondes, de renvoyer directement la page d'erreur, sans même envoyer une seule requête, d'un quelconque protocole réseau, vers le conteneur derrière.
+
+Quand il y a uen forte cahrge, çça soulage énormément la bande passante du réseau interne, derrière le load balancer !!!
+évidemment , il y ades paramètres de configuration qui permette d'adopter le comportement optimal du coupe-circuit : 
+* la durée pendant laquelle le laod balancer renvoie directement l'erreur sans essayer de contacter le ocnteneur derrière
+* les pages d'erreurs renoyées (html/css/js/imgs)
