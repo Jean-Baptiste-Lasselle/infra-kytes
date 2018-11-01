@@ -1,4 +1,4 @@
-La pomme, ou comment PXE-booter une application Meteor
+La pomme, de l'histoire du paysan qui PXE-boote ses applications Meteor
 
 Les fruits, les potes des fleurs romatiques comme marguerite
 
