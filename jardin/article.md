@@ -64,3 +64,28 @@ ajouter integration free ipa server / keycloak / api gateway, ça donne deux sta
   * free ipa server / <=usePAM=> / keycloak / <=SAML=> / Tyk
   * free ipa server / <=usePAM=> / keycloak / <=SAML=> / Gravitee.io => tester les 17 000 par secondes, setup terraform de l'infra de tests avec symian army.
   
+  Ah! mais oui au fait, tu te rappelles, cher développeur, avant j'allais moi me logguer, dans le portail des paysans, pour configurer l'alisa, le nom de domaine pour chacun des 140 microservices?
+  BOn, maintenant, Traefik fait cela automatiqeuement, en se basnat les paramètres suivants que tu  collés dans ton yaml de déploiement (`docker-compose;yml` ou un `saint-nectaire-deployement.yaml`) : 
+
+```yaml
+version: 3
+services:
+...
+
+  mailer_campagnes_marketing:
+    image: campagnes-e-mailer:4.3.1-fourme-d-ambert
+    labels:
+      - traefik.backend=mailer_campagnes_marketing
+      - traefik.frontend.rule=Host:mailer-campagnes-marketing.mon-entreprise.io
+      - traefik.docker.network=reseau_dans_lequel_le_contneur_docker_traefik_est_aussi
+      - traefik.port=8080
+    networks:
+      - reseau_dans_lequel_le_contneur_docker_traefik_est_aussi
+    depends_on:
+      - mongo
+```
+
+
+
+
+  
