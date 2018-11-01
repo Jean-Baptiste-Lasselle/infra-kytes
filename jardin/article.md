@@ -102,9 +102,4 @@ Ci-dessus :
       - on obtient ainsi une isolation et un ocntrôle, quii peut se fâcher avec un firewall
       
 
-Ok donc j'ai compris: 
-* traefik disqualifie directement Gravitee.io, à cause de l'aspect fdynamique (entre parenthèses, le choix du projet MANTL confirme largement e que j'écris là)
-* je comprends donc bien pourquoi une certaine personne, dans un certain projet dans une ceraine entreprise, ne voulait pas entendre parler de traafik.
 
-hum le bon fromage.
-  
