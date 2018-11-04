@@ -39,7 +39,10 @@ Thank you for reading me,
 
 
 
-# TODO du mataîngLancer l'évolution FRee IPA sver pour  :
+# TODO du mataîng
+
+Lancer l'évolution Free IPA server pour  :
+
 * gestion serveurs Autroités de Certification, et gestion des certificat SSL
 * gestion des serveurs de nom de domaine
 * gestion du bootstrap de la gestion d'identité des humains
