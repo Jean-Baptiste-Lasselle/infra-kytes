@@ -8,6 +8,7 @@ services:
     restart: always
     container_name: "$NOM_CONTENEUR_GITLAB"
     hostname: "$HOTE_RESEAU_GITLAB"
+    privileged: true
     build: 
       context: ./gitlab/
       args:
