@@ -2,17 +2,17 @@
 
 Since I tagged this repo, users may expect communication from me.
 
-My work here (writing this on Tuesday, the 30th of October, 2018) is not fready for re-use, and will be by Xmas Eve, as my Merry Christmas to Microsoft Inc. 
+My work here (writing this on Tuesday, the 30th of October, 2018) is not ready for re-use, and will be by Xmas Eve, as my Merry Christmas to Microsoft Inc. 
 
-That  first usable version will be released as [3.0.0-xmas]. I will consider authorizing branchning/collaboration on this repo, only after that 3.0.0-xmas release.
+That  first usable version will be released as [3.0.0-xmas]. I will consider authorizing branching/collaboration on this repo, only after that 3.0.0-xmas release.
 
-In the meantime don't be shy about asking anything, especially if you think it's out of your reach: I love showing people they are much more thant they think. I will very happily answer you, just try and make your question as clear and short as possible. The clearer and the shorter you question will be, the faster you'll get an answer. Submit an issue here for any question.
+In the meantime don't be shy about asking anything, especially if you think it's out of your reach: I love proving people they are much more thant they think. I will very happily answer you, just try and make your question as clear and short as possible. The clearer and the shorter you question will be, the faster you'll get an answer. Submit an issue here for any question.
 
 Any previous release is just for my personal project management automation. (I have in house 24 U stack + 2 zero-U PDUs )
 
 I wil  never provide ansible / terraform recipe for that repo : those are things company will have to pay, to get.
 
-You may request my services, by submitting an issue with a github account, I will then find you, you don't need to write any email contact or phone number. Don't be shy about asking me if I would fly 11 000 miles to work op a project: I will, especially I f don' understand a word of your native language.
+You may request my services, by submitting an issue with a github account, I will then find you, you don't need to write any email contact or phone number. Don't bother asking me if I would fly 11 000 miles to work on a project: I will, especially I f don' understand a word of your native language.
 
 All in all, 3.0.0-xmas release will provide you a way to say f*** u to microsoft buying github.com, and you will find out how then, but for now, consider :
 
